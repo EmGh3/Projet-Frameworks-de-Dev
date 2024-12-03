@@ -1,7 +1,10 @@
-﻿namespace ERP_Project.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace ERP_Project.Models
 {
     public class ProjectTask
     {
+        
         public int Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
