@@ -8,6 +8,11 @@ namespace ERP_Project.Services.Services
     {
         public TaskService(ITaskRepository repository) : base(repository)
         {
+            
+        }
+        public ProjectTask GetByIdWithIncludes(int id)
+        {
+            return ((ITaskRepository)_repository).GetByIdWithIncludes(id);
         }
     }
 

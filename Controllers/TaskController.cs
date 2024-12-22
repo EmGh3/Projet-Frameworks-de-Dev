@@ -38,11 +38,20 @@ namespace ERP_Project.Controllers
         public async Task<IActionResult> Create(ProjectTask projectTask)
         {
             projectTask.Id = 0;
-                await _taskService.AddAsync(projectTask);
-                
-            //return RedirectToAction("details"); // Redirect to a list or details page after successful creation
+            projectTask.Status = ProjectTaskStatus.NotStarted;
+            await _taskService.AddAsync(projectTask);
+            // Redirect to details page after successful creation
+            return RedirectToAction("Details", new { projectTask.Id }); 
+        }
+        public IActionResult Details(int id)
+        {
+            ProjectTask projectTask = _taskService.GetByIdWithIncludes(id);
+            if (projectTask == null)
+            {
+                // Handle the case when the task is not found
+                return NotFound();
+            }
             return View(projectTask);
         }
-
     }
 }
