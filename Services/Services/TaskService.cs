@@ -14,6 +14,10 @@ namespace ERP_Project.Services.Services
         {
             return ((ITaskRepository)_repository).GetByIdWithIncludes(id);
         }
+        public IEnumerable<ProjectTask> GetByProjectId(int projectId)
+        {
+            return ((ITaskRepository)_repository).GetByProjectId(projectId);
+        }
     }
 
 }

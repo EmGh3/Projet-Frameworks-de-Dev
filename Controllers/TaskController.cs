@@ -53,5 +53,10 @@ namespace ERP_Project.Controllers
             }
             return View(projectTask);
         }
+        public IActionResult List(int id)
+        {
+            IEnumerable<ProjectTask> projectTasks = _taskService.GetByProjectId(id);
+            return View(projectTasks);
+        }
     }
 }

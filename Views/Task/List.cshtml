@@ -1,0 +1,73 @@
+﻿@model IEnumerable<ERP_Project.Models.ProjectTask>
+
+@{
+    ViewData["Title"] = "List";
+}
+
+<h1>@Html.DisplayFor(model => model.First().Project.Name)</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Deadline)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cost)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Employee)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Deadline)
+            </td>
+            <td>
+                    @if (item.Status == ProjectTaskStatus.Finished)
+                    {
+                        <span class="badge badge-success">Finished</span>
+                    }
+                    else if (item.Status == ProjectTaskStatus.InProgress)
+                    {
+                        <span class="badge badge-warning">In progress</span>
+                    }
+                    else if (item.Status == ProjectTaskStatus.NotStarted)
+                    {
+                        <span class="badge badge-info">Not started</span>
+                    }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cost)
+            </td>
+            <td>
+                    @if (item.Employee != null)
+                    {
+                        @Html.DisplayFor(modelItem => item.Employee.FirstName)
+                        @Html.DisplayFor(modelItem => item.Employee.LastName)
+                    }
+                    else
+                    {
+                        <div>No Employee Assigned</div>
+                    }
+            </td>
+            <td>
+                    <a class="btn btn-gradient-primary btn-sm" asp-action="Details" asp-route-id="@item.Id">Details</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
