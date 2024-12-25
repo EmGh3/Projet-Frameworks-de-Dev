@@ -13,7 +13,7 @@ namespace ERP_Project.Repositories.Repositories
         public ProjectTask GetByIdWithIncludes(int id)
         {
             return _dbSet.Include(t => t.Employee).Include(t => t.Project)
-                .Include(t => t.Comments).SingleOrDefault(t => t.Id == id);
+                .SingleOrDefault(t => t.Id == id);
         }
         public IEnumerable<ProjectTask> GetByProjectId(int projectId)
         {

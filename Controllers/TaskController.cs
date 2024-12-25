@@ -14,9 +14,11 @@ namespace ERP_Project.Controllers
     {
         public readonly ITaskService _taskService;
         public readonly IGenericService<Project> _genericService;
-        public TaskController(ITaskService taskService, IGenericService<Project> genericService)
+        public readonly ICommentService _commentService;
+        public TaskController(ITaskService taskService,ICommentService commentService , IGenericService<Project> genericService)
         {
             _taskService = taskService;
+            _commentService = commentService;
             _genericService = genericService;
         }
         [Authorize(Roles = "ProjectManager")]
@@ -46,11 +48,13 @@ namespace ERP_Project.Controllers
         public IActionResult Details(int id)
         {
             ProjectTask projectTask = _taskService.GetByIdWithIncludes(id);
+            IEnumerable<Comment> comments = _commentService.GetByTaskId(id);
             if (projectTask == null)
             {
                 // Handle the case when the task is not found
                 return NotFound();
             }
+            ViewData["Comments"] = comments;
             return View(projectTask);
         }
         public IActionResult List(int id)

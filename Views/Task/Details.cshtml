@@ -62,8 +62,31 @@
             @Html.DisplayFor(model => model.Description)
         </div>
         <hr />
+        <div class="col-sm-2" style="font-weight: bolder; margin:10px">
+            @Html.DisplayNameFor(model => model.Comments)
+        </div>
+        <div class="col-sm-10">
+            @foreach (var comment in (IEnumerable<Comment>)ViewData["Comments"])
+			{
+				<div class="card">
+					<div class="card-body">
+                        <blockquote class="blockquote blockquote-primary">
+                            <h4 class="card-title">
+                                @comment.Title
+							</h4>
+                                <div class="card-description">
+                                @comment.User.FirstName @comment.User.LastName
+                            </div>
+                        <p class="lead">@comment.Content</p>
+
+                        </blockquote>
+					</div>
+				</div>
+			}
+        </div>
     <div>
             <a class="add btn btn-gradient-primary font-weight-bold" asp-action="List" asp-route-id="@Model.ProjectId">Back to List</a>
+            <a class="add btn btn-gradient-primary font-weight-bold" asp-action="Create" asp-controller="Comment" asp-route-id="@Model.Id">Add Comment</a>
 </div>
 </div>
 </div>
