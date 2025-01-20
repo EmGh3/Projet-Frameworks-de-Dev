@@ -1,8 +1,34 @@
-﻿@*
+﻿@using Newtonsoft.Json
+@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
+    var isManagerString = Context.Session.GetString("isManager");
+    var isManager = isManagerString == "true";  // Convert to a boolean
+
+    var userJson = Context.Session.GetString("User");
+    object user = null;
+
+    if (!string.IsNullOrEmpty(userJson))
+    {
+        if (isManager)
+        {
+            user = JsonConvert.DeserializeObject<ProjectManager>(userJson);
+
+        }
+        else
+        {
+            user = JsonConvert.DeserializeObject<Employee>(userJson);
+            
+
+        }
+    }
 }
+
+
+
+
+
 <nav class="sidebar sidebar-offcanvas" id="sidebar">
     <ul class="nav">
         <li class="nav-item nav-profile">
@@ -12,9 +38,20 @@
                     <span class="login-status online"></span>
                     <!--change to offline or busy as needed-->
                 </div>
-                <div class="nav-profile-text d-flex flex-column">
-                    <span class="font-weight-bold mb-2">David Grey. H</span>
-                    <span class="text-secondary text-small">Project Manager</span>
+               <div class="nav-profile-text d-flex flex-column">
+                    @if (user is ProjectManager manager)
+                    {
+                        <span class="font-weight-bold mb-2">@manager.FirstName @manager.LastName</span>
+                        <span class="menu-title">Project Manager</span>
+
+                        
+                    }
+                    else if (user is Employee employee)
+                    {
+                        <span class="font-weight-bold mb-2">@employee.FirstName @employee.LastName</span>
+                        <span class="menu-title">@employee.Designation</span>
+
+                    }
                 </div>
                 <i class="mdi mdi-bookmark-check text-success nav-profile-badge"></i>
             </a>

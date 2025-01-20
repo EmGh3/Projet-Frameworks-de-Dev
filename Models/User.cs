@@ -13,6 +13,8 @@ namespace ERP_Project.Models
 
         [Phone] public string PhoneNumber { get; set; }
         public ICollection<Comment> Comments { get; set; }
+        public string Discriminator { get; set; }
+
 
 
 

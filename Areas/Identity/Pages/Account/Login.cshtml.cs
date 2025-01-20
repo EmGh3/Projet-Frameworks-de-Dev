@@ -15,6 +15,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using ERP_Project.Models;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Security.Claims;
+using Newtonsoft.Json;
+using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using ERP_Project.Data;
+using ERP_Project.Controllers;
 
 namespace ERP_Project.Areas.Identity.Pages.Account
 {
@@ -22,11 +29,15 @@ namespace ERP_Project.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<User> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly UserManager<User> _userManager;
+        private readonly ApplicationDbContext _context;
 
-        public LoginModel(SignInManager<User> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<User> signInManager, ILogger<LoginModel> logger ,UserManager<User> userManager,ApplicationDbContext context)
         {
+            _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+            _context = context;
         }
 
         /// <summary>
@@ -116,7 +127,48 @@ namespace ERP_Project.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
-                    return LocalRedirect(returnUrl);
+
+                    // Get the current user based on the email
+                    var currentUser = await _userManager.FindByEmailAsync(Input.Email);
+
+                    // Fetch the user details from the database
+                    var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == currentUser.Id);
+
+                    if (user != null)
+                    {
+                        // Check if the user is a ProjectManager or Employee
+                        if (user.Discriminator == "ProjectManager")
+                        {
+                            // Retrieve the ProjectManager object
+                            var manager = await _context.ProjectManagers
+                                .FirstOrDefaultAsync(pm => pm.Id == user.Id);
+
+                            // Serialize the manager object and store it in the session
+                            var managerJson = JsonConvert.SerializeObject(manager);
+                            HttpContext.Session.SetString("isManager", "true");  // Set the 'isManager' flag to true
+                            HttpContext.Session.SetString("User", managerJson);  // Store the manager object in session
+                            return LocalRedirect("/ProjectManager/Index");
+
+                        }
+                        else if (user.Discriminator == "Employee")
+                        {
+                            // Retrieve the Employee object
+                            var employee = await _context.Employees
+                                .FirstOrDefaultAsync(emp => emp.Id == user.Id);
+
+                            // Serialize the employee object and store it in the session
+                            var employeeJson = JsonConvert.SerializeObject(employee);
+                            HttpContext.Session.SetString("isManager", "false");  // Set the 'isManager' flag to false
+                            HttpContext.Session.SetString("User", employeeJson);  // Store the employee object in session
+                        }
+                    }
+                
+
+
+
+
+                _logger.LogInformation("User logged in.");
+                    return LocalRedirect("/Home/Index");
                 }
                 if (result.RequiresTwoFactor)
                 {

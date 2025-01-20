@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using System;
+using ERP_Project.Repositories.Contracts;
+using ERP_Project.Repositories.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,12 +21,28 @@ builder.Services.AddIdentity<User, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 builder.Services.AddTransient<IEmailSender, EmailSender>();
+builder.Services.AddScoped<IDepartmentRepository,DepartmentRepository>();
+builder.Services.AddScoped<IProjectManagerRepository, ProjectManagerRepository>();
+builder.Services.AddScoped<IEmployeeRepository, EmployeesRepository>();
 
 builder.Services.AddRazorPages();
 builder.Services.AddControllersWithViews();
 
-var app = builder.Build();
+builder.Services.AddDistributedMemoryCache(); // Session storage in memory
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(180); // Set session timeout
+    options.Cookie.HttpOnly = true; // Protect session cookie
+    options.Cookie.IsEssential = true;
+});
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Identity/Account/Login"; // Ensures the correct path is set globally
+    options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+});
 
+var app = builder.Build();
+app.UseSession();
 using (var scope = app.Services.CreateScope())
 {
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
@@ -57,7 +75,15 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
-
+app.Use(async (context, next) =>
+{
+    if (context.Request.Path == "/")
+    {
+        context.Response.Redirect("/Identity/Account/Login");
+        return;
+    }
+    await next();
+});
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");

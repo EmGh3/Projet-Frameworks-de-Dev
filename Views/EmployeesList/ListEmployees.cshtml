@@ -1,0 +1,55 @@
+﻿<h4 class="card-title">Employee List</h4>
+
+<div class="d-flex align-items-center justify-content-between mb-4 p-3" style="background-color: #e7f1ff; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+    <div class="d-flex align-items-center">
+        <!-- Icon and Text for Total Employees -->
+        <div class="d-flex align-items-center">
+            <i class="fa fa-id-card" style="font-size: 24px; color: purple; margin-right: 10px;"></i>
+            <h5 class="m-0" style="font-weight: 600; color: #333;">Total Employees: @ViewBag.EmployeeCount</h5>
+        </div>
+    </div>
+</div>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Designation</th>
+            <th>Phone Number</th>
+            <th>Department Name</th>
+            <th>Email</th>
+            <th>Action</th> <!-- New column for the button -->
+        </tr>
+    </thead>
+    <tbody>
+        @if ((int)ViewBag.EmployeeCount > 0)
+        {
+            int counter = 0;
+            foreach (var employee in Model)
+            {
+                <tr>
+                    <td>@counter</td>  <!-- Display the counter value -->
+                    <td>@employee.FirstName</td>
+                    <td>@employee.LastName</td>
+                    <td>@employee.Designation</td>
+                    <td>@employee.PhoneNumber</td>
+                    <td>@employee.Department?.Name</td> <!-- Safe navigation for potential null values -->
+                    <td>@employee.Email</td>
+                    <td>
+                        <a href="@Url.Action("Profile", "Employee", new { id = employee.Id })" class="btn btn-primary">View Profile</a>
+                    </td> <!-- Button to view profile -->
+                </tr>
+                counter++;
+                <!-- Increment the counter for the next row -->
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="8" class="text-center">No employees found.</td>
+            </tr>
+        }
+    </tbody>
+</table>

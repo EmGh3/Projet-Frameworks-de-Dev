@@ -1,0 +1,87 @@
+﻿@using Newtonsoft.Json
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    var isManagerString = Context.Session.GetString("isManager");
+    var isManager = isManagerString == "true";  // Convert to a boolean
+
+    var userJson = Context.Session.GetString("User");
+    object user = null;
+
+    if (!string.IsNullOrEmpty(userJson))
+    {
+        if (isManager)
+        {
+            user = JsonConvert.DeserializeObject<ProjectManager>(userJson);
+
+        }
+       
+    }
+}
+
+
+
+
+
+<nav class="sidebar sidebar-offcanvas" id="sidebar">
+    <ul class="nav">
+        <li class="nav-item nav-profile">
+            <a href="@Url.Action("ProjectManagerDetails", "ProjectManager")" class="nav-link">
+
+                <div class="nav-profile-image">
+                    <img src="/images/profile_pic.webp" alt="profile" />
+                    <span class="login-status online"></span>
+                    <!--change to offline or busy as needed-->
+                </div>
+                <div class="nav-profile-text d-flex flex-column">
+                    @if (user is ProjectManager manager)
+                    {
+                        <span class="font-weight-bold mb-2">@manager.FirstName @manager.LastName</span>
+                        <span class="menu-title">Project Manager</span>
+
+
+                    }
+                    else if (user is Employee employee)
+                    {
+                        <span class="font-weight-bold mb-2">@employee.FirstName @employee.LastName</span>
+                        <span class="menu-title">@employee.Designation</span>
+
+                    }
+                </div>
+                <i class="mdi mdi-bookmark-check text-success nav-profile-badge"></i>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="index.html">
+                <span class="menu-title">Dashboard</span>
+                <i class="mdi mdi-home menu-icon"></i>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+                <span class="menu-title">Projects</span>
+                <i class="menu-arrow"></i>
+                <i class="mdi mdi-crosshairs-gps menu-icon"></i>
+            </a>
+          
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="collapse" href="#forms" aria-expanded="false" aria-controls="forms">
+                <span class="menu-title">Tasks</span>
+                <i class="mdi mdi-format-list-bulleted menu-icon"></i>
+            </a>
+
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="@Url.Action("ListEmployees", "EmployeesList")" aria-expanded="false" aria-controls="icons">
+                <span class="menu-title">Employees</span>
+                <i class="mdi mdi-contacts menu-icon"></i>
+            </a>
+          
+        </li>
+        
+       
+       
+    </ul>
+</nav>
