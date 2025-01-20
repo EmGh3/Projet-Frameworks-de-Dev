@@ -14,7 +14,7 @@
         public decimal Budget { get; set; }
         public decimal Expenses { get; set; }
 
-        public int ProjectManagerId { get; set; } // Foreign Key to Project Manager
+        public string ProjectManagerId { get; set; } // Foreign Key to Project Manager
         public ProjectManager ProjectManager { get; set; } // Navigation Property
 
         // Many-to-Many relationship with Employees

@@ -1,4 +1,8 @@
-﻿<h4 class="card-title">Employee List</h4>
+﻿@{
+    Layout = "../Shared/_adminLayout.cshtml";
+}
+
+<h4 class="card-title">Employee List</h4>
 
 <div class="d-flex align-items-center justify-content-between mb-4 p-3" style="background-color: #e7f1ff; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
     <div class="d-flex align-items-center">
@@ -9,6 +13,8 @@
         </div>
     </div>
 </div>
+
+<p>Employee Count: @ViewBag.EmployeeCount</p> <!-- Debugging Employee Count -->
 
 <table class="table table-bordered">
     <thead>
@@ -30,7 +36,7 @@
             foreach (var employee in Model)
             {
                 <tr>
-                    <td>@counter</td>  <!-- Display the counter value -->
+                    <td>@(counter + 1)</td>  <!-- Increment counter properly -->
                     <td>@employee.FirstName</td>
                     <td>@employee.LastName</td>
                     <td>@employee.Designation</td>
@@ -38,7 +44,7 @@
                     <td>@employee.Department?.Name</td> <!-- Safe navigation for potential null values -->
                     <td>@employee.Email</td>
                     <td>
-                        <a href="@Url.Action("Profile", "Employee", new { id = employee.Id })" class="btn btn-primary">View Profile</a>
+                        <a href="@Url.Action("EmployeeProfile", "Employee", new { id = employee.Id })" class="btn btn-gradient-primary text-white text-decoration-none" style="font-size: 1.2rem; padding: 12px 20px;">View Profile</a>
                     </td> <!-- Button to view profile -->
                 </tr>
                 counter++;

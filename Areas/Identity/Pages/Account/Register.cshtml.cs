@@ -140,7 +140,7 @@ namespace ERP_Project.Areas.Identity.Pages.Account
         {
             ReturnUrl = returnUrl;
             Departments = await _depRepo.GetAllAsync();
-            ViewData["Departments"] = new SelectList(Departments, "Id", "Id");
+            ViewData["Departments"] = new SelectList(Departments, "Id", "Name");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
 

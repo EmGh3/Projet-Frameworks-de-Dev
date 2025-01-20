@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using ERP_Project.Repositories.Contracts;
 using ERP_Project.Repositories.Repositories;
+using ERP_Project.Services.Contracts;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +25,10 @@ builder.Services.AddTransient<IEmailSender, EmailSender>();
 builder.Services.AddScoped<IDepartmentRepository,DepartmentRepository>();
 builder.Services.AddScoped<IProjectManagerRepository, ProjectManagerRepository>();
 builder.Services.AddScoped<IEmployeeRepository, EmployeesRepository>();
+
+builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+builder.Services.AddScoped<IProjectManagerService, ProjectManagerService>();
+
 
 builder.Services.AddRazorPages();
 builder.Services.AddControllersWithViews();

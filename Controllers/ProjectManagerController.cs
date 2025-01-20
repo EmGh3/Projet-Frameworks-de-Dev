@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using ERP_Project.Models.viewModels;
-using ERP_Project.Services.Services;
+using ERP_Project.Services.Contracts;
 using Microsoft.AspNetCore.WebUtilities;
 using System.Text;
 namespace ERP_Project.Controllers
@@ -14,12 +14,12 @@ namespace ERP_Project.Controllers
 
     public class ProjectManagerController : Controller
     {
-        public readonly IProjectManagerRepository _projectManagerRepository;
+        public readonly IProjectManagerService _projectManagerService;
         private readonly UserManager<User> _userManager;
 
-        public ProjectManagerController(IProjectManagerRepository projectManagerRepository, UserManager<User> userManager)
+        public ProjectManagerController(IProjectManagerService projectManagerService, UserManager<User> userManager)
         {
-            _projectManagerRepository = projectManagerRepository;
+            _projectManagerService = projectManagerService;
             _userManager = userManager;
         }
         public IActionResult Index()
@@ -30,7 +30,7 @@ namespace ERP_Project.Controllers
         {
             var managerJson = HttpContext.Session.GetString("User");
             var managerId = JsonConvert.DeserializeObject<ProjectManager>(managerJson).Id;
-            var manager = await _projectManagerRepository.GetByIdAsync(managerId);
+            var manager = await _projectManagerService.GetByIdAsync(managerId);
 
 
             return View(manager);

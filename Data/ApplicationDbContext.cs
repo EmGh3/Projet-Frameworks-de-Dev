@@ -23,7 +23,11 @@ namespace ERP_Project.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
 {
     base.OnModelCreating(modelBuilder);
-
+            modelBuilder.Entity<Project>()
+            .HasOne(p => p.ProjectManager)
+            .WithMany()
+            .HasForeignKey(p => p.ProjectManagerId)
+            .OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<User>()
                 .HasDiscriminator<string>("Discriminator")  // Map to the existing discriminator column
                 .HasValue<User>("User")

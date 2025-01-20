@@ -1,16 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
 
-using ERP_Project.Repositories.Contracts;
+using ERP_Project.Services.Contracts;
 namespace ERP_Project.Controllers
 {
     public class EmployeesListController : Controller
     {
-        readonly IEmployeeRepository _employeeRepository;
-        public EmployeesListController(IEmployeeRepository employeeRepository)
+        readonly IEmployeeService _employeeService;
+        public EmployeesListController(IEmployeeService employeeService)
         {
-            _employeeRepository = employeeRepository;
-        }               
+            _employeeService = employeeService;
+        }
+
         public IActionResult Index()
 
         {
@@ -20,10 +21,10 @@ namespace ERP_Project.Controllers
         public async Task<IActionResult> ListEmployees()
         {
             // Await the async call to get employees
-            var employees = await _employeeRepository.GetAllEmployeesWithDepartment();
+            var employees = await _employeeService.GetAllEmployeesWithDepartment();
 
             // Get the employee count (you can also await if it's an async method)
-            var count = await _employeeRepository.EmployeeCount();
+            var count = await _employeeService.EmployeeCount();
 
             // Pass the employee count to the view
             ViewBag.EmployeeCount = count;

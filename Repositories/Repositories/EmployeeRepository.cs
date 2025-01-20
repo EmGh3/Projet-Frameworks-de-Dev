@@ -46,13 +46,9 @@ namespace ERP_Project.Repositories.Repositories
 
         public async Task<IEnumerable<ProjectTask>> GetEmployeeTasksAsync(string id)
         {
-            if (!int.TryParse(id, out int employeeId))
-            {
-                return Enumerable.Empty<ProjectTask>(); // Return an empty list if the id is invalid
-            }
-
+           
             return await _context.Tasks
-                                 .Where(t => t.EmployeeId == employeeId)
+                                 .Where(t => t.EmployeeId == id)
                                  .ToListAsync();
         }
 

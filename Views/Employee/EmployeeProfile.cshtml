@@ -1,0 +1,189 @@
+﻿
+@model ERP_Project.Models.viewModels.EmployeeProfileViewModel
+
+@{
+    ViewData["Title"] = "Employee Details";
+    Layout = "../Shared/_adminLayout.cshtml";
+
+}
+
+
+<div class="card mb-4 shadow">
+    <!-- Header -->
+    <div class="card-header bg-white p-3 border-primary border-3 border-top border-bottom-0 border-start-0 border-end-0">
+        <div>
+            <h5 class="fw-bold mb-1 text-dark">@Model.Employee.FirstName @Model.Employee.LastName</h5>
+            <small class="text-muted">@Model.Employee.Designation</small>
+        </div>
+    </div>
+    <div class="border-primary border-1 border-top border-bottom-0 border-start-0 border-end-0"></div>
+
+
+    <!-- Body -->
+    <div class="card-body p-4">
+        <div class="row g-4">
+            <!-- First Column -->
+            <div class="col-md-6">
+                <div class="list-group">
+                    <div class="list-group-item border-0 bg-light rounded">
+                        <div class="d-flex flex-column">
+                            <small class="text-primary fw-bold">Email</small>
+                            <span>@Model.Employee.Email</span>
+                        </div>
+                    </div>
+                    <div class="list-group-item border-0 bg-light rounded mt-3">
+                        <div class="d-flex flex-column">
+                            <small class="text-primary fw-bold">Phone Number</small>
+                            <span>@Model.Employee.PhoneNumber</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Second Column -->
+            <div class="col-md-6">
+                <div class="list-group">
+                    <div class="list-group-item border-0 bg-light rounded">
+                        <div class="d-flex flex-column">
+                            <small class="text-primary fw-bold">Gender</small>
+                            <span>@Model.Employee.Gender</span>
+                        </div>
+                    </div>
+                    <div class="list-group-item border-0 bg-light rounded mt-3">
+                        <div class="d-flex flex-column">
+                            <small class="text-primary fw-bold">Date of Birth</small>
+                            <span>@Model.Employee.DateOfBirth.ToShortDateString()</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Address (Full Width) -->
+            <div class="col-12">
+                <div class="list-group">
+                    <div class="list-group-item border-0 bg-light rounded">
+                        <div class="d-flex flex-column">
+                            <small class="text-primary fw-bold">Address</small>
+                            <span>@Model.Employee.Address</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (Model.Projects != null && Model.Projects.Any())
+{
+    <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Assigned Projects</h5>
+                <p class="card-description">Below is the list of projects assigned to this employee:</p>
+                <table class="table table-hover table-bordered">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>#</th>
+                            <th>Project Name</th>
+                            <th>Status</th>
+                            <th>Progress</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (var i = 0; i < Model.Projects.Count(); i++)
+                        {
+                            var project = Model.Projects[i];
+                            <tr>
+                                <td>@(i + 1)</td>
+                                <td>@project.Name</td>
+                                <td>
+                                    <span class="badge 
+                                        @(project.Status == "Completed" ? "badge-success" : 
+                                          project.Status == "In Progress" ? "badge-warning" : 
+                                          "badge-danger")">
+                                        @project.Status
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="progress">
+                                        <div class="progress-bar @(project.Progress >= 75 ? "bg-success" : project.Progress >= 50 ? "bg-info" : "bg-warning")" 
+                                            role="progressbar" 
+                                            style="width: @project.Progress%" 
+                                            aria-valuenow="@project.Progress" 
+                                            aria-valuemin="0" 
+                                            aria-valuemax="100">
+                                            @project.Progress%
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>@project.StartDate.ToShortDateString()</td>
+                                <td>@project.EndDate.ToShortDateString()</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="alert alert-info">
+        No projects assigned to this employee.
+    </div>
+}
+
+
+@if (Model.Tasks != null && Model.Tasks.Any())
+{
+    <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Assigned Tasks</h5>
+                <p class="card-description">Below is the list of tasks assigned to this employee:</p>
+                <table class="table table-hover table-bordered">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>#</th>
+                            <th>Task Title</th>
+                            <th>Status</th>
+                            <th>Deadline</th>
+                            <th>Cost</th>
+                            <th>Project </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (var i = 0; i < Model.Tasks.Count(); i++)
+                        {
+                            var task = Model.Tasks[i];
+                            <tr>
+                                <td>@(i + 1)</td>
+                                <td>@task.Title</td>
+                                <td>
+                                    <span class="badge
+                                        @(task.Status == "Completed" ? "badge-success" :
+                                          task.Status == "In Progress" ? "badge-warning" :
+                                          "badge-danger")">
+                                        @task.Status
+                                    </span>
+                                </td>
+                                <td>@task.Deadline.ToShortDateString()</td>
+                                <td>@task.Cost.ToString("C")</td>
+                                <td>@task.Project.Name</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="alert alert-info">
+        No tasks assigned to this employee.
+    </div>
+}
+

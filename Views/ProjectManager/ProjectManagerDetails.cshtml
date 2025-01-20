@@ -32,15 +32,15 @@
                             <p><strong>Address:</strong> @Model.Address</p>
                         </div>
                     </div>
-                    <div class="d-flex justify-content-center gap-4 mt-4">
+                    <div class="d-flex justify-content-center gap-4 mt-4 mb-4">
                         <a href="@Url.Action("UpdateProfile", "ProjectManager")" class="btn btn-gradient-primary text-white text-decoration-none" style="font-size: 1.2rem; padding: 12px 20px;">Update Profile</a>
-                        <a href="@Url.Action("ResetPassword", "Account")" class="btn btn-danger text-white text-decoration-none" style="font-size: 1.2rem; padding: 12px 20px;">Reset Password</a>
+                        <a href="@Url.Action("ResetPassword", "Account")" class="btn btn-gradient-primary text-white text-decoration-none" style="font-size: 1.2rem; padding: 12px 20px;">Reset Password</a>
+                    </div>
 
+                    <div class="card-footer text-muted">
+                        <p class="mb-2" style="font-size: 1.1rem;">Profile last updated: <em>@DateTime.Now.ToString("dd/MM/yyyy")</em></p>
+                    </div>
 
-                </div>
-                <div class="card-footer text-muted">
-                    <p class="mb-0" style="font-size: 1.1rem;">Profile last updated: <em>@DateTime.Now.ToString("dd/MM/yyyy")</em></p>
-                </div>
             </div>
         </div>
     </div>
