@@ -2,7 +2,7 @@
 
 namespace ERP_Project.Services.Contracts
 {
-    public interface IEmployeeService
+    public interface IEmployeeService : IGenericService<Employee>
     {
         Task<IEnumerable<Employee>> GetAllEmployeesWithDepartment();
         Task<int> EmployeeCount();

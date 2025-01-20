@@ -1,15 +1,16 @@
-﻿using ERP_Project.Models;
+﻿using ERP_Project.Controllers;
+using ERP_Project.Models;
 using ERP_Project.Repositories.Contracts;
 using ERP_Project.Services.Contracts;
 
 namespace ERP_Project.Services.Services
 {
-    public class EmployeeService : IEmployeeService
+    public class EmployeeService :GenericService<Employee> , IEmployeeService
     {
         private readonly IEmployeeRepository _employeeRepository;
 
         // Constructor to inject the IEmployeeRepository dependency
-        public EmployeeService(IEmployeeRepository employeeRepository)
+        public EmployeeService(IEmployeeRepository employeeRepository) : base(employeeRepository)
         {
             _employeeRepository = employeeRepository;
         }

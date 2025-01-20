@@ -2,7 +2,7 @@
 
 namespace ERP_Project.Services.Contracts
 {
-    public interface IProjectManagerService
+    public interface IProjectManagerService :IGenericService<ProjectManager>
     {
 
       
