@@ -29743,3 +29743,15 @@ dl {
     flex-grow: 1;
 }
 /*# sourceMappingURL=maps/style.css.map */
+#sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px; /* Adjust width as needed */
+    height: 100vh; /* Make sidebar full height */
+    background-color: #343a40; /* Dark background for sidebar */
+    color: white;
+    padding: 20px;
+    z-index: 1000; /* Ensure sidebar is on top */
+    overflow-y: auto; /* Scroll content inside the sidebar if needed */
+}

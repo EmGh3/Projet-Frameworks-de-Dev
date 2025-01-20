@@ -18,5 +18,10 @@ namespace ERP_Project.Services.Services
         {
             return await _projectManagerRepository.GetByIdAsync(id);
         }
+
+        public async Task<IEnumerable<Project>> GetProjectsByManager(string id) {
+            return await _projectManagerRepository.GetProjectsByManager(id);
+
+        }
     }
 }

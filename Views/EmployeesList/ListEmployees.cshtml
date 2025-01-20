@@ -44,7 +44,7 @@
                     <td>@employee.Department?.Name</td> <!-- Safe navigation for potential null values -->
                     <td>@employee.Email</td>
                     <td>
-                        <a href="@Url.Action("EmployeeProfile", "Employee", new { id = employee.Id })" class="btn btn-gradient-primary text-white text-decoration-none" style="font-size: 1.2rem; padding: 12px 20px;">View Profile</a>
+                        <a href="@Url.Action("EmployeeProfile", "Employee", new { id = employee.Id })" class="btn btn-gradient-primary text-white text-decoration-none" style="font-size: 1rem; padding: 10px 10px;">View Profile</a>
                     </td> <!-- Button to view profile -->
                 </tr>
                 counter++;

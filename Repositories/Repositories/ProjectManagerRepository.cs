@@ -27,5 +27,14 @@ namespace ERP_Project.Repositories.Repositories
         }
 
 
+        public async Task<IEnumerable<Project>> GetProjectsByManager(string id) {
+            return await _context.Projects
+                .Where(p => p.ProjectManagerId == id)
+                .ToListAsync();
+
+
+        }
+
+
     }
 }

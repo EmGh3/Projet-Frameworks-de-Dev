@@ -89,6 +89,7 @@
                             <th>Progress</th>
                             <th>Start Date</th>
                             <th>End Date</th>
+                            <th>Project Link</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -120,6 +121,9 @@
                                 </td>
                                 <td>@project.StartDate.ToShortDateString()</td>
                                 <td>@project.EndDate.ToShortDateString()</td>
+                                <td>
+                                    <a href="#" class="btn btn-gradient-primary text-white text-decoration-none" style="font-size: 1rem; padding: 10px 10px;">Project Details</a>
+                                </td>
                             </tr>
                         }
                     </tbody>

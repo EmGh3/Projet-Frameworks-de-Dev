@@ -31,11 +31,27 @@ namespace ERP_Project.Controllers
             var managerJson = HttpContext.Session.GetString("User");
             var managerId = JsonConvert.DeserializeObject<ProjectManager>(managerJson).Id;
             var manager = await _projectManagerService.GetByIdAsync(managerId);
+            var projects = await _projectManagerService.GetProjectsByManager(manager.Id);
 
+            // Extract events from projects (e.g., project deadlines)
+            var calendarEvents = projects.Select(p => new CalendarEvent
+            {
+                Title = p.Name, // Title of the event can be the project name
+                StartDate = p.StartDate, // Assuming projects have a StartDate
+                EndDate = p.EndDate // Assuming projects have an EndDate (optional)
+            }).ToList();
 
-            return View(manager);
+            var viewModel = new ProjectManagerDetailsViewModel
+            {
+                Manager = manager,
+                Projects = projects,
+                CalendarEvents = calendarEvents
+            };
+
+            return View(viewModel);
         }
-       
+
+
 
         [HttpGet]
         public async Task<IActionResult> UpdateProfile()

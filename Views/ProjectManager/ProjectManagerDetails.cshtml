@@ -1,47 +1,172 @@
-﻿@model ERP_Project.Models.ProjectManager
-
+﻿@model ERP_Project.Models.viewModels.ProjectManagerDetailsViewModel
 @{
     ViewData["Title"] = "Project Manager Details";
     Layout = "../Shared/_adminLayout.cshtml";
 }
-<div class="container mt-4">
-    <div class="row justify-content-center">
-        <div class="col-md-10">
-            <div class="card shadow-lg border-0 rounded-lg">
-                <div class="card-header bg-primary text-white">
-                    <h6 class="card-title mb-0 text-white" style="font-size: 1.5rem;">Welcome, @Model.FirstName @Model.LastName</h6>
+
+<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css" rel="stylesheet">
+
+<div class="container">
+<div class="container py-2">
+    <!-- Profile Section -->
+    <div class="row mb-3">
+        <div class="col-10">
+            <div class="card shadow-lg border-0 rounded-lg" style="height: auto;">
+                <div class="card-header bg-gradient-primary text-white py-2">
+                    <h5 class="card-title mb-0 text-white">Project Manager Profile</h5>
                 </div>
-                <div class="card-body">
-                    <div class="d-flex align-items-center mb-4">
-                        <div class="nav-profile-image">
-                            <img src="/images/profile_pic.webp" alt="image" style="height: 100px; width: 100px; border-radius: 50%; object-fit: cover;">
-                        </div>
-                        <div style="font-size: 1.2rem;">
-                            <h4 class="mb-0 text-primary">@Model.FirstName @Model.LastName</h4>
-                            <p class="text-muted">@Model.Email</p>
-                        </div>
-                    </div>
-                    <hr />
-                    <div class="row">
-                        <div class="col-12 col-md-6" style="font-size: 1.1rem;">
-                            <p><strong>Phone:</strong> @Model.PhoneNumber</p>
-                            <p><strong>Date of Birth:</strong> @Model.DateOfBirth.ToString("dd/MM/yyyy")</p>
-                        </div>
-                        <div class="col-12 col-md-6" style="font-size: 1.1rem;">
-                            <p><strong>Gender:</strong> @Model.Gender</p>
-                            <p><strong>Address:</strong> @Model.Address</p>
-                        </div>
-                    </div>
-                    <div class="d-flex justify-content-center gap-4 mt-4 mb-4">
-                        <a href="@Url.Action("UpdateProfile", "ProjectManager")" class="btn btn-gradient-primary text-white text-decoration-none" style="font-size: 1.2rem; padding: 12px 20px;">Update Profile</a>
-                        <a href="@Url.Action("ResetPassword", "Account")" class="btn btn-gradient-primary text-white text-decoration-none" style="font-size: 1.2rem; padding: 12px 20px;">Reset Password</a>
+                <div class="card-body py-3">
+                    <div class="text-center mb-2">
+                        <img src="/images/profile_pic.webp" alt="Profile Picture" 
+                             class="rounded-circle shadow-sm border border-3 border-primary" 
+                             style="height: 80px; width: 80px; object-fit: cover;">
+                        <h5 class="mt-2 mb-1">@Model.Manager.FirstName @Model.Manager.LastName</h5>
+                        <p class="text-muted small mb-1">Project Manager</p>
+                        <p class="text-primary small mb-2">
+                            <i class="fas fa-envelope me-2"></i>@Model.Manager.Email
+                        </p>
                     </div>
 
-                    <div class="card-footer text-muted">
-                        <p class="mb-2" style="font-size: 1.1rem;">Profile last updated: <em>@DateTime.Now.ToString("dd/MM/yyyy")</em></p>
+                    <div class="row g-2 text-center small">
+                        <div class="col-6 col-md-3">
+                            <label class="text-muted d-block">Phone</label>
+                            <p>@Model.Manager.PhoneNumber</p>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <label class="text-muted d-block">Date of Birth</label>
+                            <p>@Model.Manager.DateOfBirth.ToString("dd/MM/yyyy")</p>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <label class="text-muted d-block">Gender</label>
+                            <p>@Model.Manager.Gender</p>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <label class="text-muted d-block">Address</label>
+                            <p>@Model.Manager.Address</p>
+                        </div>
                     </div>
 
+                    <!-- Action Buttons -->
+                    <div class="d-grid gap-2 mt-3">
+                        <a href="@Url.Action("UpdateProfile", "ProjectManager")" 
+                           class="btn btn-primary">
+                            <i class="fas fa-user-edit me-2"></i>Update Profile
+                        </a>
+                        <a href="@Url.Action("ResetPassword", "Account")" 
+                           class="btn btn-outline-primary">
+                            <i class="fas fa-key me-2"></i>Reset Password
+                        </a>
+                    </div>
+                </div>
+                <div class="card-footer bg-light text-muted py-1">
+                    <small><i class="fas fa-clock me-1"></i>Last updated: @DateTime.Now.ToString("dd/MM/yyyy")</small>
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+
+
+<div class="container py-2">
+
+  <div class="row mb-3">
+    <div class="col-10">
+        <div class="card shadow-lg border-0 rounded-lg">
+            <div class="card-header bg-gradient-primary text-white py-3" style="height:50px;">
+                <h5 class="card-title mb-0 text-white">Project Calendar</h5>
+            </div>
+            <div class="card-body p-0" style="height: 600px;"> <!-- Increase this height -->
+                <div id="calendar" style="height:200px;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<style>
+    .bg-gradient-primary {
+        background: linear-gradient(45deg, #4e73df 0%, #224abe 100%);
+    }
+
+    .rounded-circle {
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn {
+        font-size: 0.9rem;
+        padding: 0.5rem 1rem;
+    }
+
+    #calendar {
+        margin: 1rem;
+        height: 200px !important;/* Adjust calendar height */
+    }
+
+    .fc .fc-toolbar-title {
+        font-size: 1rem;
+        font-weight: 200;
+    }
+    #calendar {
+    margin: 0.2rem;
+  
+}
+
+.fc { /* FullCalendar root */
+    height: 40% !important;
+}
+</style>
+<style>
+    /* Customize event appearance */
+    .fc-event.custom-event {
+        color: #6c757d; /* Light gray text color */
+        text-decoration: none !important; /* Remove blue underline */
+        background-color:  #c5c5ef; /* Light background color */
+        border-color: #6c757d; /* Light border color */
+    }
+
+    /* Hover effect for the event */
+  
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            height: 'auto',
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay'
+            },
+            buttonText: {
+                today: 'Today',
+                month: 'Month',
+                week: 'Week',
+                day: 'Day'
+            },
+            events: [
+        @foreach (var calendarEvent in Model.CalendarEvents)
+        {
+            var startDate = calendarEvent.StartDate.ToString("yyyy-MM-dd");
+            var endDate = calendarEvent.EndDate?.ToString("yyyy-MM-dd");
+            <text>
+                            {
+                                title: '@calendarEvent.Title',
+                                start: '@startDate',
+                @if (endDate != null)
+                {
+                    @:end: '@endDate',
+                }
+                                className: 'custom-event'  // Added custom class for styling
+                            },
+            </text>
+        }
+            ]
+        });
+        calendar.render();
+    });
+</script>

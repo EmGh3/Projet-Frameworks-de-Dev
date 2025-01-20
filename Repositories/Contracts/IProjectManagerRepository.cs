@@ -7,6 +7,7 @@ namespace ERP_Project.Repositories.Contracts
 
 
         Task<ProjectManager> GetByIdAsync(string id);
+        Task<IEnumerable<Project>> GetProjectsByManager(string id);
 
 
     }
