@@ -1,0 +1,18 @@
+﻿@model List<string>
+
+
+@foreach (var notification in Model)
+{
+    <a class="dropdown-item preview-item">
+        <div class="preview-thumbnail">
+            <div class="preview-icon bg-danger">
+                <i class="mdi mdi-alert"></i>
+            </div>
+        </div>
+        <div class="preview-item-content d-flex align-items-start flex-column justify-content-center">
+            <h6 class="preview-subject font-weight-normal mb-1">@notification</h6>
+        </div>
+    </a>
+    <div class="dropdown-divider"></div>
+}
+

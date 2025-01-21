@@ -8,6 +8,7 @@ using System;
 using ERP_Project.Repositories.Contracts;
 using ERP_Project.Repositories.Repositories;
 using ERP_Project.Services.Contracts;
+using ERP_Project.Views.Shared.Components.Notifications;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,7 +30,8 @@ builder.Services.AddScoped<IEmployeeRepository, EmployeesRepository>();
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<IProjectManagerService, ProjectManagerService>();
 
-
+builder.Services.AddScoped<INotificationService, NotificationService>(); // Register NotificationService
+builder.Services.AddScoped<NotificationsViewComponent>(); // Register the ViewComponent
 builder.Services.AddRazorPages();
 builder.Services.AddControllersWithViews();
 

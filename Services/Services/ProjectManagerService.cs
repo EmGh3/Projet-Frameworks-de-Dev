@@ -1,6 +1,7 @@
 ﻿using ERP_Project.Models;
 using ERP_Project.Repositories.Contracts;
 using ERP_Project.Services.Contracts;
+using Microsoft.AspNetCore.Mvc;
 namespace ERP_Project.Services.Services
 {
     public class ProjectManagerService :GenericService<ProjectManager>, IProjectManagerService
@@ -23,5 +24,6 @@ namespace ERP_Project.Services.Services
             return await _projectManagerRepository.GetProjectsByManager(id);
 
         }
+       
     }
 }
