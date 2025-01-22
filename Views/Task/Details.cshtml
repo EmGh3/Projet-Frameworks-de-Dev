@@ -23,6 +23,19 @@
                     <span class="badge badge-info" style="font-size: 15px">Not started</span>
 				}
             </div>
+            @if(Model.EmployeeId == null && Model.Project.ProjectManagerId == (string?)ViewData["UserId"])
+			{
+                <a class="btn btn-gradient-primary font-weight-bold col-md-2" asp-action="ChooseEmployee" asp-route-id="@Model.Id">Assign Task</a>
+			}
+
+            @if (Model.EmployeeId == (string?)ViewData["UserId"] && Model.Status == ProjectTaskStatus.InProgress)
+            {
+                <a class="btn btn-gradient-primary font-weight-bold col-md-2" asp-action="FinishTask" asp-route-id="@Model.Id" asp-route-employeeId="@Model.EmployeeId">Finish Task</a>
+            }
+            
+
+
+           
     </div>
         <h4>Project:  @Html.DisplayFor(model => model.Project.Name)</h4>
     <hr />
@@ -85,8 +98,12 @@
 			}
         </div>
     <div>
-            <a class="add btn btn-gradient-primary font-weight-bold" asp-action="List" asp-route-id="@Model.ProjectId">Back to List</a>
+            <a class="add btn btn-gradient-primary font-weight-bold" asp-action="ListByProject" asp-route-id="@Model.ProjectId">Back to Project Tasks</a>
             <a class="add btn btn-gradient-primary font-weight-bold" asp-action="Create" asp-controller="Comment" asp-route-id="@Model.Id">Add Comment</a>
+            @if (Model.Project.ProjectManagerId == (string?)ViewData["UserId"])
+            {
+                <a class="add btn btn-gradient-danger font-weight-bold" asp-action="Delete" asp-route-id="@Model.Id">Delete Task</a>
+            }
 </div>
 </div>
 </div>

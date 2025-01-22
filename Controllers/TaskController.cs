@@ -5,26 +5,35 @@ using ERP_Project.Services.Services;
 using ERP_Project.Services.Contracts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
+using Microsoft.CodeAnalysis;
 
 
 
 namespace ERP_Project.Controllers
 {
+    [Authorize]
     public class TaskController: Controller
     {
         public readonly ITaskService _taskService;
-        public readonly IGenericService<Project> _genericService;
+        public readonly IProjectService _projectService;
         public readonly ICommentService _commentService;
-        public TaskController(ITaskService taskService,ICommentService commentService , IGenericService<Project> genericService)
+        public readonly IEmployeeService _employeeService;
+        public readonly UserManager<User> _userManager;
+        public TaskController(ITaskService taskService,ICommentService commentService , IProjectService projectService, UserManager<User> userManager, IEmployeeService employeeService)
         {
             _taskService = taskService;
             _commentService = commentService;
-            _genericService = genericService;
+            _projectService = projectService;
+            _userManager = userManager;
+            _employeeService = employeeService;
         }
         [Authorize(Roles = "ProjectManager")]
         public IActionResult Create(int id)
         {
-            Project project = _genericService.GetByIdAsync(id).Result;
+            var project = _projectService.GetByIdAsync(id).Result;
             if (project == null)
             {
                 // Handle the case when the project is not found
@@ -42,11 +51,13 @@ namespace ERP_Project.Controllers
             projectTask.Id = 0;
             projectTask.Status = ProjectTaskStatus.NotStarted;
             await _taskService.AddAsync(projectTask);
+            _projectService.UpdateProgress(projectTask.ProjectId);
             // Redirect to details page after successful creation
             return RedirectToAction("Details", new { projectTask.Id }); 
         }
         public IActionResult Details(int id)
-        {
+        { 
+            ViewData["UserId"] = _userManager.GetUserId(User);
             ProjectTask projectTask = _taskService.GetByIdWithIncludes(id);
             IEnumerable<Comment> comments = _commentService.GetByTaskId(id);
             if (projectTask == null)
@@ -57,10 +68,86 @@ namespace ERP_Project.Controllers
             ViewData["Comments"] = comments;
             return View(projectTask);
         }
-        public IActionResult List(int id)
+        [Authorize(Roles = "ProjectManager")]
+        public IActionResult Delete(int id)
         {
+            ProjectTask task = _taskService.GetByIdAsync(id).Result;
+            return View(task);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Delete(ProjectTask task)
+        {
+            _taskService.DeleteAsync(task.Id);
+            _projectService.UpdateProgress(task.ProjectId);
+            return RedirectToAction(nameof(ListByManager));
+        }
+        public IActionResult ListByProject(int id)
+        {
+            ViewData["UserId"] = _userManager.GetUserId(User);
+            ViewData["ProjectId"] = id;
+            ViewData["ProjectName"] = _projectService.GetByIdAsync(id).Result.Name;
             IEnumerable<ProjectTask> projectTasks = _taskService.GetByProjectId(id);
             return View(projectTasks);
         }
+        [Authorize(Roles = "ProjectManager")]
+        public IActionResult ListByManager()
+        {
+            ViewData["UserId"] = _userManager.GetUserId(User);
+            IEnumerable<ProjectTask> projectTasks = _taskService.GetByProjectManagerId(_userManager.GetUserId(User));
+            return View(projectTasks);
+        }
+        [Authorize(Roles = "Employee")]
+        public IActionResult FinishTask (int id) {
+            var projectTask = _taskService.GetByIdAsync(id).Result;
+            if (projectTask == null)
+            {
+                return NotFound(new { Message = "Task not found." });
+            }
+
+            if (projectTask.EmployeeId != _userManager.GetUserId(User))
+            {
+                return Unauthorized(new { Message = "You are not authorized to update this task." });
+            }
+            _taskService.ChangeStatus(projectTask, ProjectTaskStatus.Finished);
+            _projectService.UpdateProgress(projectTask.ProjectId);
+            return RedirectToAction("Details", new { id });
+        }
+        [Authorize(Roles = "ProjectManager")]
+        public IActionResult ChooseEmployee(int id)
+        {
+            var projectTask = _taskService.GetByIdAsync(id).Result;
+            if (projectTask == null)
+            {
+                return NotFound(new { Message = "Task not found." });
+            }
+            var employees = _employeeService.GetByProjectId(projectTask.ProjectId).Result
+             .Select(e => new SelectListItem
+             {
+                Value = e.Id,  
+                Text = $"{e.FirstName} {e.LastName}"
+             })
+            .ToList();
+            ViewBag.Employees = employees;
+            return View(projectTask);
+        }
+        [Authorize(Roles = "ProjectManager")]
+        public IActionResult AssignTask(string employeeId, int taskId)
+        {
+            var task = _taskService.GetByIdAsync(taskId).Result;
+            var employee = _employeeService.GetById(employeeId).Result;
+            if (task == null)
+            {
+                return NotFound(new { Message = "Task not found."});
+            }
+            if (employee == null)
+            {
+                return NotFound(new { Message = "Employee not found." });
+            }
+            _taskService.ChangeStatus(task, ProjectTaskStatus.InProgress).Wait();
+            _taskService.AssignTask(task, employee).Wait();
+            return RedirectToAction("Details", new { id = taskId });
+        }
+
     }
 }

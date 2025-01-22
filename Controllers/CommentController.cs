@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace ERP_Project.Controllers
 {
+    [Authorize]
     public class CommentController : Controller
     {
         public readonly ICommentService _commentService;
