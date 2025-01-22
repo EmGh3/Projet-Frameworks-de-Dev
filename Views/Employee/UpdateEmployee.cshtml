@@ -1,0 +1,136 @@
+﻿@model ERP_Project.Models.viewModels.UpdateEmployeeViewModel
+
+@{
+    ViewData["Title"] = "Update Employee";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/vendors/mdi/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="~/vendors/css/vendor.bundle.base.css">
+    <link rel="stylesheet" href="~/css/style.css">
+    <link rel="shortcut icon" href="~/images/favicon.png" />
+</head>
+<body>
+    <div class="container-scroller">
+        <div class="container-fluid page-body-wrapper full-page-wrapper">
+            <div class="content-wrapper d-flex align-items-center auth">
+                <div class="row flex-grow justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="auth-form-light text-left p-4 shadow-sm">
+                            <div class="text-center mb-3">
+                                <div class="brand-logo mb-2">
+                                    <img src="~/images/logo.svg" alt="logo">
+                                </div>
+                                <h4 class="mb-1">Update Employee Information</h4>
+                                <p class="text-muted small mb-0">Modify the details below to update the employee record</p>
+                            </div>
+
+                            <form method="post" class="needs-validation mt-3" novalidate>
+                                <!-- Personal Information Section -->
+                                <div class="card mb-3">
+                                    <div class="card-header py-2">
+                                        <h6 class="mb-0"><i class="mdi mdi-account-circle me-2"></i>Personal Information</h6>
+                                    </div>
+                                    <div class="card-body py-2">
+                                        <div class="row g-2">
+                                            <div class="col-md-6">
+                                                <div class="form-group mb-2">
+                                                    <label asp-for="FirstName" class="small text-muted"></label>
+                                                    <input asp-for="FirstName" class="form-control form-control-sm" placeholder="First name" />
+                                                    <span asp-validation-for="FirstName" class="text-danger small"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group mb-2">
+                                                    <label asp-for="LastName" class="small text-muted"></label>
+                                                    <input asp-for="LastName" class="form-control form-control-sm" placeholder="Last name" />
+                                                    <span asp-validation-for="LastName" class="text-danger small"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Contact Information Section -->
+                                <div class="card mb-3">
+                                    <div class="card-header py-2">
+                                        <h6 class="mb-0"><i class="mdi mdi-contact-mail me-2"></i>Contact Information</h6>
+                                    </div>
+                                    <div class="card-body py-2">
+                                        <div class="row g-2">
+                                            <div class="col-md-6">
+                                                <div class="form-group mb-2">
+                                                    <label asp-for="Email" class="small text-muted"></label>
+                                                    <input asp-for="Email" class="form-control form-control-sm" placeholder="Email" />
+                                                    <span asp-validation-for="Email" class="text-danger small"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group mb-2">
+                                                    <label asp-for="PhoneNumber" class="small text-muted"></label>
+                                                    <input asp-for="PhoneNumber" class="form-control form-control-sm" placeholder="Phone number" />
+                                                    <span asp-validation-for="PhoneNumber" class="text-danger small"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Employment Details Section -->
+                                <div class="card mb-3">
+                                    <div class="card-header py-2">
+                                        <h6 class="mb-0"><i class="mdi mdi-briefcase me-2"></i>Employment Details</h6>
+                                    </div>
+                                    <div class="card-body py-2">
+                                        <div class="row g-2">
+                                            <div class="col-md-6">
+                                                <div class="form-group mb-2">
+                                                    <label asp-for="DepartmentId" class="small text-muted"></label>
+                                                    <select asp-for="DepartmentId" class="form-select form-select-sm" asp-items="ViewBag.Departments">
+                                                        <option value="">Select Department</option>
+                                                    </select>
+                                                    <span asp-validation-for="DepartmentId" class="text-danger small"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group mb-2">
+                                                    <label asp-for="Designation" class="small text-muted"></label>
+                                                    <input asp-for="Designation" class="form-control form-control-sm" placeholder="Designation" />
+                                                    <span asp-validation-for="Designation" class="text-danger small"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="text-center mt-3">
+                                    <button type="submit" class="btn btn-primary px-4">
+                                        <i class="mdi mdi-update me-2"></i>Update Employee
+                                    </button>
+                                </div>
+                                <div class="card-footer bg-light text-center py-2">
+
+                                    <a href="@Url.Action("Employeeprofile", "Employee",new {Id = @Model.Id})" class="text-decoration-none text-primary">
+                                            <i class="fas fa-arrow-left me-1"></i>Back to Profile Details
+                                        </a>
+                                    
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/vendors/js/vendor.bundle.base.js"></script>
+    <script src="~/js/misc.js"></script>
+</body>
+</html>

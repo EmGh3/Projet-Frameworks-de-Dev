@@ -1,8 +1,11 @@
-﻿using ERP_Project.Models.viewModels;
+﻿using ERP_Project.Models;
+using ERP_Project.Models.viewModels;
 using ERP_Project.Repositories;
 using ERP_Project.Services.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Security.Claims;
 
 namespace ERP_Project.Controllers
 {
@@ -11,13 +14,15 @@ namespace ERP_Project.Controllers
     public class EmployeeController : Controller  // Inherit from Controller to handle actions
     {
         private readonly IEmployeeService _employeeService;
+        private readonly IDepartmentService _departmentService;
 
-        public EmployeeController(IEmployeeService employeeService)
-        { 
+        public EmployeeController(IEmployeeService employeeService ,IDepartmentService departmentService)
+        {
             _employeeService = employeeService;
+            _departmentService = departmentService;
         }
-            
-        
+
+
 
         // Corrected method with proper type for 'id' (assuming it's an integer)
 
@@ -37,10 +42,68 @@ namespace ERP_Project.Controllers
                 Tasks = tasks.ToList()
             };
 
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Assuming user ID is stored in claims
+            ViewBag.CurrentUserId = currentUserId;
             return View(viewModel); // Pass the ViewModel to the view
         }
 
-       
-    }
+
+        [HttpGet]
+        public async Task<IActionResult> UpdateEmployee(string id)
+        {
+            var employee = await _employeeService.GetById(id);    
+            if (employee == null)
+            {
+                return NotFound();
+            }
+
+            var model = new UpdateEmployeeViewModel
+            {
+                Id = employee.Id,
+                FirstName = employee.FirstName,
+                LastName = employee.LastName,
+                Email = employee.Email,
+                PhoneNumber = employee.PhoneNumber,
+                DepartmentId = employee.DepartmentId,
+                Designation = employee.Designation
+            };
+            var departments = await _departmentService.GetAllAsync();
+            ViewData["Departments"] = new SelectList(departments, "Id", "Name");
+            return View(model);
+        }
+
+        [HttpPost]
+        public async  Task<IActionResult> UpdateEmployee(UpdateEmployeeViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+
+                var departments = await _departmentService.GetAllAsync();
+                ViewData["Departments"] = new SelectList(departments, "Id", "Name");
+                return View(model);
+            }
+
+            var employee =await  _employeeService.GetById(model.Id);
+            if (employee == null)
+            {
+                return NotFound();
+            }
+
+            employee.FirstName = model.FirstName;
+            employee.LastName = model.LastName;
+            employee.Email = model.Email;
+            employee.PhoneNumber = model.PhoneNumber;
+            employee.DepartmentId = model.DepartmentId;
+            employee.Designation = model.Designation;
+
+            await _employeeService.UpdateAsync(employee);
+
+            return RedirectToAction("EmployeeProfile", new { id = model.Id });
+        }
+
+
+
 
     }
+
+}

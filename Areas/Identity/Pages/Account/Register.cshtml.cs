@@ -101,7 +101,6 @@ namespace ERP_Project.Areas.Identity.Pages.Account
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
 
-            // Add the additional fields from the User model
             [Required]
             [Display(Name = "First Name")]
             public string FirstName { get; set; }
@@ -125,10 +124,8 @@ namespace ERP_Project.Areas.Identity.Pages.Account
             [Phone]
             [Display(Name = "Phone Number")]
             public string PhoneNumber { get; set; }
-            // Role Selection
            
 
-            // Department and Designation (only shown when Role is "Employee")
             [Display(Name = "Department")]
             public int DepartmentId { get; set; }
 
@@ -155,9 +152,9 @@ namespace ERP_Project.Areas.Identity.Pages.Account
             {
                 foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
                 {
-                    _logger.LogError("ModelState error: " + error.ErrorMessage); // Log the ModelState errors
+                    _logger.LogError("ModelState error: " + error.ErrorMessage);
                 }
-                return Page(); // Ensure this is reached if ModelState is invalid
+                return Page(); 
             }
 
             _logger.LogInformation("ModelState is valid, continuing registration process.");
@@ -166,7 +163,7 @@ namespace ERP_Project.Areas.Identity.Pages.Account
 
             if (user == null)
             {
-                _logger.LogError("Unable to create employee.");  // Log error if user creation fails
+                _logger.LogError("Unable to create employee."); 
                 ModelState.AddModelError(string.Empty, "Unable to create employee.");
                 return Page();
             }
@@ -190,15 +187,14 @@ namespace ERP_Project.Areas.Identity.Pages.Account
             {
                 foreach (var error in result.Errors)
                 {
-                    _logger.LogError("Registration failed: " + error.Description); // Log registration errors
+                    _logger.LogError("Registration failed: " + error.Description); 
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
-                return Page(); // Ensure this returns errors if registration fails
+                return Page(); 
             }
 
             _logger.LogInformation("User created successfully.");
 
-            // Ensure the "Employee" role exists
             var roleExist = await _roleManager.RoleExistsAsync("Employee");
             if (!roleExist)
             {
@@ -211,39 +207,33 @@ namespace ERP_Project.Areas.Identity.Pages.Account
                 }
             }
 
-            // Add the selected role to the user
             await _userManager.AddToRoleAsync(user, "Employee");
             if (user != null)
             {
-                // Check if the user is a ProjectManager or Employee
+               
                 if (user.Discriminator == "ProjectManager")
                 {
-                    // Retrieve the ProjectManager object
                     var manager = await _context.ProjectManagers
                         .FirstOrDefaultAsync(pm => pm.Id == user.Id);
 
-                    // Serialize the manager object and store it in the session
                     var managerJson = JsonConvert.SerializeObject(manager);
-                    HttpContext.Session.SetString("isManager", "true");  // Set the 'isManager' flag to true
-                    HttpContext.Session.SetString("User", managerJson);  // Store the manager object in session
+                    HttpContext.Session.SetString("isManager", "true");  
+                    HttpContext.Session.SetString("User", managerJson);  
                 }
                 else if (user.Discriminator == "Employee")
                 {
-                    // Retrieve the Employee object
                     var employee = await _context.Employees
                         .FirstOrDefaultAsync(emp => emp.Id == user.Id);
 
-                    // Serialize the employee object and store it in the session
                     var employeeJson = JsonConvert.SerializeObject(employee);
-                    HttpContext.Session.SetString("isManager", "false");  // Set the 'isManager' flag to false
-                    HttpContext.Session.SetString("User", employeeJson);  // Store the employee object in session
+                    HttpContext.Session.SetString("isManager", "false");  
+                    HttpContext.Session.SetString("User", employeeJson);  
                 }
             }
 
 
 
 
-            // Email confirmation and sign-in process
             var userId = await _userManager.GetUserIdAsync(user);
             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
             code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
@@ -273,9 +263,8 @@ namespace ERP_Project.Areas.Identity.Pages.Account
         {
             try
             {
-                // Check the role and return the corresponding user type
                
-                    return Activator.CreateInstance<Employee>(); // Create an Employee instance
+                    return Activator.CreateInstance<Employee>(); 
                
             }
             catch

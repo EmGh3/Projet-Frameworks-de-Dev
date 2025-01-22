@@ -2,10 +2,18 @@
 @model ERP_Project.Models.viewModels.EmployeeProfileViewModel
 
 @{
-    ViewData["Title"] = "Employee Details";
-    Layout = "../Shared/_adminLayout.cshtml";
+    ViewData["Title"] = "Employee Profile";
 
+    if (User.IsInRole("ProjectManager"))
+    {
+        Layout = "../Shared/_adminLayout.cshtml";
+    }
+    else
+    {
+        Layout = "../Shared/_Layout.cshtml";
+    }
 }
+
 
 
 <div class="card mb-4 shadow">
@@ -69,6 +77,22 @@
                     </div>
                 </div>
             </div>
+
+            @if (ViewBag.CurrentUserId != null && ViewBag.CurrentUserId.ToString() == Model.Employee.Id.ToString())
+            {
+                <div class="d-flex justify-content-end mt-4 gap-3">
+                    <a href="@Url.Action("UpdateEmployee", "Employee", new { id = Model.Employee.Id })"
+                       class="btn btn-gradient-primary btn-fw d-flex align-items-center px-4 py-2 shadow-sm">
+                        <i class="bi bi-pencil-square me-2"></i> <!-- Icon for Update -->
+                        Update
+                    </a>
+                    <a href="@Url.Action("ResetPassword", "Account")" 
+                       class="btn btn-outline-primary btn-fw d-flex align-items-center px-4 py-2 shadow-sm">
+                        <i class="bi bi-key me-2"></i> <!-- Icon for Change Password -->
+                        Change Password
+                    </a>
+                </div>
+            }
         </div>
     </div>
 </div>
@@ -130,6 +154,7 @@
                 </table>
             </div>
         </div>
+
     </div>
 }
 else
@@ -182,6 +207,7 @@ else
                 </table>
             </div>
         </div>
+
     </div>
 }
 else
@@ -190,4 +216,7 @@ else
         No tasks assigned to this employee.
     </div>
 }
+
+
+
 

@@ -36,16 +36,12 @@ namespace ERP_Project.Controllers
         [Authorize(Roles = "ProjectManager")]
         public async Task<IActionResult> ListEmployees()
         {
-            // Await the async call to get employees
             var employees = await _employeeService.GetAllEmployeesWithDepartment();
 
-            // Get the employee count (you can also await if it's an async method)
             var count = await _employeeService.EmployeeCount();
 
-            // Pass the employee count to the view
             ViewBag.EmployeeCount = count;
 
-            // Return the view with the employees
             return View(employees);
         }
 
@@ -53,16 +49,13 @@ namespace ERP_Project.Controllers
 
         public async Task<IActionResult> SendEmailToEmployee(string  employeeId)
         {
-            // Fetch the employee details by Id
             var employee =await _employeeService.GetById(employeeId);
             if (employee == null)
             {
                 return NotFound();
             }
 
-            // Get the logged-in user's email (manager's email)
-
-            // Pass employee details and manager email to the view
+            
             var model = new SendEmailViewModel
             {
                 EmployeeName = $"{employee.FirstName} {employee.LastName}",
@@ -70,7 +63,7 @@ namespace ERP_Project.Controllers
                
             };
 
-            return View(model); // Return the email composition form view
+            return View(model); 
         }
 
 
@@ -83,20 +76,19 @@ namespace ERP_Project.Controllers
             {
                 try
                 {
-                    // Use the manager's email (from ViewModel) and a dynamic name
                      var user = await _userManager.GetUserAsync(User);
 
-                    var fromName = user.FirstName + " " + user.LastName;  // Dynamically get the logged-in user's email
-                    var fromEmail = user.Email; ;  // The manager's email (from the ViewModel)
-                                                         // You can dynamically set this as needed (e.g., get from the logged-in user's profile)
+                    var fromName = user.FirstName + " " + user.LastName;  
+                    var fromEmail = user.Email; ;  
+                                                        
 
                     await _emailService.SendEmailAsync(
-                        model.EmployeeEmail,   // To Email (Employee's Email)
-                        model.Subject,         // Subject
-                        model.Body,            // Body
-                        model.Signature,       // Signature
-                        fromEmail,             // Dynamic 'From Email'
-                        fromName               // Dynamic 'From Name'
+                        model.EmployeeEmail,   
+                        model.Subject,         
+                        model.Body,            
+                        model.Signature,       
+                        fromEmail,             
+                        fromName               
                     );
 
                     TempData["SuccessMessage"] = "Email sent successfully!";

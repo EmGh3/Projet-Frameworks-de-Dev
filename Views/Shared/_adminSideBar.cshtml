@@ -7,17 +7,11 @@
     var isManager = isManagerString == "true";  // Convert to a boolean
 
     var userJson = Context.Session.GetString("User");
-    object user = null;
+   
 
-    if (!string.IsNullOrEmpty(userJson))
-    {
-        if (isManager)
-        {
-            user = JsonConvert.DeserializeObject<ProjectManager>(userJson);
-
-        }
+            ProjectManager manager = JsonConvert.DeserializeObject<ProjectManager>(userJson);
        
-    }
+    
 }
 
 
@@ -35,19 +29,11 @@
                     <!--change to offline or busy as needed-->
                 </div>
                 <div class="nav-profile-text d-flex flex-column">
-                    @if (user is ProjectManager manager)
-                    {
+                   
                         <span class="font-weight-bold mb-2">@manager.FirstName @manager.LastName</span>
                         <span class="menu-title">Project Manager</span>
 
 
-                    }
-                    else if (user is Employee employee)
-                    {
-                        <span class="font-weight-bold mb-2">@employee.FirstName @employee.LastName</span>
-                        <span class="menu-title">@employee.Designation</span>
-
-                    }
                 </div>
                 <i class="mdi mdi-bookmark-check text-success nav-profile-badge"></i>
             </a>

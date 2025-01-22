@@ -32,6 +32,7 @@ builder.Services.AddScoped<IEmployeeRepository, EmployeesRepository>();
 
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<IProjectManagerService, ProjectManagerService>();
+builder.Services.AddScoped<IDepartmentService, DepartmentService>();
 
 builder.Services.AddScoped<INotificationService, NotificationService>(); 
 builder.Services.AddScoped<NotificationsViewComponent>();

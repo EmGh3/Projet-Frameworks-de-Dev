@@ -3,12 +3,12 @@
     public class SendEmailViewModel
     {
      
-        public string EmployeeName { get; set; } // Employee Full Name
-        public string EmployeeEmail { get; set; } // Employee Email
+        public string EmployeeName { get; set; } 
+        public string EmployeeEmail { get; set; } 
 
-        public string Subject { get; set; } // Email Subject (optional)
-        public string Body { get; set; } // Email Body (can be input by user)
-        public string Signature { get; set; } // Email Signature (can be input by user)
+        public string Subject { get; set; } 
+        public string Body { get; set; } 
+        public string Signature { get; set; } 
     }
 
 }
