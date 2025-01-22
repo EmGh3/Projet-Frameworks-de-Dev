@@ -6,8 +6,10 @@ using ERP_Project.Services.Services;
 using ERP_Project.Models.viewModels;
 using Microsoft.AspNetCore.Identity;
 using ERP_Project.Models;
+using Microsoft.AspNetCore.Authorization;
 namespace ERP_Project.Controllers
 {
+    [Authorize]
     public class EmployeesListController : Controller
     {
         readonly IEmployeeService _employeeService;
@@ -31,6 +33,7 @@ namespace ERP_Project.Controllers
             return View();
         }
 
+        [Authorize(Roles = "ProjectManager")]
         public async Task<IActionResult> ListEmployees()
         {
             // Await the async call to get employees
@@ -45,6 +48,8 @@ namespace ERP_Project.Controllers
             // Return the view with the employees
             return View(employees);
         }
+
+        [Authorize(Roles = "ProjectManager")]
 
         public async Task<IActionResult> SendEmailToEmployee(string  employeeId)
         {
@@ -67,6 +72,9 @@ namespace ERP_Project.Controllers
 
             return View(model); // Return the email composition form view
         }
+
+
+        [Authorize(Roles = "ProjectManager")]
 
         [HttpPost]
         public async Task<IActionResult> SendEmailToEmployee(SendEmailViewModel model)

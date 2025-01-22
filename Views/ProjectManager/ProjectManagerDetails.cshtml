@@ -5,18 +5,17 @@
 }
 
 <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css" rel="stylesheet">
-<link   rel="stylesheet" href="~/css/Calendar.css" />
-<div class="container">
-<div class="container py-2">
-    <!-- Profile Section -->
-    <div class="row mb-3">
-        <div class="col-10">
-            <div class="card shadow-lg border-0 rounded-lg" style="height: auto;">
+<link rel="stylesheet" href="~/css/Calendar.css" />
+<div class="container py-3">
+    <div class="row d-flex align-items-stretch">
+        <!-- Profile Section -->
+        <div class="col-lg-4 col-md-12 mb-3">
+            <div class="card shadow-lg border-0 rounded-lg h-100">
                 <div class="card-header bg-gradient-primary text-white py-2">
-                    <h5 class="card-title mb-0 text-white">Project Manager Profile</h5>
+                    <h5 class="card-title mb-0">Project Manager Profile</h5>
                 </div>
-                <div class="card-body py-3">
-                    <div class="text-center mb-2">
+                <div class="card-body py-3 d-flex flex-column justify-content-between">
+                    <div class="text-center mb-3">
                         <img src="/images/profile_pic.webp" alt="Profile Picture" 
                              class="rounded-circle shadow-sm border border-3 border-primary" 
                              style="height: 80px; width: 80px; object-fit: cover;">
@@ -28,28 +27,27 @@
                     </div>
 
                     <div class="row g-2 text-center small">
-                        <div class="col-6 col-md-3">
+                        <div class="col-6">
                             <label class="text-muted d-block">Phone</label>
                             <p>@Model.Manager.PhoneNumber</p>
                         </div>
-                        <div class="col-6 col-md-3">
-                            <label class="text-muted d-block">Date of Birth</label>
+                        <div class="col-6">
+                            <label class="text-muted d-block">DOB</label>
                             <p>@Model.Manager.DateOfBirth.ToString("dd/MM/yyyy")</p>
                         </div>
-                        <div class="col-6 col-md-3">
+                        <div class="col-6">
                             <label class="text-muted d-block">Gender</label>
                             <p>@Model.Manager.Gender</p>
                         </div>
-                        <div class="col-6 col-md-3">
+                        <div class="col-6">
                             <label class="text-muted d-block">Address</label>
                             <p>@Model.Manager.Address</p>
                         </div>
                     </div>
 
-                    <!-- Action Buttons -->
                     <div class="d-grid gap-2 mt-3">
                         <a href="@Url.Action("UpdateProfile", "ProjectManager")" 
-                           class="btn btn-primary">
+                           class="btn btn-outline-primary">
                             <i class="fas fa-user-edit me-2"></i>Update Profile
                         </a>
                         <a href="@Url.Action("ResetPassword", "Account")" 
@@ -63,37 +61,28 @@
                 </div>
             </div>
         </div>
-    </div>
-</div>
 
-
-
-<div class="container py-2">
-
-  <div class="row mb-3">
-    <div class="col-10">
-        <div class="card shadow-lg border-0 rounded-lg">
-            <div class="card-header bg-gradient-primary text-white py-3" style="height:50px;">
-                <h5 class="card-title mb-0 text-white">Project Calendar</h5>
-            </div>
-            <div class="card-body p-0" style="min-height: 700px;"> 
-                <div id="calendar" style="height:200px;"></div>
+        <!-- Calendar Section -->
+        <div class="col-lg-8 col-md-12">
+            <div class="card shadow-lg border-0 rounded-lg">
+                <div class="card-header bg-gradient-primary text-white py-2">
+                    <h5 class="card-title mb-0">Project Calendar</h5>
+                </div>
+                <div class="card-body p-3" style="min-height: 400px;">
+                    <div id="calendar" style="height: 100%;"></div>
+                </div>
             </div>
         </div>
     </div>
 </div>
-</div>
 
-
-
-<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         var calendarEl = document.getElementById('calendar');
         var calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'dayGridMonth',
-            height: 'auto',
+            height: 400,
             headerToolbar: {
                 left: 'prev,next today',
                 center: 'title',
@@ -106,24 +95,32 @@
                 day: 'Day'
             },
             events: [
-        @foreach (var calendarEvent in Model.CalendarEvents)
-        {
-            var startDate = calendarEvent.StartDate.ToString("yyyy-MM-dd");
-            var endDate = calendarEvent.EndDate?.ToString("yyyy-MM-dd");
-            <text>
-                            {
-                                title: '@calendarEvent.Title',
-                                start: '@startDate',
-                @if (endDate != null)
-                {
-                    @:end: '@endDate',
-                }
-                                className: 'custom-event' 
-                            },
-            </text>
-        }
+    @foreach (var calendarEvent in Model.CalendarEvents)
+    {
+        var startDate = calendarEvent.StartDate.ToString("yyyy-MM-dd");
+        var endDate = calendarEvent.EndDate?.ToString("yyyy-MM-dd");
+        <text>
+                                        {
+                                            title: '@calendarEvent.Title',
+                                            start: '@startDate',
+            @if (endDate != null)
+            {
+                @:end: '@endDate',
+            }
+                                            className: 'custom-event' 
+                                        },
+        </text>
+    }
             ]
         });
         calendar.render();
     });
 </script>
+
+<style>
+    #calendar {
+    margin: 0.5rem;
+    height: 500px !important; /* Adjusted calendar size */
+}
+
+</style>

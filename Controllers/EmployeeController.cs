@@ -1,11 +1,13 @@
 ﻿using ERP_Project.Models.viewModels;
 using ERP_Project.Repositories;
 using ERP_Project.Services.Contracts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
 
 namespace ERP_Project.Controllers
 {
+    [Authorize]
+
     public class EmployeeController : Controller  // Inherit from Controller to handle actions
     {
         private readonly IEmployeeService _employeeService;
@@ -18,6 +20,7 @@ namespace ERP_Project.Controllers
         
 
         // Corrected method with proper type for 'id' (assuming it's an integer)
+
         public async Task<IActionResult> EmployeeProfile(string id)
         {
             var employee = await _employeeService.GetById(id);  // Await the async call to get the employee

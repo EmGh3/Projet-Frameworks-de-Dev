@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using System.Text;
 namespace ERP_Project.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "ProjectManager")]
 
     public class ProjectManagerController : Controller
     {
