@@ -12,16 +12,11 @@
     <link rel="stylesheet" href="~/vendors/ti-icons/css/themify-icons.css">
     <link rel="stylesheet" href="~/vendors/css/vendor.bundle.base.css">
     <link rel="stylesheet" href="~/vendors/font-awesome/css/font-awesome.min.css">
-    <!-- endinject -->
-    <!-- Plugin css for this page -->
+    
     <link rel="stylesheet" href="~/vendors/font-awesome/css/font-awesome.min.css" />
     <link rel="stylesheet" href="~/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css">
-    <!-- End plugin css for this page -->
-    <!-- inject:css -->
-    <!-- endinject -->
-    <!-- Layout styles -->
+  
     <link rel="stylesheet" href="~/css/style.css">
-    <!-- End layout styles -->
     <link rel="shortcut icon" href="~/images/favicon.png" />
    
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
@@ -48,23 +43,19 @@
                 </div>
             </div>
         </div>
-            <!-- Include Navbar -->
             @Html.Partial("_Navbar")
 
             <div class="container-fluid page-body-wrapper">
-                <!-- Include Sidebar -->
                 @Html.Partial("_Sidebar")
 
-                <!-- Page Content -->
                 <div class="main-panel">
                     <div class="content-wrapper">
-                        @RenderBody()  <!-- This is where the page content will be injected -->
+                        @RenderBody()  
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Add JS scripts here (e.g., Bootstrap, jQuery, etc.) -->
     
 
     <footer class="border-top footer text-muted">
@@ -93,15 +84,7 @@
     <script src="~/js/jquery.cookie.js"></script>
     <script src="~/js/dashboard.js"></script>
 
-    <!-- endinject -->
-    <!-- Custom js for this page -->
-    
-   
-    <!-- endinject -->
-    <!-- Plugin js for this page -->
-   
-    <!-- End plugin js for this page -->
-    <!-- inject:js -->
+  
    
     @await RenderSectionAsync("Scripts", required: false)
 </body>

@@ -1,12 +1,39 @@
 ﻿@{
     Layout = "../Shared/_adminLayout.cshtml";
 }
+@{
+    var successMessage = ViewBag.SuccessMessage as string;
+}
+ <!-- Alert Messages -->
+@if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+{
+                            <div class="alert alert-danger alert-dismissible fade show border-start border-danger border-4" role="alert">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-exclamation-circle me-2"></i>
+                                    <span>@ViewBag.ErrorMessage</span>
+                                </div>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+}
+
+@if (TempData["SuccessMessage"] != null)
+{
+                            <div class="alert alert-success alert-dismissible fade show border-start border-success border-4" role="alert">
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-check-circle me-2"></i>
+                                    <span>@TempData["SuccessMessage"]</span>
+                                </div>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+}
+
+<!-- Your employee list HTML here -->
+
 
 <h4 class="card-title">Employee List</h4>
 
 <div class="d-flex align-items-center justify-content-between mb-4 p-3" style="background-color: #e7f1ff; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
     <div class="d-flex align-items-center">
-        <!-- Icon and Text for Total Employees -->
         <div class="d-flex align-items-center">
             <i class="fa fa-id-card" style="font-size: 24px; color: purple; margin-right: 10px;"></i>
             <h5 class="m-0" style="font-weight: 600; color: #333;">Total Employees: @ViewBag.EmployeeCount</h5>
@@ -14,7 +41,7 @@
     </div>
 </div>
 
-<p>Employee Count: @ViewBag.EmployeeCount</p> <!-- Debugging Employee Count -->
+<p>Employee Count: @ViewBag.EmployeeCount</p> 
 
 <table class="table table-bordered">
     <thead>
@@ -24,9 +51,9 @@
             <th>Last Name</th>
             <th>Designation</th>
             <th>Phone Number</th>
-            <th>Department Name</th>
+            <th>Department</th>
             <th>Email</th>
-            <th>Action</th> <!-- New column for the button -->
+            <th>Action</th> 
         </tr>
     </thead>
     <tbody>
@@ -36,19 +63,20 @@
             foreach (var employee in Model)
             {
                 <tr>
-                    <td>@(counter + 1)</td>  <!-- Increment counter properly -->
+                    <td>@(counter + 1)</td>  
                     <td>@employee.FirstName</td>
                     <td>@employee.LastName</td>
                     <td>@employee.Designation</td>
                     <td>@employee.PhoneNumber</td>
-                    <td>@employee.Department?.Name</td> <!-- Safe navigation for potential null values -->
+                    <td>@employee.Department?.Name</td> 
                     <td>@employee.Email</td>
                     <td>
-                        <a href="@Url.Action("EmployeeProfile", "Employee", new { id = employee.Id })" class="btn btn-gradient-primary text-white text-decoration-none" style="font-size: 1rem; padding: 10px 10px;">View Profile</a>
-                    </td> <!-- Button to view profile -->
+                        <a href="@Url.Action("EmployeeProfile", "Employee", new { id = employee.Id })" class="btn btn-gradient-primary text-white text-decoration-none" style="font-size: 0.7rem; padding: 10px 10px;">View Profile</a>
+                        <a href="@Url.Action("SendEmailToEmployee", "EmployeesList", new { employeeId = employee.Id })" class="btn btn-gradient-primary text-white text-decoration-none" style="font-size: 0.7rem; padding: 10px 10px;">Send Email</a>
+                            
+                    </td> 
                 </tr>
                 counter++;
-                <!-- Increment the counter for the next row -->
             }
         }
         else
@@ -59,3 +87,4 @@
         }
     </tbody>
 </table>
+

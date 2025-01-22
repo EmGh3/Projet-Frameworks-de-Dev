@@ -9,15 +9,14 @@
         public DateOnly EndDate  { get; set; }
         public DateOnly? ActualEndDate { get; set; }
         public string Status { get; set; } // En cours, Terminé, etc.
-        public double Progress { get; set; } // En pourcentage
+        public double Progress { get; set; } 
 
         public decimal Budget { get; set; }
         public decimal Expenses { get; set; }
 
-        public string ProjectManagerId { get; set; } // Foreign Key to Project Manager
-        public ProjectManager ProjectManager { get; set; } // Navigation Property
+        public string ProjectManagerId { get; set; }
+        public ProjectManager ProjectManager { get; set; } 
 
-        // Many-to-Many relationship with Employees
         public ICollection<Employee> Employees { get; set; }
 
         public ICollection<ProjectTask> Tasks { get; set; }

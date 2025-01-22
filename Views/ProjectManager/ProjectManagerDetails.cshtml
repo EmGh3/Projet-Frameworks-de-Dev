@@ -5,7 +5,7 @@
 }
 
 <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css" rel="stylesheet">
-
+<link   rel="stylesheet" href="~/css/Calendar.css" />
 <div class="container">
 <div class="container py-2">
     <!-- Profile Section -->
@@ -76,7 +76,7 @@
             <div class="card-header bg-gradient-primary text-white py-3" style="height:50px;">
                 <h5 class="card-title mb-0 text-white">Project Calendar</h5>
             </div>
-            <div class="card-body p-0" style="height: 600px;"> <!-- Increase this height -->
+            <div class="card-body p-0" style="min-height: 700px;"> 
                 <div id="calendar" style="height:200px;"></div>
             </div>
         </div>
@@ -84,50 +84,7 @@
 </div>
 </div>
 
-<style>
-    .bg-gradient-primary {
-        background: linear-gradient(45deg, #4e73df 0%, #224abe 100%);
-    }
 
-    .rounded-circle {
-        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    .btn {
-        font-size: 0.9rem;
-        padding: 0.5rem 1rem;
-    }
-
-    #calendar {
-        margin: 1rem;
-        height: 200px !important;/* Adjust calendar height */
-    }
-
-    .fc .fc-toolbar-title {
-        font-size: 1rem;
-        font-weight: 200;
-    }
-    #calendar {
-    margin: 0.2rem;
-  
-}
-
-.fc { /* FullCalendar root */
-    height: 40% !important;
-}
-</style>
-<style>
-    /* Customize event appearance */
-    .fc-event.custom-event {
-        color: #6c757d; /* Light gray text color */
-        text-decoration: none !important; /* Remove blue underline */
-        background-color:  #c5c5ef; /* Light background color */
-        border-color: #6c757d; /* Light border color */
-    }
-
-    /* Hover effect for the event */
-  
-</style>
 
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.15/index.global.min.js"></script>
@@ -161,7 +118,7 @@
                 {
                     @:end: '@endDate',
                 }
-                                className: 'custom-event'  // Added custom class for styling
+                                className: 'custom-event' 
                             },
             </text>
         }

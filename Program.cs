@@ -9,6 +9,9 @@ using ERP_Project.Repositories.Contracts;
 using ERP_Project.Repositories.Repositories;
 using ERP_Project.Services.Contracts;
 using ERP_Project.Views.Shared.Components.Notifications;
+using Microsoft.Extensions.DependencyInjection;
+using System.Configuration;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,21 +33,27 @@ builder.Services.AddScoped<IEmployeeRepository, EmployeesRepository>();
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 builder.Services.AddScoped<IProjectManagerService, ProjectManagerService>();
 
-builder.Services.AddScoped<INotificationService, NotificationService>(); // Register NotificationService
-builder.Services.AddScoped<NotificationsViewComponent>(); // Register the ViewComponent
+builder.Services.AddScoped<INotificationService, NotificationService>(); 
+builder.Services.AddScoped<NotificationsViewComponent>();
+
+
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
+builder.Services.AddTransient<EmailService>();  // Register the email service
+
+
 builder.Services.AddRazorPages();
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddDistributedMemoryCache(); // Session storage in memory
+builder.Services.AddDistributedMemoryCache(); 
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(180); // Set session timeout
-    options.Cookie.HttpOnly = true; // Protect session cookie
+    options.IdleTimeout = TimeSpan.FromMinutes(180); 
+    options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
 builder.Services.ConfigureApplicationCookie(options =>
 {
-    options.LoginPath = "/Identity/Account/Login"; // Ensures the correct path is set globally
+    options.LoginPath = "/Identity/Account/Login";
     options.AccessDeniedPath = "/Identity/Account/AccessDenied";
 });
 
@@ -64,7 +73,6 @@ using (var scope = app.Services.CreateScope())
         }
     }
 }
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseMigrationsEndPoint();
@@ -72,7 +80,6 @@ if (app.Environment.IsDevelopment())
 else
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 

@@ -22,10 +22,12 @@ namespace ERP_Project.Controllers
             _projectManagerService = projectManagerService;
             _userManager = userManager;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var managers = await _projectManagerService.GetAllAsync();
+            return View(managers); 
         }
+
         public async Task<IActionResult> ProjectManagerDetails()
         {
             var managerJson = HttpContext.Session.GetString("User");
@@ -33,12 +35,11 @@ namespace ERP_Project.Controllers
             var manager = await _projectManagerService.GetByIdAsync(managerId);
             var projects = await _projectManagerService.GetProjectsByManager(manager.Id);
 
-            // Extract events from projects (e.g., project deadlines)
             var calendarEvents = projects.Select(p => new CalendarEvent
             {
-                Title = p.Name, // Title of the event can be the project name
-                StartDate = p.StartDate, // Assuming projects have a StartDate
-                EndDate = p.EndDate // Assuming projects have an EndDate (optional)
+                Title = p.Name, 
+                StartDate = p.StartDate,
+                EndDate = p.EndDate 
             }).ToList();
 
             var viewModel = new ProjectManagerDetailsViewModel

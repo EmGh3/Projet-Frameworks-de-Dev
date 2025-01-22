@@ -1,0 +1,69 @@
+﻿ .bg-gradient-primary {
+        background: linear-gradient(45deg, #4e73df 0%, #224abe 100%);
+    }
+
+    .rounded-circle {
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn {
+        font-size: 0.9rem;
+        padding: 0.5rem 1rem;
+    }
+
+    #calendar {
+        margin: 1rem;
+        height: 200px !important;
+    }
+
+    .fc .fc-toolbar-title {
+        font-size: 1rem;
+        font-weight: 200;
+    }
+    #calendar {
+    margin: 0.2rem;
+  
+}
+
+.fc { 
+    height: 100% !important;
+}
+
+    .fc-event.custom-event {
+        color: #6c757d;
+        text-decoration: none !important; 
+        background-color:  #c5c5ef;
+        border-color: #6c757d;
+    }
+
+
+.bg-gradient-primary {
+    background: linear-gradient(45deg, #4e73df 0%, #224abe 100%);
+}
+
+.rounded-circle {
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn {
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+}
+
+#calendar {
+    margin: 1rem;
+    height: 200px !important; 
+}
+
+.fc .fc-toolbar-title {
+    font-size: 1rem;
+    font-weight: 200;
+}
+
+#calendar {
+    margin: 0.2rem;
+}
+
+.fc {
+    height: 100% !important;
+}

@@ -4,6 +4,11 @@
 
     ViewData["Title"] = "Index";
 }
+@model IEnumerable<ERP_Project.Models.ProjectManager>
 
 <h1>Index</h1>
 
+@foreach (var item in Model)
+{
+    <p>@item.FirstName</p>
+}

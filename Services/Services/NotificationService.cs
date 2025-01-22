@@ -16,17 +16,15 @@ namespace ERP_Project.Services.Services
         {
             var notifications = new List<string>();
 
-            // Get all projects (or filter by user or other criteria if necessary)
-            var projects = await _projectManagerRepository.GetProjectsByManager(Id);// Modify this as per your repository structure
+            var projects = await _projectManagerRepository.GetProjectsByManager(Id);
 
-            // Check if any project deadline is near
             foreach (var project in projects)
             {
                 if (project.EndDate!=null)
                 {
                     var daysRemaining = (project.EndDate.ToDateTime(TimeOnly.MinValue) - DateTime.Now).Days;
 
-                    if (daysRemaining <= 7 && daysRemaining >= 0) // If the deadline is in the next 3 days
+                    if (daysRemaining <= 7 && daysRemaining >= 0) 
                     {
                         notifications.Add($"Project '{project.Name}' deadline is in {daysRemaining} days!");
                     }
