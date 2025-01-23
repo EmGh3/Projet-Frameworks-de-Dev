@@ -36,6 +36,7 @@ namespace ERP_Project.Services.Services
         public Task RemoveEmployee(ProjectTask projectTask)
         {
             projectTask.Employee = null;
+            projectTask.EmployeeId = null;
             return UpdateAsync(projectTask);
         }
         // Get all tasks assigned to a specific employee by their ID

@@ -14,6 +14,10 @@ namespace ERP_Project.Repositories.Repositories
         {
             return _dbSet.Include(p => p.Tasks).SingleOrDefault(p => p.Id == projectId).Tasks;
         }
+        public IEnumerable<Project> GetByProjectManagerId(string projectManagerId)
+        {
+            return _dbSet.Include(p => p.Tasks).Where(p => p.ProjectManagerId == projectManagerId).ToList();
+        }
 
 
 

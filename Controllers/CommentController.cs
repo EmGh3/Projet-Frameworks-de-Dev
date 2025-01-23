@@ -39,5 +39,19 @@ namespace ERP_Project.Controllers
             // Redirect to details page after successful creation
             return RedirectToAction("Details", "Task" ,new { id = comment.TaskId });
         }
+        public async Task<IActionResult> Delete(int id)
+        {
+            Comment comment = await _commentService.GetByIdAsync(id);
+            if (comment == null)
+            {
+                return NotFound();
+            }
+            if (comment.UserId != _userManager.GetUserId(User))
+            {
+                return Forbid();
+            }
+            await _commentService.DeleteAsync(id);
+            return RedirectToAction("Details", "Task", new { id = comment.TaskId });
+        }
     }
 }

@@ -32,5 +32,9 @@ namespace ERP_Project.Services.Services
             project.Expenses = (decimal)totalExpense;
             _repository.UpdateAsync(project).Wait();
         }
+        public IEnumerable<Project> GetByProjectManagerId(string projectManagerId)
+        {
+            return ((IProjectRepository)_repository).GetByProjectManagerId(projectManagerId);
+        }
     }
 }

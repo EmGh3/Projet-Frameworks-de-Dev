@@ -90,8 +90,12 @@
 				<div class="card">
 					<div class="card-body">
                         <blockquote class="blockquote blockquote-primary">
-                            <h4 class="card-title">
+                                <h4 class="card-title col-md-4">
                                 @comment.Title
+                                @if(comment.UserId == (string?)ViewData["UserId"])
+                                {
+                                    <a class="btn-inverse-danger" asp-action="Delete" asp-controller="Comment" asp-route-id="@comment.Id"><i class="fa fa-trash-o"></i></a>
+                                }
 							</h4>
                                 <div class="card-description">
                                 @comment.User.FirstName @comment.User.LastName
@@ -110,6 +114,10 @@
             {
                 <a class="add btn btn-gradient-danger font-weight-bold" asp-action="Delete" asp-route-id="@Model.Id">Delete Task</a>
             }
+            @if (Model.EmployeeId == (string?)ViewData["UserId"] && Model.Status == ProjectTaskStatus.InProgress)
+			{
+				<a class="add btn btn-gradient-danger font-weight-bold" asp-action="RefuseTask" asp-route-id="@Model.Id">Refuse Task</a>
+			}
 </div>
 </div>
 </div>

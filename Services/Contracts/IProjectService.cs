@@ -7,5 +7,6 @@ namespace ERP_Project.Services.Contracts
         public IEnumerable<ProjectTask> GetTasks(int projectId);
         public void UpdateProgress(int projectId);
         public void UpdateExpenses(int projectId);
+        public IEnumerable<Project> GetByProjectManagerId(string projectManagerId);
     }
 }

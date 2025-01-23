@@ -3,14 +3,17 @@
 @{
     ViewData["Title"] = "Assign Employee to Task";
 }
+<div class="row col-12 grid-margin stretch-card">
 
-<h2>Assign Employee to Task</h2>
+    <div class="card">
+        <div class="card-body">
+    <h2 class="card-title">Assign Employee to Task</h2>
 
-<h4>@Model.Title</h4>
+    <h4>@Model.Title</h4>
 
-<hr />
+    <hr />
 
-<form asp-action="AssignTask" method="post">
+    <form asp-action="AssignTask" method="post">
     <div class="form-group">
         <label asp-for="Employee" class="control-label"></label>
         <select asp-for="EmployeeId" class="form-control" asp-items="ViewBag.Employees"></select>
@@ -19,6 +22,9 @@
     <input type="hidden" name="taskId" value="@Model.Id" />
     <button type="submit" class="btn btn-primary">Assign Employee</button>
     <a class="btn btn-secondary" asp-action="Details" asp-route-id="@Model.Id">Cancel</a>
-</form>
+    </form>
+		</div>
+	</div>
+    </div>
 
 

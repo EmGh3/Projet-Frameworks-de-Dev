@@ -1,0 +1,31 @@
+﻿@model ERP_Project.Models.ProjectTask
+
+@{
+    ViewData["Title"] = "RefuseTask";
+}
+<div class="row col-12 grid-margin stretch-card">
+
+    <div class="card">
+        <div class="card-body">
+            <br />
+            <h3 class="card-title">Are you sure you want to refuse this task?</h3>
+    <div>
+    <h4>@Model.Title</h4>
+    <hr />
+
+                <form asp-action="RefuseTask" method="post">
+                    <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="Title" />
+                    <input type="hidden" asp-for="Description" />
+                    <input type="hidden" asp-for="StartDate" />
+                    <input type="hidden" asp-for="Deadline" />
+                    <input type="hidden" asp-for="Status" />
+                    <input type="hidden" asp-for="Cost" />
+                    <input type="hidden" asp-for="ProjectId" />
+                    <input type="submit" value="Refuse Task" class="btn btn-danger" />
+                    <a class="btn btn-secondary" asp-action="Details" asp-route-id="@Model.Id">Cancel</a>
+                </form>
+</div>
+		</div>
+	</div>
+    </div>

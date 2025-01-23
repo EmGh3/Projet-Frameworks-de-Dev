@@ -31,6 +31,18 @@ namespace ERP_Project.Controllers
             _employeeService = employeeService;
         }
         [Authorize(Roles = "ProjectManager")]
+        [HttpGet]
+        [Route("Task/Create")]
+        //Allow the manager to choose the project when creating a task
+        public IActionResult Create()
+        {
+            ViewBag.projectList = new SelectList(_projectService.GetByProjectManagerId(_userManager.GetUserId(User)), "Id", "Name");
+            return View();
+        }
+        [Authorize(Roles = "ProjectManager")]
+        [HttpGet]
+        [Route("Task/Create/{id:int}")]
+        //Create a task for a specific project
         public IActionResult Create(int id)
         {
             var project = _projectService.GetByIdAsync(id).Result;
@@ -152,5 +164,28 @@ namespace ERP_Project.Controllers
             return RedirectToAction("Details", new { id = taskId });
         }
 
+        [Authorize(Roles = "Employee")]
+        [HttpGet]
+        public IActionResult RefuseTask(int id)
+        {
+            var task = _taskService.GetByIdAsync(id).Result;
+            if (task == null)
+            {
+                return NotFound(new { Message = "Task not found." });
+            }
+            if (task.EmployeeId != _userManager.GetUserId(User))
+            {
+                return Unauthorized();
+            }
+            return View(task);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult RefuseTask(ProjectTask task)
+        {
+            _taskService.RemoveEmployee(task).Wait();
+            _taskService.ChangeStatus(task, ProjectTaskStatus.NotStarted);
+            return RedirectToAction("Details", new { task.Id });
+        }
     }
 }
