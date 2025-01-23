@@ -50,8 +50,10 @@ namespace ERP_Project.Controllers
         {
             projectTask.Id = 0;
             projectTask.Status = ProjectTaskStatus.NotStarted;
+            projectTask.StartDate = DateOnly.FromDateTime(DateTime.Now);
             await _taskService.AddAsync(projectTask);
             _projectService.UpdateProgress(projectTask.ProjectId);
+            _projectService.UpdateExpenses(projectTask.ProjectId);
             // Redirect to details page after successful creation
             return RedirectToAction("Details", new { projectTask.Id }); 
         }
@@ -80,6 +82,7 @@ namespace ERP_Project.Controllers
         {
             _taskService.DeleteAsync(task.Id);
             _projectService.UpdateProgress(task.ProjectId);
+            _projectService.UpdateExpenses(task.ProjectId);
             return RedirectToAction(nameof(ListByManager));
         }
         public IActionResult ListByProject(int id)

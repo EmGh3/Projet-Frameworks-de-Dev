@@ -12,7 +12,7 @@
 
 <form asp-action="AssignTask" method="post">
     <div class="form-group">
-        <label asp-for="EmployeeId" class="control-label"></label>
+        <label asp-for="Employee" class="control-label"></label>
         <select asp-for="EmployeeId" class="form-control" asp-items="ViewBag.Employees"></select>
         <span asp-validation-for="EmployeeId" class="text-danger"></span>
     </div>

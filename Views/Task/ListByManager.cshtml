@@ -11,6 +11,9 @@
                 @Html.DisplayNameFor(model => model.Title)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.StartDate)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Deadline)
             </th>
             <th>
@@ -34,6 +37,9 @@
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartDate)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Deadline)

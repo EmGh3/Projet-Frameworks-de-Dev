@@ -24,5 +24,13 @@ namespace ERP_Project.Services.Services
             project.Progress = (finishedTasks * 100) / totalTasks;
             _repository.UpdateAsync(project).Wait();
         }
+        public void UpdateExpenses(int projectId)
+        {
+            var project = _repository.GetByIdAsync(projectId).Result;
+            var tasks = GetTasks(projectId);
+            var totalExpense = tasks.Sum(t => t.Cost);
+            project.Expenses = (decimal)totalExpense;
+            _repository.UpdateAsync(project).Wait();
+        }
     }
 }

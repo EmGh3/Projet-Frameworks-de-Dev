@@ -14,6 +14,7 @@ namespace ERP_Project.Models
         public int Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
+        public DateOnly StartDate { get; set; }
         public DateOnly Deadline { get; set; }
         public ProjectTaskStatus Status { get; set; } // En cours, Terminé, etc.
 
