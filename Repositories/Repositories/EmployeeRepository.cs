@@ -49,6 +49,7 @@ namespace ERP_Project.Repositories.Repositories
            
             return await _context.Tasks
                                  .Where(t => t.EmployeeId == id)
+                                 .Include(t=>t.Project)
                                  .ToListAsync();
         }
 

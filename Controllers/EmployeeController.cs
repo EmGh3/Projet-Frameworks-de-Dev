@@ -102,6 +102,21 @@ namespace ERP_Project.Controllers
         }
 
 
+        public async Task<IActionResult> EmployeeCalendar(string id)
+        {
+            var tasks = await _employeeService.GetEmployeeTasksAsync(id);
+            var calendarEvents = tasks.Select(p => new CalendarEvent
+            {
+                Title = p.Title,
+                EndDate = p.Deadline  // Direct assignment since both are DateOnly
+            }).ToList();
+
+            // Debug: Print events to console
+           
+
+            ViewBag.CalendarEvents = calendarEvents;
+            return View();
+        }
 
 
     }

@@ -42,7 +42,6 @@
         <li class="nav-item">
             <a class="nav-link" data-bs-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
                 <span class="menu-title">My Projects</span>
-                <i class="menu-arrow"></i>
                 <i class="mdi mdi-crosshairs-gps menu-icon"></i>
             </a>
             
@@ -51,6 +50,13 @@
             <a class="nav-link" data-bs-toggle="collapse" href="#icons" aria-expanded="false" aria-controls="icons">
                 <span class="menu-title">My Tasks</span>
                 <i class="mdi mdi-contacts menu-icon"></i>
+            </a>
+            
+        </li>
+         <li class="nav-item">
+            <a class="nav-link"  href="@Url.Action("EmployeeCalendar", "Employee", new { id = employee.Id })" >
+                <span class="menu-title">My Calendar</span>
+                <i class="fa fa-calendar-o menu-icon"></i>
             </a>
             
         </li>

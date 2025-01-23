@@ -97,7 +97,7 @@
             events: [
     @foreach (var calendarEvent in Model.CalendarEvents)
     {
-        var startDate = calendarEvent.StartDate.ToString("yyyy-MM-dd");
+        var startDate = calendarEvent.StartDate?.ToString("yyyy-MM-dd");
         var endDate = calendarEvent.EndDate?.ToString("yyyy-MM-dd");
         <text>
                                         {

@@ -187,22 +187,32 @@ else
                         @for (var i = 0; i < Model.Tasks.Count(); i++)
                         {
                             var task = Model.Tasks[i];
-                            <tr>
-                                <td>@(i + 1)</td>
-                                <td>@task.Title</td>
-                                <td>
-                                    <span class="badge
-                                        @(task.Status == "Completed" ? "badge-success" :
-                                          task.Status == "In Progress" ? "badge-warning" :
-                                          "badge-danger")">
+            <tr>
+                <td>@(i + 1)</td>
+                <td>@task.Title</td>
+                <td>
+                    <span class="badge
+                @(task.Status == "Completed" ? "badge-success" :
+                  task.Status == "In Progress" ? "badge-warning" :
+                  "badge-danger")">
                                         @task.Status
-                                    </span>
-                                </td>
-                                <td>@task.Deadline.ToShortDateString()</td>
-                                <td>@task.Cost.ToString("C")</td>
-                                <td>@task.Project.Name</td>
-                            </tr>
+                    </span>
+                </td>
+                <td>@task.Deadline.ToShortDateString()</td>
+                <td>@task.Cost.ToString("C")</td>
+                <td>
+                                    @if (task.Project != null)
+                                    {
+                                        @task.Project.Name
+                                    }
+                                    else
+                                    {
+                            <span class="text-muted">No Project</span>
+                                    }
+                </td>
+            </tr>
                         }
+
                     </tbody>
                 </table>
             </div>
