@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace ERP_Project.Data.Migrations
+namespace ERP_Project.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241129201938_initial")]
-    partial class initial
+    [Migration("20250126000723_addStartDateForTask")]
+    partial class addStartDateForTask
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -44,8 +44,9 @@ namespace ERP_Project.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("UserId1")
                         .HasColumnType("nvarchar(450)");
@@ -53,6 +54,8 @@ namespace ERP_Project.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("TaskId");
+
+                    b.HasIndex("UserId");
 
                     b.HasIndex("UserId1");
 
@@ -107,8 +110,9 @@ namespace ERP_Project.Data.Migrations
                     b.Property<double>("Progress")
                         .HasColumnType("float");
 
-                    b.Property<int>("ProjectManagerId")
-                        .HasColumnType("int");
+                    b.Property<string>("ProjectManagerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProjectManagerId1")
                         .HasColumnType("nvarchar(450)");
@@ -121,6 +125,8 @@ namespace ERP_Project.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ProjectManagerId");
 
                     b.HasIndex("ProjectManagerId1");
 
@@ -145,8 +151,8 @@ namespace ERP_Project.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("EmployeeId")
-                        .HasColumnType("int");
+                    b.Property<string>("EmployeeId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("EmployeeId1")
                         .HasColumnType("nvarchar(450)");
@@ -154,15 +160,19 @@ namespace ERP_Project.Data.Migrations
                     b.Property<int>("ProjectId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateOnly>("StartDate")
+                        .HasColumnType("date");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
 
                     b.HasIndex("EmployeeId1");
 
@@ -360,12 +370,10 @@ namespace ERP_Project.Data.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderKey")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
@@ -402,12 +410,10 @@ namespace ERP_Project.Data.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LoginProvider")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
@@ -449,6 +455,12 @@ namespace ERP_Project.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("ERP_Project.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ERP_Project.Models.User", null)
                         .WithMany("Comments")
                         .HasForeignKey("UserId1");
 
@@ -460,6 +472,12 @@ namespace ERP_Project.Data.Migrations
             modelBuilder.Entity("ERP_Project.Models.Project", b =>
                 {
                     b.HasOne("ERP_Project.Models.ProjectManager", "ProjectManager")
+                        .WithMany()
+                        .HasForeignKey("ProjectManagerId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("ERP_Project.Models.ProjectManager", null)
                         .WithMany("Projects")
                         .HasForeignKey("ProjectManagerId1");
 
@@ -469,6 +487,11 @@ namespace ERP_Project.Data.Migrations
             modelBuilder.Entity("ERP_Project.Models.ProjectTask", b =>
                 {
                     b.HasOne("ERP_Project.Models.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("ERP_Project.Models.Employee", null)
                         .WithMany("Tasks")
                         .HasForeignKey("EmployeeId1");
 

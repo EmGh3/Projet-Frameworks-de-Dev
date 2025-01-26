@@ -167,10 +167,10 @@ else
                                 <td>@task.Title</td>
                                 <td>
                                     <span class="badge
-                                        @(task.Status == "Completed" ? "badge-success" :
-                                          task.Status == "In Progress" ? "badge-warning" :
+                                         @(task.Status == ProjectTaskStatus.Finished ? "badge-success" :
+                                          task.Status == ProjectTaskStatus.InProgress ? "badge-warning" :
                                           "badge-danger")">
-                                        @task.Status
+                                        @task.Status.ToString()
                                     </span>
                                 </td>
                                 <td>@task.Deadline.ToShortDateString()</td>

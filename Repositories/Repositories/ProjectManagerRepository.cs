@@ -16,9 +16,12 @@ namespace ERP_Project.Repositories.Repositories
 
         }
 
-       
 
-      
+        public int CountProjectsForUser(string userId)
+        {
+            return _context.Projects.Count(p => p.ProjectManagerId == userId);
+        }
+
 
         public async Task<ProjectManager> GetByIdAsync(string id)
         {
@@ -33,6 +36,15 @@ namespace ERP_Project.Repositories.Repositories
                 .ToListAsync();
 
 
+        }
+        public async Task<int> GetCompletedProjectsCountAsync(string userId)
+        {
+            var count = await _context.Projects
+                .Where(p => p.ProjectManagerId == userId && p.Status == "Completed"
+                            )
+                .CountAsync();
+
+            return count;
         }
 
 

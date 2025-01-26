@@ -1,5 +1,6 @@
 ﻿using ERP_Project.Models;
 using ERP_Project.Repositories.Contracts;
+using ERP_Project.Repositories.Repositories;
 using ERP_Project.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
 namespace ERP_Project.Services.Services
@@ -24,6 +25,17 @@ namespace ERP_Project.Services.Services
             return await _projectManagerRepository.GetProjectsByManager(id);
 
         }
-       
+        public int GetProjectCountForUser(string userId)
+        {
+            if (string.IsNullOrEmpty(userId))
+                throw new ArgumentException("UserId cannot be null or empty", nameof(userId));
+
+            return _projectManagerRepository.CountProjectsForUser(userId);
+        }
+        public async Task<int> GetCompletedProjectsCountForUserAsync(string userId)
+        {
+            return await _projectManagerRepository.GetCompletedProjectsCountAsync(userId);
+        }
+
     }
 }

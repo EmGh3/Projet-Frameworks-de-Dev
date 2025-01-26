@@ -1,0 +1,323 @@
+﻿@model ERP_Project.Models.Project
+
+@{
+    ViewData["Title"] = "Project Details";
+    Layout = "~/Views/Shared/_adminLayout.cshtml";
+}
+
+
+<div class="container py-2 my-5">
+    <!-- Project Details Section -->
+    <div class="card shadow-lg border-0 rounded-lg w-100">
+        <div class="card-header bg-gradient-primary text-white py-2">
+            <h4 class="card-title mb-0 text-white">Project Details</h4>
+        </div>
+        <div class="card-body">
+            <!-- Project Overview Section -->
+            <div class="mb-4">
+                <h5 class="mb-3 text-muted">Project Overview</h5>
+                <div class="row">
+                    <!-- Project Name -->
+                    <div class="col-md-6 mb-3">
+                        <div class="d-flex justify-content-between">
+                            <strong>@Html.DisplayNameFor(model => model.Name)</strong>
+                            <p class="mb-0">@Html.DisplayFor(model => model.Name)</p>
+                        </div>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="col-md-6 mb-3">
+                        <div class="d-flex justify-content-between">
+                            <strong>@Html.DisplayNameFor(model => model.Description)</strong>
+                            <p class="mb-0">@Html.DisplayFor(model => model.Description)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project Dates Section -->
+            <div class="mb-4">
+                <h5 class="mb-3 text-muted">Project Dates</h5>
+                <div class="row">
+                    <!-- Start Date -->
+                    <div class="col-md-6 mb-3">
+                        <div class="d-flex justify-content-between">
+                            <strong>@Html.DisplayNameFor(model => model.StartDate)</strong>
+                            <p class="mb-0">@Html.DisplayFor(model => model.StartDate)</p>
+                        </div>
+                    </div>
+
+                    <!-- End Date -->
+                    <div class="col-md-6 mb-3">
+                        <div class="d-flex justify-content-between">
+                            <strong>@Html.DisplayNameFor(model => model.EndDate)</strong>
+                            <p class="mb-0">@Html.DisplayFor(model => model.EndDate)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Status and Progress Section -->
+            <div class="mb-4">
+                <h5 class="mb-3 text-muted">Status & Progress</h5>
+                <div class="row">
+                    <!-- Status -->
+                    <div class="col-md-6 mb-3">
+                        <div class="d-flex justify-content-between">
+                            <strong>@Html.DisplayNameFor(model => model.Status)</strong>
+                            <span class="badge @(Model.Status == "Completed" ? "bg-success" :
+                                                    Model.Status == "In progress" ? "bg-warning" :
+                                                    Model.Status == "Delayed" ? "bg-danger" :
+                                                    "bg-info")">
+                                @Html.DisplayFor(model => model.Status)
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Progress -->
+                    <div class="col-md-6 mb-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <strong>@Html.DisplayNameFor(model => model.Progress)</strong>
+                            <div class="progress w-75">
+                                <div class="progress-bar @(Model.Status == "Delayed" ? "bg-danger" :
+                                                       Model.Status == "In progress" ? "bg-warning" :
+                                                       Model.Status == "Completed" ? "bg-success" : "")"
+                                     role="progressbar" style="width: @Model.Progress%" aria-valuenow="@Model.Progress" aria-valuemin="0" aria-valuemax="100">
+                                </div>
+                            </div>
+                            <span class="ms-2">@Model.Progress% Complete</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Financial Details Section -->
+            <div class="mb-4">
+                <h5 class="mb-3 text-muted">Financials</h5>
+                <div class="row">
+                    <!-- Budget -->
+                    <div class="col-md-6 mb-3">
+                        <div class="d-flex justify-content-between">
+                            <strong>@Html.DisplayNameFor(model => model.Budget)</strong>
+                            <p class="mb-0">$@Html.DisplayFor(model => model.Budget)</p>
+                        </div>
+                    </div>
+
+                    <!-- Expenses -->
+                    <div class="col-md-6 mb-3">
+                        <div class="d-flex justify-content-between">
+                            <strong>@Html.DisplayNameFor(model => model.Expenses)</strong>
+                            <p class="mb-0">$@Html.DisplayFor(model => model.Expenses)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Project Tasks Section -->
+<div class="container py-2 my-5">
+
+        <div class="row mb-3">
+            <div class="col-12">
+                <div class="card shadow-lg border-0 rounded-lg w-100" style="height: auto;">
+                    <div class="card-header bg-gradient-primary text-white py-2">
+                        <h4 class="card-title mb-0 text-white">Project Tasks</h4>
+                    </div>
+
+                    <!-- Add Task Button -->
+                    <a asp-action="CreateTask" asp-route-projectId="@Model.Id" class="btn btn-outline-primary mt-3 ms-3" style="width: 25%;">
+                        <i class="fa fa-plus me-2"></i>Add Task
+                    </a>
+
+                    <div class="card-body">
+                        <table class="table table-responsive">
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    
+                                    <th>Start Date</th>
+                                    <th>Deadline</th>
+                                    <th>Status</th>
+                                    
+                                    <th>Cost</th>
+                                    
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var task in Model.Tasks)
+                                {
+                                    <tr>
+                                        <td>@Html.DisplayFor(modelItem => task.Title)</td>
+                                        
+                                        <td>@Html.DisplayFor(modelItem => task.StartDate)</td>
+                                        <td>@Html.DisplayFor(modelItem => task.Deadline)</td>
+                                        <td>
+                                            <span class="badge
+                                                 @(task.Status == ProjectTaskStatus.Finished ? "badge-success" :
+                                                  task.Status == ProjectTaskStatus.InProgress ? "badge-warning" :
+                                                  task.Status == ProjectTaskStatus.NotStarted ? "badge-danger" :
+                                                  "badge-warning")">
+                                                @task.Status.ToString()
+                                            </span>
+                                    
+                                        </td>
+                                        
+                                        <td>@Html.DisplayFor(modelItem => task.Cost)</td>
+                                        
+                                        <td>
+                                            <a asp-action="EditTask" asp-route-id="@task.Id" class="btn btn-outline-primary btn-sm">Edit</a>
+                                            <a asp-action="DetailsTask" asp-route-id="@task.Id" class="btn btn-outline-secondary btn-sm">Details</a>
+                                            <a asp-action="DeleteTask" asp-route-id="@task.Id" class="btn btn-outline-danger btn-sm">Delete</a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+
+
+<!-- Gantt Chart Section -->
+<div class="container py-2 my-5">
+    <div class="card shadow border-light rounded">
+        <div class="card shadow-lg border-0 rounded-lg w-100" style="height: auto;">
+            <div class="card-header bg-gradient-primary text-white py-3">
+                <h4 class="card-title mb-0 text-white">Project Timeline</h4>
+            </div>
+            <div class="card-body">
+                <div id="gantt-chart-container" class="position-relative" style="overflow-x: auto;">
+                    <div id="gantt-chart" style="width: 100%; height: 500px; border: 1px solid #ddd; border-radius: 10px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Prepare the task data from the model
+            var tasks = {
+                data: [
+        @foreach (var task in Model.Tasks)
+        {
+            <text>
+                            {
+                                id: @task.Id,
+                                text: "@task.Title", // Properly escape quotes for strings
+                                start_date: "@task.StartDate.ToString("dd-MM-yyyy")", // Ensure valid format
+                                end_date: "@task.Deadline.ToString("dd-MM-yyyy")",   // Ensure valid format
+                                duration: @((task.Deadline.DayNumber - task.StartDate.DayNumber)), // Calculate duration using DayNumber
+                                open: true
+                            },
+            </text>
+        }
+                ]
+            };
+
+            // Log tasks for debugging
+            console.log(tasks);
+
+            // Configure Gantt chart columns
+            gantt.config.columns = [
+                { name: "text", label: "Task", width: "200",align: "center", tree: true },
+               
+            ];
+
+            // Add custom styling for tasks
+            gantt.templates.task_class = function (start, end, task) {
+                if (task.duration <= 5) return "short-task";
+                else if (task.duration > 5 && task.duration <= 10) return "medium-task";
+                else return "long-task";
+            };
+
+            // Set scale and grid appearance
+            gantt.config.scale_unit = "month";
+            gantt.config.date_scale = "%F %Y"; // Display full month name and year
+            gantt.config.subscales = [{ unit: "day", step: 1, date: "%D, %j" }]; // Display weekdays and days
+
+        // Adjust the scale height
+        gantt.config.scale_height = 75; // Increase the height for better visibility
+
+        // Adjust the width of scale cells
+        gantt.templates.scale_cell_class = function(date) {
+            return "gantt_scale_cell"; // Optionally, apply custom classes for further styling
+        };
+
+
+            // Styling for gridlines and taskbars
+            gantt.templates.grid_header_class = function () {
+                return "grid-header";
+            };
+            gantt.templates.task_text = function (start, end, task) {
+                return task.text;
+            };
+
+            gantt.init("gantt-chart");
+            gantt.parse(tasks);
+        });
+    </script>
+    <style>
+        /* Custom Gantt chart styles */
+        #gantt-chart-container {
+            background-color: #f8f9fa; /* Light gray */
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        .gantt_task_line.short-task {
+            background-color: #c39bd3 !important; /* Lilac */
+            border-color: #c39bd3;
+        }
+
+        .gantt_task_line.medium-task {
+            background-color: #da8cff !important; /* Salmon */
+            border-color: #da8cff;
+        }
+
+        .gantt_task_line.long-task {
+            background-color: #566573 !important; /* Gray */
+            border-color: #566573;
+        }
+
+        .gantt_task_row {
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .gantt_task_scale .gantt_scale_cell {
+            background-color: #f5eef8; /* Soft lilac */
+            color: #2c3e50; /* Blackish */
+            font-weight: 500;
+        }
+
+            .gantt_task_scale .gantt_scale_cell:nth-child(even) {
+                background-color: #fbeee6; /* Soft salmon */
+            }
+
+        .gantt_task_grid .gantt_grid_data .gantt_row .gantt_cell {
+            background-color: #ffffff;
+        }
+
+        .grid-header {
+            background-color: #2c3e50; /* Dark gray/Black */
+            color: white;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .gantt_task_text {
+            font-weight: 600;
+            color: #2c3e50; /* Blackish */
+        }
+    </style>
+
+}
+
+

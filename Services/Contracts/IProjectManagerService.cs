@@ -8,7 +8,8 @@ namespace ERP_Project.Services.Contracts
       
             Task<ProjectManager> GetByIdAsync(string id);
         Task<IEnumerable<Project>> GetProjectsByManager(string id);
-
+        int GetProjectCountForUser(string userId);
+        Task<int> GetCompletedProjectsCountForUserAsync(string userId);
 
     }
 }

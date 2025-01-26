@@ -44,5 +44,19 @@ namespace ERP_Project.Services.Services
         {
             return await _employeeRepository.GetById(id);
         }
+        public async Task<int> GetProjectCountForEmployeeAsync(string employeeId)
+        {
+            return await _employeeRepository.GetProjectCountForEmployeeAsync(employeeId);
+        }
+
+        public async Task<int> GetCompletedProjectsCountForEmployeeAsync(string employeeId)
+        {
+            return await _employeeRepository.GetCompletedProjectsCountForEmployeeAsync(employeeId);
+        }
+
+        public async Task<int> GetDelayedProjectsCountForEmployeeAsync(string employeeId)
+        {
+            return await _employeeRepository.GetDelayedProjectsCountForEmployeeAsync(employeeId);
+        }
     }
 }

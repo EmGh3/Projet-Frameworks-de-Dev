@@ -18,6 +18,12 @@
     <link rel="stylesheet" href="~/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css">
     <!-- End plugin css for this page -->
     <!-- inject:css -->
+    <!-- Add these in the <head> section of your layout file -->
+<link rel="stylesheet" href="https://cdn.dhtmlx.com/gantt/edge/dhtmlxgantt.css" type="text/css">
+ <link href="~/css/GanttStyling.css" rel="stylesheet" />
+
+
+
     <!-- endinject -->
     <!-- Layout styles -->
     <link rel="stylesheet" href="~/css/style.css">
@@ -82,6 +88,11 @@
     <script src="~/js/todolist.js"></script>
     <script src="~/js/jquery.cookie.js"></script>
     <script src="~/js/dashboard.js"></script>
+
+
+    <script src="~/js/GanttJS.js"></script>
+    
+<script src="https://cdn.dhtmlx.com/gantt/edge/dhtmlxgantt.js"></script>
 
     <!-- Custom js for this page -->
     @await RenderSectionAsync("Scripts", required: false)

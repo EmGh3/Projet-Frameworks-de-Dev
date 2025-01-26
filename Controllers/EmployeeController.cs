@@ -1,7 +1,9 @@
-﻿using ERP_Project.Models.viewModels;
+﻿using ERP_Project.Models;
+using ERP_Project.Models.viewModels;
 using ERP_Project.Repositories;
 using ERP_Project.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 
 namespace ERP_Project.Controllers
@@ -36,6 +38,24 @@ namespace ERP_Project.Controllers
 
             return View(viewModel); // Pass the ViewModel to the view
         }
+        public async Task<IActionResult> ProjectList()
+        {
+            var EmployeeJson = HttpContext.Session.GetString("User");
+            var employeeId = JsonConvert.DeserializeObject<Employee>(EmployeeJson).Id;
+
+            var projectCount = await _employeeService.GetProjectCountForEmployeeAsync(employeeId);
+            var completedProjectsCount = await _employeeService.GetCompletedProjectsCountForEmployeeAsync(employeeId);
+            var delayedProjectsCount = await _employeeService.GetDelayedProjectsCountForEmployeeAsync(employeeId);
+
+            // Passer les statistiques dans ViewBag pour les afficher dans la vue
+            ViewBag.ProjectCount = projectCount;
+            ViewBag.CompletedProjectsCount = completedProjectsCount;
+            ViewBag.DelayedProjectsCount = delayedProjectsCount;
+
+            var projects = await _employeeService.GetEmployeeProjects(employeeId);
+            return View(projects);
+        }
+
     }
 
     }

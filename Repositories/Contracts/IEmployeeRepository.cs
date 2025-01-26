@@ -11,6 +11,8 @@ namespace ERP_Project.Repositories.Contracts
         Task<IEnumerable<ProjectTask>> GetEmployeeTasksAsync(string id);
         Task<IEnumerable<Project>> GetEmployeeProjects(string employeeId);
         Task<Employee> GetById(string id);
-
+        Task<int> GetProjectCountForEmployeeAsync(string employeeId);
+        Task<int> GetCompletedProjectsCountForEmployeeAsync(string employeeId);
+        Task<int> GetDelayedProjectsCountForEmployeeAsync(string employeeId);
     }
 }

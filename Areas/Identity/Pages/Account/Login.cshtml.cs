@@ -136,7 +136,7 @@ namespace ERP_Project.Areas.Identity.Pages.Account
                     if (user != null)
                     {
                         // Check if the user is a ProjectManager or Employee
-                        /*if (user.Discriminator == "ProjectManager")
+                        if (user.Discriminator == "ProjectManager")
                         {
                             // Retrieve the ProjectManager object
                             var manager = await _context.ProjectManagers
@@ -159,7 +159,7 @@ namespace ERP_Project.Areas.Identity.Pages.Account
                             var employeeJson = JsonConvert.SerializeObject(employee);
                             HttpContext.Session.SetString("isManager", "false");  // Set the 'isManager' flag to false
                             HttpContext.Session.SetString("User", employeeJson);  // Store the employee object in session
-                        }*/
+                        }
                     }
                 
 

@@ -32,6 +32,10 @@ builder.Services.AddScoped<IProjectManagerService, ProjectManagerService>();
 
 builder.Services.AddScoped<INotificationService, NotificationService>(); // Register NotificationService
 builder.Services.AddScoped<NotificationsViewComponent>(); // Register the ViewComponent
+
+builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
+builder.Services.AddScoped<IProjectService, ProjectService>();
+
 builder.Services.AddRazorPages();
 builder.Services.AddControllersWithViews();
 

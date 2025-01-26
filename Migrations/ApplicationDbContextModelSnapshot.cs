@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace ERP_Project.Data.Migrations
+namespace ERP_Project.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
@@ -41,8 +41,9 @@ namespace ERP_Project.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("UserId1")
                         .HasColumnType("nvarchar(450)");
@@ -50,6 +51,8 @@ namespace ERP_Project.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("TaskId");
+
+                    b.HasIndex("UserId");
 
                     b.HasIndex("UserId1");
 
@@ -148,12 +151,17 @@ namespace ERP_Project.Data.Migrations
                     b.Property<string>("EmployeeId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<string>("EmployeeId1")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int>("ProjectId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateOnly>("StartDate")
+                        .HasColumnType("date");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -162,6 +170,8 @@ namespace ERP_Project.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("EmployeeId");
+
+                    b.HasIndex("EmployeeId1");
 
                     b.HasIndex("ProjectId");
 
@@ -442,6 +452,12 @@ namespace ERP_Project.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("ERP_Project.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ERP_Project.Models.User", null)
                         .WithMany("Comments")
                         .HasForeignKey("UserId1");
 
@@ -468,8 +484,13 @@ namespace ERP_Project.Data.Migrations
             modelBuilder.Entity("ERP_Project.Models.ProjectTask", b =>
                 {
                     b.HasOne("ERP_Project.Models.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("ERP_Project.Models.Employee", null)
                         .WithMany("Tasks")
-                        .HasForeignKey("EmployeeId");
+                        .HasForeignKey("EmployeeId1");
 
                     b.HasOne("ERP_Project.Models.Project", "Project")
                         .WithMany("Tasks")
