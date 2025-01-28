@@ -2,85 +2,204 @@
 @model ERP_Project.Areas.Identity.Pages.Account.RegisterModel
 @{
     ViewData["Title"] = "Register";
+    Layout = null;
 }
 
-<h2>@ViewData["Title"]</h2>
-<p>Create a new account.</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/vendors/mdi/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="~/vendors/css/vendor.bundle.base.css">
+    <link rel="stylesheet" href="~/css/style.css">
+    <link rel="stylesheet" href="~/css/Register.css">
 
-<form method="post">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <link rel="shortcut icon" href="~/images/favicon.png" />
+    
+</head>
+<body>
+    <div class="container-scroller">
+        <div class="container-fluid page-body-wrapper full-page-wrapper">
+            <div class="content-wrapper d-flex align-items-center auth">
+                <div class="row flex-grow justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="auth-form-light text-left p-4 shadow-sm">
+                            <div class="text-center mb-3">
+                                <div class="brand-logo mb-2">
+                                    <img src="~/images/logo.svg" alt="logo">
+                                </div>
+                                <h4 class="mb-1">Create a New Account</h4>
+                                <p class="text-muted small mb-0">Fill in the details to register</p>
+                            </div>
 
-    <div class="form-group">
-        <label asp-for="Input.Email" class="control-label"></label>
-        <input asp-for="Input.Email" class="form-control" />
-        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                            <form method="post" class="needs-validation mt-3" novalidate>
+
+                                @if (!ModelState.IsValid)
+                                {
+                                    <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+                                        <div class="d-flex">
+                                            <i class="mdi mdi-alert-circle me-2 align-self-center"></i>
+                                            <div>
+                                                <h6 class="alert-heading mb-1">Please correct the following errors:</h6>
+                                                <div asp-validation-summary="All" class="text-danger small mb-0"></div>
+                                            </div>
+                                        </div>
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                                }
+                                <!-- Personal Information Section -->
+                                <div class="card mb-3">
+                                    <div class="card-header py-2">
+                                        <h6 class="mb-0"><i class="mdi mdi-account-circle me-2"></i>Personal Information</h6>
+                                    </div>
+                                    <div class="card-body py-2">
+                                        <div class="row g-2">
+                                            <div class="col-md-6">
+                                                <div class="form-group mb-2">
+                                                    <label asp-for="Input.FirstName" class="small text-muted"></label>
+                                                    <input asp-for="Input.FirstName" class="form-control form-control-sm" placeholder="Enter first name" />
+                                                    <span asp-validation-for="Input.FirstName" class="text-danger small"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group mb-2">
+                                                    <label asp-for="Input.LastName" class="small text-muted"></label>
+                                                    <input asp-for="Input.LastName" class="form-control form-control-sm" placeholder="Enter last name" />
+                                                    <span asp-validation-for="Input.LastName" class="text-danger small"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group mb-2">
+                                                    <label asp-for="Input.DateOfBirth" class="small text-muted"></label>
+                                                    <input asp-for="Input.DateOfBirth" type="date" class="form-control form-control-sm" />
+                                                    <span asp-validation-for="Input.DateOfBirth" class="text-danger small"></span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <label asp-for="Input.Gender" class="control-label"></label>
+                                                <select asp-for="Input.Gender" class="form-control form-control-lg" style="color: black;">
+                                                    <option value="">-- Select Gender --</option>
+                                                    <option value="Male">Male</option>
+                                                    <option value="Female">Female</option>
+                                                </select>
+                                                <span asp-validation-for="Input.Gender" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Contact Information Section -->
+                                <div class="card mb-3">
+                                    <div class="card-header py-2">
+                                        <h6 class="mb-0"><i class="mdi mdi-contact-mail me-2"></i>Contact Information</h6>
+                                    </div>
+                                    <div class="card-body py-2">
+                                        <div class="row g-2">
+                                            <div class="col-md-6">
+                                                <div class="form-group mb-2">
+                                                    <label asp-for="Input.Email" class="small text-muted"></label>
+                                                    <input asp-for="Input.Email" class="form-control form-control-sm" placeholder="Enter email" />
+                                                    <span asp-validation-for="Input.Email" class="text-danger small"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group mb-2">
+                                                    <label asp-for="Input.PhoneNumber" class="small text-muted"></label>
+                                                    <input asp-for="Input.PhoneNumber" class="form-control form-control-sm" placeholder="Enter phone number" />
+                                                    <span asp-validation-for="Input.PhoneNumber" class="text-danger small"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="form-group mb-2">
+                                                    <label asp-for="Input.Address" class="small text-muted"></label>
+                                                    <textarea asp-for="Input.Address" class="form-control form-control-sm" rows="2" placeholder="Enter address"></textarea>
+                                                    <span asp-validation-for="Input.Address" class="text-danger small"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Employment Details Section -->
+                                <div class="card mb-3">
+                                    <div class="card-header py-2">
+                                        <h6 class="mb-0"><i class="mdi mdi-briefcase me-2"></i>Employment Details</h6>
+                                    </div>
+                                    <div class="card-body py-2">
+                                        <div class="row g-2">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label asp-for="Input.DepartmentId" class="control-label" ></label>
+                                                    <select asp-for="Input.DepartmentId" class="form-control" asp-items="@(ViewData["Departments"] as SelectList)" style="color: black;">
+                                                        <option value="">-- Select Department --</option>
+                                                    </select>
+                                                    <span asp-validation-for="Input.DepartmentId" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group mb-2">
+                                                    <label asp-for="Input.Designation" class="small text-muted"></label>
+                                                    <input asp-for="Input.Designation" class="form-control form-control-sm" placeholder="Enter designation" />
+                                                    <span asp-validation-for="Input.Designation" class="text-danger small"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Account Security Section -->
+                                <div class="card mb-3">
+                                    <div class="card-header py-2">
+                                        <h6 class="mb-0"><i class="mdi mdi-security me-2"></i>Account Security</h6>
+                                    </div>
+                                    <div class="card-body py-2">
+                                        <div class="row g-2">
+                                            <div class="col-md-6">
+                                                <div class="form-group mb-2">
+                                                    <label asp-for="Input.Password" class="small text-muted"></label>
+                                                    <input asp-for="Input.Password" class="form-control form-control-sm" placeholder="Enter password" />
+                                                    <span asp-validation-for="Input.Password" class="text-danger small"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group mb-2">
+                                                    <label asp-for="Input.ConfirmPassword" class="small text-muted"></label>
+                                                    <input asp-for="Input.ConfirmPassword" class="form-control form-control-sm" placeholder="Confirm password" />
+                                                    <span asp-validation-for="Input.ConfirmPassword" class="text-danger small"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="text-center mt-3">
+                                    <button type="submit" class="btn btn-primary px-4">
+                                        <i class="mdi mdi-account-plus me-2"></i>Register Account
+                                    </button>
+                                </div>
+
+                                <div class="text-center mt-3">
+                                    <p>
+                                        Already have an account?
+                                        <a asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl" class="text-primary">Login</a>
+                                    </p>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="form-group">
-        <label asp-for="Input.Password" class="control-label"></label>
-        <input asp-for="Input.Password" class="form-control" />
-        <span asp-validation-for="Input.Password" class="text-danger"></span>
-    </div>
+    <script src="~/vendors/js/vendor.bundle.base.js"></script>
+    <script src="~/js/misc.js"></script>
 
-    <div class="form-group">
-        <label asp-for="Input.ConfirmPassword" class="control-label"></label>
-        <input asp-for="Input.ConfirmPassword" class="form-control" />
-        <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-    </div>
+    
+    
 
-    <!-- New fields -->
-    <div class="form-group">
-        <label asp-for="Input.FirstName" class="control-label"></label>
-        <input asp-for="Input.FirstName" class="form-control" />
-        <span asp-validation-for="Input.FirstName" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="Input.LastName" class="control-label"></label>
-        <input asp-for="Input.LastName" class="form-control" />
-        <span asp-validation-for="Input.LastName" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="Input.DateOfBirth" class="control-label"></label>
-        <input asp-for="Input.DateOfBirth" class="form-control" type="date" />
-        <span asp-validation-for="Input.DateOfBirth" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="Input.Gender" class="control-label"></label>
-        <select asp-for="Input.Gender" class="form-control">
-            <option value="">-- Select Gender --</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-            <option value="Other">Other</option>
-        </select>
-        <span asp-validation-for="Input.Gender" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="Input.Address" class="control-label"></label>
-        <textarea asp-for="Input.Address" class="form-control"></textarea>
-        <span asp-validation-for="Input.Address" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label asp-for="Input.PhoneNumber" class="control-label"></label>
-        <input asp-for="Input.PhoneNumber" class="form-control" />
-        <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <button type="submit" class="btn btn-primary">Register</button>
-    </div>
-
-    <div class="form-group">
-        <p>Already have an account? <a asp-page="/Account/Login">Login here</a>.</p>
-    </div>
-</form>
-
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-}
+</body>
+</html>

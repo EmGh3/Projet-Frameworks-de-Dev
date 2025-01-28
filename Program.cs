@@ -5,6 +5,13 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using System;
+using ERP_Project.Repositories.Contracts;
+using ERP_Project.Repositories.Repositories;
+using ERP_Project.Services.Contracts;
+using ERP_Project.Views.Shared.Components.Notifications;
+using Microsoft.Extensions.DependencyInjection;
+using System.Configuration;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,17 +26,53 @@ builder.Services.AddIdentity<User, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 builder.Services.AddTransient<IEmailSender, EmailSender>();
+builder.Services.AddScoped<IDepartmentRepository,DepartmentRepository>();
+builder.Services.AddScoped<IProjectManagerRepository, ProjectManagerRepository>();
+builder.Services.AddScoped<IEmployeeRepository, EmployeesRepository>();
+
+builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+builder.Services.AddScoped<IProjectManagerService, ProjectManagerService>();
+builder.Services.AddScoped<IDepartmentService, DepartmentService>();
+
+builder.Services.AddScoped<INotificationService, NotificationService>(); 
+builder.Services.AddScoped<NotificationsViewComponent>();
+
+builder.Services.AddScoped<ITaskRepository, TaskRepository>();
+builder.Services.AddScoped<ITaskService, TaskService>();
+builder.Services.AddScoped<ICommentRepository, CommentRepository>();
+builder.Services.AddScoped<ICommentService, CommentService>();
+
+builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
+builder.Services.AddScoped<IProjectService, ProjectService>();
+
+
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
+builder.Services.AddTransient<EmailService>();  // Register the email service
+
 
 builder.Services.AddRazorPages();
 builder.Services.AddControllersWithViews();
 
-var app = builder.Build();
+builder.Services.AddDistributedMemoryCache(); 
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(180); 
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = "/Identity/Account/Login";
+    options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+});
 
+var app = builder.Build();
+app.UseSession();
 using (var scope = app.Services.CreateScope())
 {
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-    var roles = new[] { "User", "Employee", "ChefProject" };
+    var roles = new[] { "User", "Employee", "ProjectManager" };
 
     foreach (var role in roles)
     {
@@ -39,7 +82,6 @@ using (var scope = app.Services.CreateScope())
         }
     }
 }
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseMigrationsEndPoint();
@@ -47,7 +89,6 @@ if (app.Environment.IsDevelopment())
 else
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
@@ -57,7 +98,15 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
-
+app.Use(async (context, next) =>
+{
+    if (context.Request.Path == "/")
+    {
+        context.Response.Redirect("/Identity/Account/Login");
+        return;
+    }
+    await next();
+});
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");

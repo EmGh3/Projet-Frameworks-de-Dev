@@ -41,8 +41,9 @@ namespace ERP_Project.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("UserId1")
                         .HasColumnType("nvarchar(450)");
@@ -50,6 +51,8 @@ namespace ERP_Project.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("TaskId");
+
+                    b.HasIndex("UserId");
 
                     b.HasIndex("UserId1");
 
@@ -104,8 +107,9 @@ namespace ERP_Project.Data.Migrations
                     b.Property<double>("Progress")
                         .HasColumnType("float");
 
-                    b.Property<int>("ProjectManagerId")
-                        .HasColumnType("int");
+                    b.Property<string>("ProjectManagerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProjectManagerId1")
                         .HasColumnType("nvarchar(450)");
@@ -118,6 +122,8 @@ namespace ERP_Project.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ProjectManagerId");
 
                     b.HasIndex("ProjectManagerId1");
 
@@ -142,8 +148,8 @@ namespace ERP_Project.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("EmployeeId")
-                        .HasColumnType("int");
+                    b.Property<string>("EmployeeId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("EmployeeId1")
                         .HasColumnType("nvarchar(450)");
@@ -151,15 +157,19 @@ namespace ERP_Project.Data.Migrations
                     b.Property<int>("ProjectId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateOnly>("StartDate")
+                        .HasColumnType("date");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
 
                     b.HasIndex("EmployeeId1");
 
@@ -442,6 +452,12 @@ namespace ERP_Project.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("ERP_Project.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ERP_Project.Models.User", null)
                         .WithMany("Comments")
                         .HasForeignKey("UserId1");
 
@@ -453,6 +469,12 @@ namespace ERP_Project.Data.Migrations
             modelBuilder.Entity("ERP_Project.Models.Project", b =>
                 {
                     b.HasOne("ERP_Project.Models.ProjectManager", "ProjectManager")
+                        .WithMany()
+                        .HasForeignKey("ProjectManagerId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("ERP_Project.Models.ProjectManager", null)
                         .WithMany("Projects")
                         .HasForeignKey("ProjectManagerId1");
 
@@ -462,6 +484,11 @@ namespace ERP_Project.Data.Migrations
             modelBuilder.Entity("ERP_Project.Models.ProjectTask", b =>
                 {
                     b.HasOne("ERP_Project.Models.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("ERP_Project.Models.Employee", null)
                         .WithMany("Tasks")
                         .HasForeignKey("EmployeeId1");
 

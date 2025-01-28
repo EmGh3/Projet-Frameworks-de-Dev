@@ -1,0 +1,20 @@
+﻿@model List<ERP_Project.Dtos.NotificationDto>
+<link rel="stylesheet" href="~/css/style.css">
+<link rel="stylesheet" href="~/css/notif.css" />
+<div class="notification-container">
+    @foreach (var notification in Model)
+    {
+        <a href="@Url.Action("Details", "Project", new { id = notification.ProjectId })" class="notification-item">
+            <div class="preview-thumbnail">
+                <div class="preview-icon custom-bg-blue rounded-circle position-relative">
+                    <i class="mdi mdi-alert"></i>
+                </div>
+            </div>
+            <div class="notification-content">
+                <div class="notification-message">@notification.Message</div>
+
+            </div>
+        </a>
+        <div class="notification-divider"></div>
+    }
+</div>

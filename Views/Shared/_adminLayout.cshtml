@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - ERP_Project</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Purple Admin</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/vendors/mdi/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="~/vendors/ti-icons/css/themify-icons.css">
+    <link rel="stylesheet" href="~/vendors/css/vendor.bundle.base.css">
+    <link rel="stylesheet" href="~/vendors/font-awesome/css/font-awesome.min.css">
+    <!-- endinject -->
+    <!-- Plugin css for this page -->
+    <link rel="stylesheet" href="~/vendors/font-awesome/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="~/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css">
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <!-- endinject -->
+    <!-- Layout styles -->
+    <link rel="stylesheet" href="~/css/style.css">
+    <!-- End layout styles -->
+    <link rel="shortcut icon" href="~/images/favicon.png" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/ERP_Project.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.dhtmlx.com/gantt/edge/dhtmlxgantt.css" type="text/css">
+</head>
+
+<body style="margin: 0; padding: 0; " >
+    <div class="container-scroller">
+       
+        <!-- Include Navbar -->
+        @Html.Partial("_Navbar")
+
+        <div class="container-fluid page-body-wrapper">
+            <!-- Include Sidebar -->
+            @Html.Partial("_adminSidebar")
+
+            <!-- Page Content -->
+            <div class="main-panel" style="margin-left: 300px;">
+                <div class="content-wrapper" style="min-height:120vh;">
+                    @RenderBody() 
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+   
+
+    <!-- Scripts -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/vendors/js/vendor.bundle.base.js"></script>
+    <script src="~/vendors/chart.js/chart.umd.js"></script>
+    <script src="~/vendors/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
+
+    <script src="~/js/off-canvas.js"></script>
+    <script src="~/js/misc.js"></script>
+    <script src="~/js/settings.js"></script>
+    <script src="~/js/todolist.js"></script>
+    <script src="~/js/jquery.cookie.js"></script>
+    <script src="~/js/dashboard.js"></script>
+    <script src="https://cdn.dhtmlx.com/gantt/edge/dhtmlxgantt.js"></script>
+    <!-- Custom js for this page -->
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

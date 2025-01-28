@@ -1,0 +1,89 @@
+﻿@model IEnumerable<ERP_Project.Models.ProjectTask>
+
+@{
+    ViewData["Title"] = "ListByManager";
+}
+<hr />
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Deadline)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cost)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Employee)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Project)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Deadline)
+                </td>
+                <td>
+                    @if (item.Status == ProjectTaskStatus.Finished)
+                    {
+                        <span class="badge badge-success">Finished</span>
+                    }
+                    else if (item.Status == ProjectTaskStatus.InProgress)
+                    {
+                        <span class="badge badge-warning">In progress</span>
+                    }
+                    else if (item.Status == ProjectTaskStatus.NotStarted)
+                    {
+                        <span class="badge badge-info">Not started</span>
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cost)
+                </td>
+                <td>
+                    @if (item.Employee != null)
+                    {
+                        @Html.DisplayFor(modelItem => item.Employee.FirstName)
+                        @Html.DisplayFor(modelItem => item.Employee.LastName)
+                    }
+                    else
+                    {
+                        <div>No Employee Assigned</div>
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Project.Name)
+                </td>
+
+                <td>
+                    <a class="btn btn-gradient-primary btn-sm" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                    @if (item.EmployeeId == (string?)ViewData["UserId"] && item.Status == ProjectTaskStatus.InProgress)
+                    {
+                        <a class="btn btn-gradient-primary font-weight-bold col-md-2" asp-action="FinishTask" asp-route-id="@item.Id" asp-route-employeeId="@item.EmployeeId">Finish Task</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

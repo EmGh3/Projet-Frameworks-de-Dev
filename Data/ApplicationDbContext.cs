@@ -13,13 +13,37 @@ namespace ERP_Project.Data
         }
        
 
-        DbSet<Department> Departments { get; set; }
-        DbSet<User> Users { get; set; }
-        DbSet<ProjectManager> ProjectManagers { get; set; }
-        DbSet<Comment> Comments { get; set; }
-        DbSet<Project> Projects { get; set; }
-        DbSet<ProjectTask> Tasks { get; set; }
-        DbSet<Employee> Employees { get; set; }
+        public DbSet<Department> Departments { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<ProjectManager> ProjectManagers { get; set; }
+        public DbSet<Comment> Comments { get; set; }
+        public DbSet<Project> Projects { get; set; }
+        public DbSet<ProjectTask> Tasks { get; set; }
+        public DbSet<Employee> Employees { get; set; }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+{
+    base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Project>()
+            .HasOne(p => p.ProjectManager)
+            .WithMany()
+            .HasForeignKey(p => p.ProjectManagerId)
+            .OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<User>()
+                .HasDiscriminator<string>("Discriminator")  // Map to the existing discriminator column
+                .HasValue<User>("User")
+                .HasValue<Employee>("Employee")
+                .HasValue<ProjectManager>("ProjectManager");
+            modelBuilder.Entity<ProjectTask>()
+                  .HasOne(task => task.Employee)
+                  .WithMany()
+                  .HasForeignKey(task => task.EmployeeId)
+                  .OnDelete(DeleteBehavior.SetNull);  // Specify the delete behavior if needed
+
+            modelBuilder.Entity<Comment>()
+                 .HasOne(c => c.User)
+                 .WithMany()  // If User has many Comments
+                 .HasForeignKey(c => c.UserId);  // Foreign Key configuration
+        }
 
     }
     }
