@@ -33,6 +33,16 @@ namespace ERP_Project.Data
                 .HasValue<User>("User")
                 .HasValue<Employee>("Employee")
                 .HasValue<ProjectManager>("ProjectManager");
+            modelBuilder.Entity<ProjectTask>()
+                  .HasOne(task => task.Employee)
+                  .WithMany()
+                  .HasForeignKey(task => task.EmployeeId)
+                  .OnDelete(DeleteBehavior.SetNull);  // Specify the delete behavior if needed
+
+            modelBuilder.Entity<Comment>()
+                 .HasOne(c => c.User)
+                 .WithMany()  // If User has many Comments
+                 .HasForeignKey(c => c.UserId);  // Foreign Key configuration
         }
 
     }

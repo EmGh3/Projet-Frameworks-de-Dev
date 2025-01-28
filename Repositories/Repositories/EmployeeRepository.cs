@@ -52,7 +52,34 @@ namespace ERP_Project.Repositories.Repositories
                                  .Include(t=>t.Project)
                                  .ToListAsync();
         }
+        public async Task<IEnumerable<Employee>> GetByProjectId(int id)
+        {
+            return await _context.Employees
+                                 .Where(t => t.Projects.SingleOrDefault(p => p.Id == id) != null)
+                                 .ToListAsync();
+        }
+        public async Task<int> GetProjectCountForEmployeeAsync(string employeeId)
+        {
+            return await _context.Projects
+                .Where(p => p.Employees.Any(e => e.Id == employeeId))
+                .CountAsync();
+        }
 
-       
+        public async Task<int> GetCompletedProjectsCountForEmployeeAsync(string employeeId)
+        {
+            return await _context.Projects
+                .Where(p => p.Employees.Any(e => e.Id == employeeId) && p.Status == "Completed")
+                .CountAsync();
+        }
+
+        public async Task<int> GetDelayedProjectsCountForEmployeeAsync(string employeeId)
+        {
+            return await _context.Projects
+                .Where(p => p.Employees.Any(e => e.Id == employeeId) && p.Status == "Delayed")
+                .CountAsync();
+        }
+
+
+
     }
 }

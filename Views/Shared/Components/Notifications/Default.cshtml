@@ -1,18 +1,20 @@
-﻿@model List<string>
-
-
-@foreach (var notification in Model)
-{
-    <a class="dropdown-item preview-item">
-        <div class="preview-thumbnail">
-            <div class="preview-icon bg-danger">
-                <i class="mdi mdi-alert"></i>
+﻿@model List<ERP_Project.Dtos.NotificationDto>
+<link rel="stylesheet" href="~/css/style.css">
+<link rel="stylesheet" href="~/css/notif.css" />
+<div class="notification-container">
+    @foreach (var notification in Model)
+    {
+        <a href="@Url.Action("Details", "Project", new { id = notification.ProjectId })" class="notification-item">
+            <div class="preview-thumbnail">
+                <div class="preview-icon custom-bg-blue rounded-circle position-relative">
+                    <i class="mdi mdi-alert"></i>
+                </div>
             </div>
-        </div>
-        <div class="preview-item-content d-flex align-items-start flex-column justify-content-center">
-            <h6 class="preview-subject font-weight-normal mb-1">@notification</h6>
-        </div>
-    </a>
-    <div class="dropdown-divider"></div>
-}
+            <div class="notification-content">
+                <div class="notification-message">@notification.Message</div>
 
+            </div>
+        </a>
+        <div class="notification-divider"></div>
+    }
+</div>

@@ -147,7 +147,7 @@ namespace ERP_Project.Areas.Identity.Pages.Account
                             var managerJson = JsonConvert.SerializeObject(manager);
                             HttpContext.Session.SetString("isManager", "true");  // Set the 'isManager' flag to true
                             HttpContext.Session.SetString("User", managerJson);  // Store the manager object in session
-                            return LocalRedirect("/ProjectManager/Index");
+                            return LocalRedirect($"/ProjectManager/ProjectManagerDetails/{manager.Id}");
 
                         }
                         else if (user.Discriminator == "Employee")
@@ -160,6 +160,7 @@ namespace ERP_Project.Areas.Identity.Pages.Account
                             var employeeJson = JsonConvert.SerializeObject(employee);
                             HttpContext.Session.SetString("isManager", "false");  // Set the 'isManager' flag to false
                             HttpContext.Session.SetString("User", employeeJson);  // Store the employee object in session
+                            return LocalRedirect($"/Employee/EmployeeProfile/{employee.Id}");
                         }
                     }
                 

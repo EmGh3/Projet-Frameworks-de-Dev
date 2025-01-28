@@ -1,7 +1,9 @@
-﻿namespace ERP_Project.Services.Contracts
+﻿using ERP_Project.Dtos;
+
+namespace ERP_Project.Services.Contracts
 {
     public interface INotificationService
     {
-        Task<List<string>> GetManagerNotificationsAsync(string Id);
+        Task<List<NotificationDto>> GetManagerNotificationsAsync(string Id);
     }
 }

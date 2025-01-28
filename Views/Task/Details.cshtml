@@ -1,0 +1,148 @@
+﻿@using Microsoft.EntityFrameworkCore.Metadata.Internal
+@model ERP_Project.Models.ProjectTask
+
+@{
+    ViewData["Title"] = "Details";
+
+
+
+
+
+
+
+    if (User.IsInRole("ProjectManager"))
+
+    {
+
+        Layout = "../Shared/_adminLayout.cshtml";
+
+    }
+
+    else
+
+    {
+
+        Layout = "../Shared/_Layout.cshtml";
+
+    }
+}
+
+
+
+
+<div class="card">
+<div class="card-body">
+    <div class="row">
+            <h1 class="card-title col-md-4 ">@Html.DisplayFor(model => model.Title)</h1>
+            <div class="col-md-4 ">
+                @if (Model.Status == ProjectTaskStatus.Finished)
+                {
+					<span class="badge badge-success" style="font-size: 15px">Finished</span>
+				}
+                else if (Model.Status == ProjectTaskStatus.InProgress)
+				{
+                    <span class="badge badge-warning" style="font-size: 15px">In progress</span>
+				}
+                else if (Model.Status == ProjectTaskStatus.NotStarted)
+				{
+                    <span class="badge badge-info" style="font-size: 15px">Not started</span>
+				}
+            </div>
+            @if(Model.EmployeeId == null && Model.Project.ProjectManagerId == (string?)ViewData["UserId"])
+			{
+                <a class="btn btn-gradient-primary font-weight-bold col-md-2" asp-action="ChooseEmployee" asp-route-id="@Model.Id">Assign Task</a>
+			}
+
+            @if (Model.EmployeeId == (string?)ViewData["UserId"] && Model.Status == ProjectTaskStatus.InProgress)
+            {
+                <a class="btn btn-gradient-primary font-weight-bold col-md-2" asp-action="FinishTask" asp-route-id="@Model.Id" asp-route-employeeId="@Model.EmployeeId">Finish Task</a>
+            }
+            
+
+
+           
+    </div>
+        <h4>Project:  @Html.DisplayFor(model => model.Project.Name)</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.StartDate)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.StartDate)
+            </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Deadline)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Deadline)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Cost)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Cost)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Employee)
+        </dt>
+        <dd class = "col-sm-10">
+            @if (Model.Employee != null)
+			{
+				@Html.DisplayFor(model => model.Employee.FirstName)
+                @Html.DisplayFor(model => model.Employee.LastName)
+			}
+            else
+            {
+                <div>No Employee Assigned</div>
+            }
+        </dd>
+    </dl>
+        <hr />
+        <div class="col-sm-2" style="font-weight: bolder; margin:10px">
+            @Html.DisplayNameFor(model => model.Description)
+        </div>
+        <div class="col-sm-10" style="margin:10px">
+            @Html.DisplayFor(model => model.Description)
+        </div>
+        <hr />
+        <div class="col-sm-2" style="font-weight: bolder; margin:10px">
+            @Html.DisplayNameFor(model => model.Comments)
+        </div>
+        <div class="col-sm-10">
+            @foreach (var comment in (IEnumerable<Comment>)ViewData["Comments"])
+			{
+				<div class="card">
+					<div class="card-body">
+                        <blockquote class="blockquote blockquote-primary">
+                                <h4 class="card-title col-md-4">
+                                @comment.Title
+                                @if(comment.UserId == (string?)ViewData["UserId"])
+                                {
+                                    <a class="btn-inverse-danger" asp-action="Delete" asp-controller="Comment" asp-route-id="@comment.Id"><i class="fa fa-trash-o"></i></a>
+                                }
+							</h4>
+                                <div class="card-description">
+                                @comment.User.FirstName @comment.User.LastName
+                            </div>
+                        <p class="lead">@comment.Content</p>
+
+                        </blockquote>
+					</div>
+				</div>
+			}
+        </div>
+    <div>
+            <a class="add btn btn-gradient-primary font-weight-bold" href="javascript:history.back()">Back to Previous</a>
+            <a class="add btn btn-gradient-primary font-weight-bold" asp-action="Create" asp-controller="Comment" asp-route-id="@Model.Id">Add Comment</a>
+            @if (Model.Project.ProjectManagerId == (string?)ViewData["UserId"])
+            {
+                <a class="add btn btn-gradient-danger font-weight-bold" asp-action="Delete" asp-route-id="@Model.Id">Delete Task</a>
+            }
+            @if (Model.EmployeeId == (string?)ViewData["UserId"] && Model.Status == ProjectTaskStatus.InProgress)
+			{
+				<a class="add btn btn-gradient-danger font-weight-bold" asp-action="RefuseTask" asp-route-id="@Model.Id">Refuse Task</a>
+			}
+</div>
+</div>
+</div>

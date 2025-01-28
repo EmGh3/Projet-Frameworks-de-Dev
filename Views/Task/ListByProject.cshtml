@@ -1,0 +1,109 @@
+﻿@model IEnumerable<ERP_Project.Models.ProjectTask>
+
+
+@{
+    ViewData["Title"] = "List";
+
+    if (User.IsInRole("ProjectManager"))
+
+    {
+
+        Layout = "../Shared/_adminLayout.cshtml";
+
+    }
+
+    else
+
+    {
+
+        Layout = "../Shared/_Layout.cshtml";
+
+    }
+}
+
+<h1>@ViewData["ProjectName"]</h1>
+<a class="btn btn-gradient-primary font-weight-bold col-md-2" asp-action="Create" asp-route-id="@((int?)ViewData["ProjectId"])">Create Task</a>
+<hr />
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Deadline)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cost)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Employee)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartDate)
+                </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Deadline)
+            </td>
+            <td>
+                    @if (item.Status == ProjectTaskStatus.Finished)
+                    {
+                        <span class="badge badge-success">Finished</span>
+                    }
+                    else if (item.Status == ProjectTaskStatus.InProgress)
+                    {
+                        <span class="badge badge-warning">In progress</span>
+                    }
+                    else if (item.Status == ProjectTaskStatus.NotStarted)
+                    {
+                        <span class="badge badge-info">Not started</span>
+                    }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cost)
+            </td>
+            <td>
+                    @if (item.Employee != null)
+                    {
+                        @Html.DisplayFor(modelItem => item.Employee.FirstName)
+                        @Html.DisplayFor(modelItem => item.Employee.LastName)
+                    }
+                    else
+                    {
+                        <div>No Employee Assigned</div>
+                    }
+            </td>
+            <td>
+                    <a class="btn btn-gradient-primary btn-sm" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                    @if (@item.EmployeeId == null && @item.Project.ProjectManagerId == (string?)ViewData["UserId"])
+                    {
+                        <a class="btn btn-gradient-primary btn-sm" asp-action="ChooseEmployee" asp-route-id="@item.Id">Assign Task</a>
+                    }
+                    @if (item.EmployeeId == (string?)ViewData["UserId"] && item.Status == ProjectTaskStatus.InProgress)
+                    {
+                        <a class="btn btn-gradient-primary font-weight-bold btn-sm" asp-action="FinishTask" asp-route-id="@item.Id" asp-route-employeeId="@item.EmployeeId">Finish Task</a>
+                    }
+                    @if (item.Project.ProjectManagerId == (string?)ViewData["UserId"])
+                    {
+                        <a class="btn btn-gradient-danger font-weight-bold btn-sm" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    }
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

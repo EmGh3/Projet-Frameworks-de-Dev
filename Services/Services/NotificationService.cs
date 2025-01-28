@@ -1,5 +1,6 @@
 ﻿using ERP_Project.Repositories.Contracts;
 using ERP_Project.Services.Contracts;
+using ERP_Project.Dtos;
 
 namespace ERP_Project.Services.Services
 {
@@ -12,21 +13,26 @@ namespace ERP_Project.Services.Services
             _projectManagerRepository = projectManagerRepository;
         }
 
-        public async Task<List<string>> GetManagerNotificationsAsync(String Id)
+        public async Task<List<NotificationDto>> GetManagerNotificationsAsync(string Id)
         {
-            var notifications = new List<string>();
+            var notifications = new List<NotificationDto>();
 
             var projects = await _projectManagerRepository.GetProjectsByManager(Id);
 
             foreach (var project in projects)
             {
-                if (project.EndDate!=null)
+                if (project.EndDate != null)
                 {
                     var daysRemaining = (project.EndDate.ToDateTime(TimeOnly.MinValue) - DateTime.Now).Days;
 
-                    if (daysRemaining <= 7 && daysRemaining >= 0) 
+                    if (daysRemaining <= 7 && daysRemaining >= 0)
                     {
-                        notifications.Add($"Project '{project.Name}' deadline is in {daysRemaining} days!");
+                        notifications.Add(new NotificationDto
+                        {
+                            ProjectId = project.Id,
+                            ProjectName = project.Name,
+                            Message = $"Project '{project.Name}' deadline is in {daysRemaining} days!"
+                        });
                     }
                 }
             }
@@ -34,6 +40,7 @@ namespace ERP_Project.Services.Services
             return notifications;
         }
 
-       
+
+
     }
 }

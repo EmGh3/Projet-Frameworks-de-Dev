@@ -1,4 +1,5 @@
-﻿
+﻿@using Newtonsoft.Json
+
 @model ERP_Project.Models.viewModels.EmployeeProfileViewModel
 
 @{
@@ -7,11 +8,23 @@
     if (User.IsInRole("ProjectManager"))
     {
         Layout = "../Shared/_adminLayout.cshtml";
+
     }
     else
     {
         Layout = "../Shared/_Layout.cshtml";
     }
+}
+
+@{
+   
+    var userJson = Context.Session.GetString("User");
+
+  
+      Object user = (ProjectManager) JsonConvert.DeserializeObject<ProjectManager>(userJson);
+
+      
+    
 }
 
 
@@ -146,7 +159,22 @@
                                 <td>@project.StartDate.ToShortDateString()</td>
                                 <td>@project.EndDate.ToShortDateString()</td>
                                 <td>
-                                    <a href="#" class="btn btn-gradient-primary text-white text-decoration-none" style="font-size: 1rem; padding: 10px 10px;">Project Details</a>
+                                    @if (user is ProjectManager manager)
+                                    {
+                                        @if(manager.Id == project.ProjectManagerId){
+                                                 <a asp-Controller="Project" asp-action="Details" asp-route-id=@project.Id class="btn btn-gradient-primary text-white text-decoration-none" style="font-size: 1rem; padding: 10px 10px;">Project Details</a>
+                                        }
+                                        else
+                                        {
+                                            <a asp-Controller="Project" asp-action="ProjectDetails" asp-route-id=@project.Id class="btn btn-gradient-primary text-white text-decoration-none" style="font-size: 1rem; padding: 10px 10px;">Project Details</a>
+                                        }
+                                        
+                                    }
+                                    else
+                                    {
+                                        <a asp-Controller="Project" asp-action="ProjectDetails" asp-route-id=@project.Id class="btn btn-gradient-primary text-white text-decoration-none" style="font-size: 1rem; padding: 10px 10px;">Project Details</a>
+                                    }
+                                    
                                 </td>
                             </tr>
                         }
@@ -191,12 +219,12 @@ else
                 <td>@(i + 1)</td>
                 <td>@task.Title</td>
                 <td>
-                    <span class="badge
-                @(task.Status == "Completed" ? "badge-success" :
-                  task.Status == "In Progress" ? "badge-warning" :
-                  "badge-danger")">
-                                        @task.Status
-                    </span>
+                                    <span class="badge
+                                         @(task.Status == ProjectTaskStatus.Finished ? "badge-success" :
+                                          task.Status == ProjectTaskStatus.InProgress ? "badge-warning" :
+                                          "badge-danger")">
+                                        @task.Status.ToString()
+                                    </span>
                 </td>
                 <td>@task.Deadline.ToShortDateString()</td>
                 <td>@task.Cost.ToString("C")</td>

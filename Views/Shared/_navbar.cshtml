@@ -24,6 +24,7 @@
     }
 }
 
+<link rel="stylesheet" href="~/css/navbar.css" />
 <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
 
 
@@ -36,16 +37,7 @@
         <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
             <span class="mdi mdi-menu"></span>
         </button>
-        <div class="search-field d-none d-md-block">
-            <form class="d-flex align-items-center h-100" action="#">
-                <div class="input-group">
-                    <div class="input-group-prepend bg-transparent">
-                        <i class="input-group-text border-0 mdi mdi-magnify"></i>
-                    </div>
-                    <input type="text" class="form-control bg-transparent border-0" placeholder="Search projects">
-                </div>
-            </form>
-        </div>
+        
         <ul class="navbar-nav navbar-nav-right">
             <li class="nav-item nav-profile dropdown">
                 <a class="nav-link dropdown-toggle" id="profileDropdown" href="#" data-bs-toggle="dropdown" aria-expanded="false">
@@ -81,10 +73,10 @@
 
                         </a>
                     }
-                    else if (user is Employee)
+                    else if (user is Employee employee)
                     {
 
-                        <a class="dropdown-item" href="#">
+                        <a class="dropdown-item" asp-controller="Employee" asp-action="EmployeeProfile" asp-route-id="@employee.Id">
                         <i class="fa fa-user-o me-2 text-success"></i> Profile
 
                         </a>
@@ -100,12 +92,7 @@
                         </form>
                     </a>
 
-                    <style>
-                        .dropdown-item.text-body {
-                            color: inherit; /* Use the inherited color from the parent */
-                           
-                        }
-                    </style>
+                    
 
 
 
@@ -126,15 +113,17 @@
                     <span class="count-symbol bg-danger"></span>
                 </a>
 
-                <div class="dropdown-menu dropdown-menu-end navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
-                    <h6 class="p-3 mb-0">Notifications</h6>
+                <div class="dropdown-menu dropdown-menu-end navbar-dropdown preview-list notification-dropdown" aria-labelledby="notificationDropdown">
+                    <div class="dropdown-header">
+                        <h6 class="mb-0">Notifications</h6>
+                    </div>
                     <div class="dropdown-divider"></div>
-
-                     @if (user is ProjectManager myManager)
+                    <div class="notification-scroll-container">
+                        @if (user is ProjectManager myManager)
                         {
-                        @await Component.InvokeAsync("Notifications", new { managerId = @myManager.Id })
+                            @await Component.InvokeAsync("Notifications", new { managerId = @myManager.Id })
                         }
-
+                    </div>
                 </div>
             </li>
             <li class="nav-item nav-logout d-none d-lg-block">
@@ -156,3 +145,5 @@
         </button>
     </div>
 </nav>
+
+

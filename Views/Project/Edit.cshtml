@@ -1,0 +1,95 @@
+﻿@model ERP_Project.Models.ViewModels.CreateProjectViewModel
+
+@{
+    ViewData["Title"] = "Edit Project";
+    Layout = "~/Views/Shared/_adminLayout.cshtml";
+}
+
+<div class="card-header bg-gradient-primary text-white py-2">
+    <h2 class="card-title mb-0 ms-3 text-white">Edit Project</h2>
+</div>
+
+<form asp-action="Edit" method="post">
+    <div class="card shadow-sm">
+        <div class="card-body">
+
+            <p class="card-description">Update the project details below.</p>
+
+            <div class="row">
+                <!-- Project Name -->
+                <div class="col-md-6 mb-3">
+                    <div class="form-group">
+                        <label class="form-label" for="Name">Project Name</label>
+                        <input asp-for="Name" class="form-control" id="Name" placeholder="Enter project name" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Description -->
+                <div class="col-md-6 mb-3">
+                    <div class="form-group">
+                        <label class="form-label" for="Description">Description</label>
+                        <input asp-for="Description" class="form-control" id="Description" placeholder="Enter project description" />
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Start Date -->
+                <div class="col-md-6 mb-3">
+                    <div class="form-group">
+                        <label class="form-label" for="StartDate">Start Date</label>
+                        <input asp-for="StartDate" class="form-control" id="StartDate" type="date" />
+                        <span asp-validation-for="StartDate" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- End Date -->
+                <div class="col-md-6 mb-3">
+                    <div class="form-group">
+                        <label class="form-label" for="EndDate">End Date</label>
+                        <input asp-for="EndDate" class="form-control" id="EndDate" type="date" />
+                        <span asp-validation-for="EndDate" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <!-- Budget -->
+                <div class="col-md-6 mb-3">
+                    <div class="form-group">
+                        <label class="form-label" for="Budget">Budget</label>
+                        <div class="input-group">
+                            <span class="input-group-text">$</span>
+                            <input asp-for="Budget" class="form-control" id="Budget" placeholder="Enter project budget" />
+                        </div>
+                        <span asp-validation-for="Budget" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Project Manager -->
+                <div class="col-md-6 mb-3">
+                    <div class="form-group">
+                        <label class="form-label" for="ProjectManagerId">Project Manager</label>
+                        <!-- Display readonly field for Project Manager Username -->
+                        <input type="text" class="form-control" id="ProjectManager" value="@Model.ProjectManagerUsername" readonly />
+                        <input asp-for="ProjectManagerId" type="hidden" value="@Model.ProjectManagerId" />
+                        <span asp-validation-for="ProjectManagerId" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-primary btn-lg">Save Changes</button>
+            </div>
+
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

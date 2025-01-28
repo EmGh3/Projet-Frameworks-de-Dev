@@ -14,7 +14,10 @@
     <link rel="stylesheet" href="~/vendors/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="~/vendors/css/vendor.bundle.base.css">
     <link rel="stylesheet" href="~/css/style.css">
+    <link rel="stylesheet" href="~/css/Register.css">
+
     <link rel="shortcut icon" href="~/images/favicon.png" />
+    
 </head>
 <body>
     <div class="container-scroller">
@@ -32,6 +35,20 @@
                             </div>
 
                             <form method="post" class="needs-validation mt-3" novalidate>
+
+                                @if (!ModelState.IsValid)
+                                {
+                                    <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+                                        <div class="d-flex">
+                                            <i class="mdi mdi-alert-circle me-2 align-self-center"></i>
+                                            <div>
+                                                <h6 class="alert-heading mb-1">Please correct the following errors:</h6>
+                                                <div asp-validation-summary="All" class="text-danger small mb-0"></div>
+                                            </div>
+                                        </div>
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                    </div>
+                                }
                                 <!-- Personal Information Section -->
                                 <div class="card mb-3">
                                     <div class="card-header py-2">
@@ -60,16 +77,14 @@
                                                     <span asp-validation-for="Input.DateOfBirth" class="text-danger small"></span>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group mb-2">
-                                                    <label asp-for="Input.Gender" class="small text-muted"></label>
-                                                    <select asp-for="Input.Gender" class="form-select form-select-sm">
-                                                        <option value="">Select Gender</option>
-                                                        <option value="Male">Male</option>
-                                                        <option value="Female">Female</option>
-                                                    </select>
-                                                    <span asp-validation-for="Input.Gender" class="text-danger small"></span>
-                                                </div>
+                                            <div class="form-group col-md-6">
+                                                <label asp-for="Input.Gender" class="control-label"></label>
+                                                <select asp-for="Input.Gender" class="form-control form-control-lg" style="color: black;">
+                                                    <option value="">-- Select Gender --</option>
+                                                    <option value="Male">Male</option>
+                                                    <option value="Female">Female</option>
+                                                </select>
+                                                <span asp-validation-for="Input.Gender" class="text-danger"></span>
                                             </div>
                                         </div>
                                     </div>
@@ -115,12 +130,12 @@
                                     <div class="card-body py-2">
                                         <div class="row g-2">
                                             <div class="col-md-6">
-                                                <div class="form-group mb-2">
-                                                    <label asp-for="Input.DepartmentId" class="small text-muted"></label>
-                                                    <select asp-for="Input.DepartmentId" class="form-select form-select-sm" asp-items="@(ViewData["Departments"] as SelectList)">
-                                                        <option value="">Select Department</option>
+                                                <div class="form-group">
+                                                    <label asp-for="Input.DepartmentId" class="control-label" ></label>
+                                                    <select asp-for="Input.DepartmentId" class="form-control" asp-items="@(ViewData["Departments"] as SelectList)" style="color: black;">
+                                                        <option value="">-- Select Department --</option>
                                                     </select>
-                                                    <span asp-validation-for="Input.DepartmentId" class="text-danger small"></span>
+                                                    <span asp-validation-for="Input.DepartmentId" class="text-danger"></span>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
@@ -164,6 +179,14 @@
                                         <i class="mdi mdi-account-plus me-2"></i>Register Account
                                     </button>
                                 </div>
+
+                                <div class="text-center mt-3">
+                                    <p>
+                                        Already have an account?
+                                        <a asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl" class="text-primary">Login</a>
+                                    </p>
+                                </div>
+
                             </form>
                         </div>
                     </div>
@@ -175,55 +198,8 @@
     <script src="~/vendors/js/vendor.bundle.base.js"></script>
     <script src="~/js/misc.js"></script>
 
-    <style>
-        .auth-form-light {
-            border-radius: 0.75rem;
-            background: #ffffff;
-        }
+    
+    
 
-        .card {
-            border: 1px solid #e9ecef;
-            border-radius: 0.5rem;
-            box-shadow: none;
-        }
-
-        .card-header {
-            background-color: #f8f9fa;
-            border-bottom: 1px solid #e9ecef;
-            border-radius: 0.5rem 0.5rem 0 0 !important;
-        }
-
-        .form-control-sm, .form-select-sm {
-            height: calc(1.5em + 0.5rem + 2px);
-            padding: 0.25rem 0.5rem;
-            font-size: 0.875rem;
-            border-radius: 0.3rem;
-        }
-
-        .form-control:focus, .form-select:focus {
-            border-color: #5e72e4;
-            box-shadow: 0 0 0 0.2rem rgba(94, 114, 228, 0.25);
-        }
-
-        .btn-primary {
-            background-color: #5e72e4;
-            border: none;
-            box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11);
-            transition: all 0.15s ease;
-        }
-
-            .btn-primary:hover {
-                transform: translateY(-1px);
-                box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1);
-            }
-
-        .text-muted {
-            color: #8898aa !important;
-        }
-
-        .shadow-sm {
-            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
-        }
-    </style>
 </body>
 </html>

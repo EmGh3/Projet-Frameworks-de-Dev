@@ -45,16 +45,14 @@ namespace ERP_Project.Areas.Identity.Pages.Account
             IUserStore<User> userStore,
             SignInManager<User> signInManager,
             RoleManager<IdentityRole>roleManager,
-            ILogger<RegisterModel> logger,
-            IEmailSender emailSender, IDepartmentRepository depRepo,ApplicationDbContext dbContext)
+            ILogger<RegisterModel> logger
+           , IDepartmentRepository depRepo,ApplicationDbContext dbContext)
         {
             _userManager = userManager;
             _userStore = userStore;
             _roleManager = roleManager;
-            _emailStore = GetEmailStore();
             _signInManager = signInManager;
             _logger = logger;
-            _emailSender = emailSender;
             _depRepo = depRepo;
             _context=dbContext;
 
@@ -85,52 +83,55 @@ namespace ERP_Project.Areas.Identity.Pages.Account
         /// </summary>
         public class InputModel
         {
-            [Required]
-            [EmailAddress]
+            [Required(ErrorMessage = "First name is required")]
+            [Display(Name = "First Name")]
+            public string FirstName { get; set; }
+
+            [Required(ErrorMessage = "Last name is required")]
+            [Display(Name = "Last Name")]
+            public string LastName { get; set; }
+
+            [Required(ErrorMessage = "Date of birth is required")]
+            [Display(Name = "Date of Birth")]
+            [DataType(DataType.Date)]
+            public DateOnly DateOfBirth { get; set; }
+
+            [Required(ErrorMessage = "Gender is required")]
+            [Display(Name = "Gender")]
+            public string Gender { get; set; }
+
+            [Required(ErrorMessage = "Email is required")]
+            [EmailAddress(ErrorMessage = "Invalid email address")]
             [Display(Name = "Email")]
             public string Email { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "Phone number is required")]
+            [Phone(ErrorMessage = "Invalid phone number")]
+            [Display(Name = "Phone Number")]
+            public string PhoneNumber { get; set; }
+
+            [Required(ErrorMessage = "Address is required")]
+            [Display(Name = "Address")]
+            public string Address { get; set; }
+
+            [Required(ErrorMessage = "Department is required")]
+            [Display(Name = "Department")]
+            public int DepartmentId { get; set; }
+
+            [Required(ErrorMessage = "Designation is required")]
+            [Display(Name = "Designation")]
+            public string Designation { get; set; }
+
+            [Required(ErrorMessage = "Password is required")]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Password")]
             public string Password { get; set; }
 
             [DataType(DataType.Password)]
-            [Display(Name = "Confirm password")]
+            [Display(Name = "Confirm Password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
-
-            [Required]
-            [Display(Name = "First Name")]
-            public string FirstName { get; set; }
-
-            [Required]
-            [Display(Name = "Last Name")]
-            public string LastName { get; set; }
-
-            [Required]
-            [Display(Name = "Date of Birth")]
-            public DateOnly DateOfBirth { get; set; }
-
-            [Required]
-            [Display(Name = "Gender")]
-            public string Gender { get; set; }
-
-            [Required]
-            [Display(Name = "Address")]
-            public string Address { get; set; }
-
-            [Phone]
-            [Display(Name = "Phone Number")]
-            public string PhoneNumber { get; set; }
-           
-
-            [Display(Name = "Department")]
-            public int DepartmentId { get; set; }
-
-            [Display(Name = "Designation")]
-            public string Designation { get; set; }
         }
 
         public async System.Threading.Tasks.Task OnGetAsync(string returnUrl = null)
@@ -230,31 +231,12 @@ namespace ERP_Project.Areas.Identity.Pages.Account
                     HttpContext.Session.SetString("User", employeeJson);  
                 }
             }
+            return LocalRedirect(returnUrl);
 
 
 
 
-            var userId = await _userManager.GetUserIdAsync(user);
-            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-            var callbackUrl = Url.Page(
-                "/Account/ConfirmEmail",
-                pageHandler: null,
-                values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
-                protocol: Request.Scheme);
 
-            await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-
-            if (_userManager.Options.SignIn.RequireConfirmedAccount)
-            {
-                return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
-            }
-            else
-            {
-                await _signInManager.SignInAsync(user, isPersistent: false);
-                return LocalRedirect(returnUrl);
-            }
         }
 
 
@@ -273,13 +255,6 @@ namespace ERP_Project.Areas.Identity.Pages.Account
             }
         }
 
-        private IUserEmailStore<User> GetEmailStore()
-        {
-            if (!_userManager.SupportsUserEmail)
-            {
-                throw new NotSupportedException("The default UI requires a user store with email support.");
-            }
-            return (IUserEmailStore<User>)_userStore;
-        }
+      
     }
 }

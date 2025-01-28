@@ -33,21 +33,16 @@
                 <i class="mdi mdi-bookmark-check text-success nav-profile-badge"></i>
             </a>
         </li>
+        
         <li class="nav-item">
-            <a class="nav-link" href="index.html">
-                <span class="menu-title">Dashboard</span>
-                <i class="mdi mdi-home menu-icon"></i>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
+            <a asp-controller="Employee"  asp-action="ProjectList" class="nav-link"   >
                 <span class="menu-title">My Projects</span>
                 <i class="mdi mdi-crosshairs-gps menu-icon"></i>
             </a>
             
         </li>
         <li class="nav-item">
-            <a class="nav-link" data-bs-toggle="collapse" href="#icons" aria-expanded="false" aria-controls="icons">
+            <a asp-controller="Task" asp-action="ListByEmployee"  class="nav-link" >
                 <span class="menu-title">My Tasks</span>
                 <i class="mdi mdi-contacts menu-icon"></i>
             </a>

@@ -6,7 +6,7 @@ namespace ERP_Project.Services.Services
 {
     public class GenericService<T> : IGenericService<T> where T : class
     {
-        private readonly IGenericRepository<T> _repository;
+        protected readonly IGenericRepository<T> _repository;
 
         public GenericService(IGenericRepository<T> repository)
         {

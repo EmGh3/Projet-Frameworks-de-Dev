@@ -15,7 +15,9 @@ namespace ERP_Project.Views.Shared.Components.Notifications
         public async Task<IViewComponentResult> InvokeAsync(string managerId)
         {
             var notifications = await _notificationService.GetManagerNotificationsAsync(managerId);
-            return View(notifications); 
+            return View(notifications);
         }
-    } } 
+
+    }
+} 
 

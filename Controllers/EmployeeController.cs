@@ -5,6 +5,7 @@ using ERP_Project.Services.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
 using System.Security.Claims;
 
 namespace ERP_Project.Controllers
@@ -117,6 +118,24 @@ namespace ERP_Project.Controllers
             ViewBag.CalendarEvents = calendarEvents;
             return View();
         }
+        public async Task<IActionResult> ProjectList()
+        {
+            var EmployeeJson = HttpContext.Session.GetString("User");
+            var employeeId = JsonConvert.DeserializeObject<Employee>(EmployeeJson).Id;
+
+            var projectCount = await _employeeService.GetProjectCountForEmployeeAsync(employeeId);
+            var completedProjectsCount = await _employeeService.GetCompletedProjectsCountForEmployeeAsync(employeeId);
+            var delayedProjectsCount = await _employeeService.GetDelayedProjectsCountForEmployeeAsync(employeeId);
+
+            // Passer les statistiques dans ViewBag pour les afficher dans la vue
+            ViewBag.ProjectCount = projectCount;
+            ViewBag.CompletedProjectsCount = completedProjectsCount;
+            ViewBag.DelayedProjectsCount = delayedProjectsCount;
+
+            var projects = await _employeeService.GetEmployeeProjects(employeeId);
+            return View(projects);
+        }
+
 
 
     }
