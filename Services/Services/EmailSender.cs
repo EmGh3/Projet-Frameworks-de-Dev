@@ -17,7 +17,6 @@ namespace ERP_Project.Services.Services
 
         public Task SendEmailAsync(string email, string subject, string htmlMessage)
         {
-            // Read SMTP settings from configuration
             var smtpServer = _configuration["EmailSettings:SmtpServer"];
             var smtpPort = int.Parse(_configuration["EmailSettings:SmtpPort"]);
             var smtpUsername = _configuration["EmailSettings:SmtpUsername"];
@@ -25,7 +24,6 @@ namespace ERP_Project.Services.Services
             var fromEmail = _configuration["EmailSettings:FromEmail"];
             var fromName = _configuration["EmailSettings:FromName"];
 
-            // Set up the SMTP client
             var smtpClient = new SmtpClient(smtpServer)
             {
                 Port = smtpPort,
@@ -33,7 +31,6 @@ namespace ERP_Project.Services.Services
                 EnableSsl = true,
             };
 
-            // Compose the email message
             var mailMessage = new MailMessage
             {
                 From = new MailAddress(fromEmail, fromName),
@@ -43,7 +40,6 @@ namespace ERP_Project.Services.Services
             };
             mailMessage.To.Add(email);
 
-            // Send the email asynchronously
             return smtpClient.SendMailAsync(mailMessage);
         }
     }

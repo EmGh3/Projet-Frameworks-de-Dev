@@ -33,7 +33,6 @@ namespace ERP_Project.Controllers
         [Authorize(Roles = "ProjectManager")]
         [HttpGet]
         [Route("Task/Create")]
-        //Allow the manager to choose the project when creating a task
         public IActionResult Create()
         {
             ViewBag.projectList = new SelectList(_projectService.GetByProjectManagerId(_userManager.GetUserId(User)), "Id", "Name");
@@ -42,17 +41,15 @@ namespace ERP_Project.Controllers
         [Authorize(Roles = "ProjectManager")]
         [HttpGet]
         [Route("Task/Create/{id:int}")]
-        //Create a task for a specific project
         public IActionResult Create(int id)
         {
             var project = _projectService.GetByIdAsync(id).Result;
             if (project == null)
             {
-                // Handle the case when the project is not found
                 return NotFound();
             }
             ViewBag.project = project;
-            ViewBag.ProjectId = id; // Pass the id to the view
+            ViewBag.ProjectId = id; 
             return View();
         }
         [Authorize(Roles = "ProjectManager")]
@@ -66,7 +63,6 @@ namespace ERP_Project.Controllers
             await _taskService.AddAsync(projectTask);
             _projectService.UpdateProgress(projectTask.ProjectId);
             _projectService.UpdateExpenses(projectTask.ProjectId);
-            // Redirect to details page after successful creation
             return RedirectToAction("Details", new { projectTask.Id }); 
         }
         public IActionResult Details(int id)
@@ -76,7 +72,6 @@ namespace ERP_Project.Controllers
             IEnumerable<Comment> comments = _commentService.GetByTaskId(id);
             if (projectTask == null)
             {
-                // Handle the case when the task is not found
                 return NotFound();
             }
             ViewData["Comments"] = comments;

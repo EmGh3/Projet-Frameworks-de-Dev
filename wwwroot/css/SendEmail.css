@@ -1,0 +1,74 @@
+﻿.bg-gradient-primary {
+    background: linear-gradient(87deg, #5e72e4 0, #825ee4 100%);
+}
+
+.card {
+    transition: all 0.3s ease;
+}
+
+.recipient-card {
+    background: #f8f9fa;
+    border-radius: 0.75rem;
+    padding: 0.75rem;
+    transition: all 0.3s ease;
+}
+
+    .recipient-card:hover {
+        background: #fff;
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    }
+
+.recipient-avatar img {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+}
+
+.form-control {
+    transition: all 0.2s ease;
+}
+
+    .form-control:focus {
+        background-color: #fff !important;
+        box-shadow: 0 0 0 0.2rem rgba(94, 114, 228, 0.15);
+        border-color: #5e72e4;
+    }
+
+    .form-control:hover {
+        background-color: #f1f3f9 !important;
+    }
+
+.btn-primary {
+    background: linear-gradient(87deg, #5e72e4 0, #825ee4 100%);
+    border: none;
+    transition: all 0.3s ease;
+}
+
+    .btn-primary:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 7px 14px rgba(94, 114, 228, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
+    }
+
+.alert {
+    border: none;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+/* Custom Scrollbar */
+textarea::-webkit-scrollbar {
+    width: 8px;
+}
+
+textarea::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+textarea::-webkit-scrollbar-thumb {
+    background: #5e72e4;
+    border-radius: 4px;
+}
+
+    textarea::-webkit-scrollbar-thumb:hover {
+        background: #825ee4;
+    }

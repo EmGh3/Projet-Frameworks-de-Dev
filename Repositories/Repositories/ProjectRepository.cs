@@ -14,7 +14,6 @@ namespace ERP_Project.Repositories.Repositories
             _context = context;
         }
 
-        // Example of a specific method for the Project entity
         public async Task<IEnumerable<Project>> GetProjectsWithDetailsAsync()
         {
             return await _dbSet
@@ -34,17 +33,16 @@ namespace ERP_Project.Repositories.Repositories
             var count = await _context.Projects
                 .Where(p => p.ProjectManagerId == userId && p.EndDate < DateOnly.FromDateTime(DateTime.Now)
                             && ( p.ActualEndDate > p.EndDate)
-                            && p.Status != "Completed")  // Assuming "Terminé" is the status for completed projects
+                            && p.Status != "Completed")  
                 .CountAsync();
 
             return count;
         }
         public async Task<Project> GetProjectWithTasksAsync(int projectId)
         {
-            // Fetch the project along with its tasks using Include
             return await _context.Projects
-                .Include(p => p.Tasks)  // Include tasks related to the project
-                .FirstOrDefaultAsync(p => p.Id == projectId);  // Filter by the project ID
+                .Include(p => p.Tasks)  
+                .FirstOrDefaultAsync(p => p.Id == projectId);  
         }
         public IEnumerable<ProjectTask> GetTasks(int projectId)
         {
@@ -60,7 +58,7 @@ namespace ERP_Project.Repositories.Repositories
             if (project != null)
             {
                 project.Employees.Add(employee);
-                _context.SaveChanges(); // Save changes to persist the addition
+                _context.SaveChanges(); 
             }
         }
 

@@ -29,7 +29,6 @@ namespace ERP_Project.Services.Contracts
         }
         public async Task<Project> GetProjectWithTasksAsync(int projectId)
         {
-            // Call the repository to fetch the project along with tasks
             return await _projectRepository.GetProjectWithTasksAsync(projectId);
         }
         public IEnumerable<ProjectTask> GetTasks(int projectId)

@@ -20,7 +20,6 @@ namespace ERP_Project.Controllers
             _projectManagerService = projectManagerService;
         }
 
-        // GET: Project/Index
         public async Task<IActionResult> Index()
         {
             
@@ -39,7 +38,6 @@ namespace ERP_Project.Controllers
             var projects = await _projectService.GetProjectsByManagerAsync(managerId);
             return View(projects);
         }
-        // GET: Project/Details/{id}
         public async Task<IActionResult> Details(int id)
         {
             var project = await _projectService.GetProjectWithTasksAsync(id);
@@ -47,7 +45,7 @@ namespace ERP_Project.Controllers
             {
                 return NotFound();
             }
-            return View(project);  // Passing the project with tasks to the view
+            return View(project);  
         }
         
         public async Task<IActionResult> ProjectDetails(int id)
@@ -60,7 +58,6 @@ namespace ERP_Project.Controllers
             return View(project);
         }
 
-        // GET: Project/Create
         public async Task<IActionResult> Create()
         {
             var viewModel = new CreateProjectViewModel();
@@ -83,7 +80,6 @@ namespace ERP_Project.Controllers
 
 
 
-        // POST: Project/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateProjectViewModel viewModel)
@@ -105,7 +101,7 @@ namespace ERP_Project.Controllers
                     Progress = 0,
                     ActualEndDate = null,
                     ProjectManagerId = managerId,
-                    ProjectManager = projectManager// Here, you're assigning it correctly
+                    ProjectManager = projectManager
                 };
 
                 await _projectService.AddAsync(project);
@@ -118,7 +114,6 @@ namespace ERP_Project.Controllers
             
         }
 
-        // GET: Project/Edit/{id}
         public async Task<IActionResult> Edit(int id)
         {
             var project = await _projectService.GetByIdAsync(id);
@@ -152,7 +147,6 @@ namespace ERP_Project.Controllers
 
 
 
-        // ... other code ...
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -169,7 +163,6 @@ namespace ERP_Project.Controllers
                 return NotFound();
             }
 
-            // Update the project with the data from the ViewModel
             project.Name = viewModel.Name;
             project.Description = viewModel.Description;
             project.StartDate = viewModel.StartDate;
@@ -184,10 +177,8 @@ namespace ERP_Project.Controllers
                 return Redirect(lastUrl);
             }
 
-            // If no referrer is available, fallback to Index
             return RedirectToAction(nameof(Index));
         }
-        // GET: Project/Delete/{id}
         public async Task<IActionResult> Delete(int id)
         {
             var project = await _projectService.GetByIdAsync(id);
@@ -198,7 +189,6 @@ namespace ERP_Project.Controllers
             return View(project);
         }
 
-        // POST: Project/Delete/{id}
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

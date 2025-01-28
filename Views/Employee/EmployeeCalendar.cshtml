@@ -5,6 +5,8 @@
     var calendarEvents = ViewBag.CalendarEvents as List<CalendarEvent>;
 }
 
+
+<link rel="stylesheet" href="~/css/EmployeeCalendar.css" />
 <div class="container mt-3">
     <div class="row justify-content-center">
         <div class="col-lg-8 col-md-12">
@@ -80,67 +82,5 @@
         });
     </script>
 
-    <style>
-        /* Calendar Container */
-        #calendar {
-            font-size: 0.9rem;
-            background: white;
-            padding: 0.5rem;
-        }
-
-        /* Header Toolbar */
-        .fc-header-toolbar {
-            margin-bottom: 0.5rem !important;
-        }
-
-        .fc .fc-toolbar-title {
-            font-size: 1.2rem;
-        }
-
-        /* Button Styling */
-        .fc-button {
-            padding: 0.3rem 0.6rem !important;
-            font-size: 0.9rem !important;
-            background-color: var(--bs-primary) !important;
-            border: none !important;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
-        }
-
-        .fc-button-active {
-            background-color: var(--bs-primary-dark, #0056b3) !important;
-        }
-
-        /* Event Styling */
-        .deadline-event {
-            background-color: var(--bs-primary) !important;
-            border: none !important;
-            padding: 2px 4px !important;
-            font-size: 0.8rem !important;
-            color: white !important;
-            margin: 1px 0 !important;
-        }
-
-        /* Calendar Days */
-        .fc-daygrid-day {
-            height: 60px !important;
-        }
-
-        .fc-day-today {
-            background-color: rgba(var(--bs-primary-rgb), 0.1) !important;
-        }
-
-        /* Legend */
-        .deadline-legend {
-            font-size: 0.8rem;
-            opacity: 0.9;
-        }
-
-        .deadline-legend i {
-            font-size: 0.7rem;
-        }
-
-        /* Responsive adjustments */
-       
-        
-    </style>
+ 
 }

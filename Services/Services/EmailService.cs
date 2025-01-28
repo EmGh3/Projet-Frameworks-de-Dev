@@ -18,9 +18,8 @@ namespace ERP_Project.Services.Services
         {
             string emailBody = body + "<br><br>" + signature;
 
-            // Use the email settings for 'FromEmail' and 'FromName' if not provided
-            fromEmail ??= _emailSettings.FromEmail; // Use default 'FromEmail' if not passed
-            fromName ??= _emailSettings.FromName;   // Use default 'FromName' if not passed
+            fromEmail ??= _emailSettings.FromEmail;
+            fromName ??= _emailSettings.FromName;   
 
             using (var smtpClient = new SmtpClient(_emailSettings.Host, _emailSettings.Port))
             {
@@ -29,15 +28,15 @@ namespace ERP_Project.Services.Services
 
                 var mailMessage = new MailMessage
                 {
-                    From = new MailAddress(fromEmail, fromName),  // Use dynamic or default 'From'
+                    From = new MailAddress(fromEmail, fromName),  
                     Subject = subject,
                     Body = emailBody,
-                    IsBodyHtml = true  // Ensuring that the email body is HTML
+                    IsBodyHtml = true  
                 };
 
-                mailMessage.To.Add(toEmail); // Add recipient's email
+                mailMessage.To.Add(toEmail); 
 
-                // Send the email asynchronously
+             
                 await smtpClient.SendMailAsync(mailMessage);
             }
         }

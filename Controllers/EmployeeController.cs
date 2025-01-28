@@ -12,7 +12,7 @@ namespace ERP_Project.Controllers
 {
     [Authorize]
 
-    public class EmployeeController : Controller  // Inherit from Controller to handle actions
+    public class EmployeeController : Controller  
     {
         private readonly IEmployeeService _employeeService;
         private readonly IDepartmentService _departmentService;
@@ -25,14 +25,13 @@ namespace ERP_Project.Controllers
 
 
 
-        // Corrected method with proper type for 'id' (assuming it's an integer)
 
         public async Task<IActionResult> EmployeeProfile(string id)
         {
-            var employee = await _employeeService.GetById(id);  // Await the async call to get the employee
-            if (employee == null)  // Check if employee exists
+            var employee = await _employeeService.GetById(id); 
+            if (employee == null)  
             {
-                return NotFound();  // Return a 404 if not found
+                return NotFound();  
             }
             var projects = await _employeeService.GetEmployeeProjects(id);
             var tasks = await _employeeService.GetEmployeeTasksAsync(id);
@@ -43,9 +42,9 @@ namespace ERP_Project.Controllers
                 Tasks = tasks.ToList()
             };
 
-            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier); // Assuming user ID is stored in claims
+            var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier); 
             ViewBag.CurrentUserId = currentUserId;
-            return View(viewModel); // Pass the ViewModel to the view
+            return View(viewModel); 
         }
 
 
@@ -109,10 +108,9 @@ namespace ERP_Project.Controllers
             var calendarEvents = tasks.Select(p => new CalendarEvent
             {
                 Title = p.Title,
-                EndDate = p.Deadline  // Direct assignment since both are DateOnly
+                EndDate = p.Deadline 
             }).ToList();
 
-            // Debug: Print events to console
            
 
             ViewBag.CalendarEvents = calendarEvents;
@@ -127,7 +125,6 @@ namespace ERP_Project.Controllers
             var completedProjectsCount = await _employeeService.GetCompletedProjectsCountForEmployeeAsync(employeeId);
             var delayedProjectsCount = await _employeeService.GetDelayedProjectsCountForEmployeeAsync(employeeId);
 
-            // Passer les statistiques dans ViewBag pour les afficher dans la vue
             ViewBag.ProjectCount = projectCount;
             ViewBag.CompletedProjectsCount = completedProjectsCount;
             ViewBag.DelayedProjectsCount = delayedProjectsCount;

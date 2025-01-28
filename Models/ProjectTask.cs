@@ -18,10 +18,8 @@
 
 
         public double Cost { get; set; }
-        // Foreign key
         public int ProjectId { get; set; }
 
-        // Navigation property
         public Project Project { get; set; }
         public string? EmployeeId { get; set; }
         public Employee? Employee { get; set; }
