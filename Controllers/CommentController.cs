@@ -23,10 +23,9 @@ namespace ERP_Project.Controllers
             ProjectTask task = _taskService.GetByIdAsync(id).Result;
             if (task == null)
             {
-                // Handle the case when the project is not found
                 return NotFound();
             }
-            ViewBag.TaskId = id; // Pass the id to the view
+            ViewBag.TaskId = id;
             return View();
         }
         [HttpPost]
@@ -36,7 +35,6 @@ namespace ERP_Project.Controllers
             comment.Id = 0;
             comment.UserId = _userManager.GetUserId(User);
             await _commentService.AddAsync(comment);
-            // Redirect to details page after successful creation
             return RedirectToAction("Details", "Task" ,new { id = comment.TaskId });
         }
         public async Task<IActionResult> Delete(int id)

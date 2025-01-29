@@ -11,7 +11,6 @@ namespace ERP_Project.Services.Services
         {
 
         }
-        // Get all the comments of a task by its ID
         public IEnumerable<Comment> GetByTaskId(int taskId)
         {
             return ((ICommentRepository)_repository).GetByTaskId(taskId);

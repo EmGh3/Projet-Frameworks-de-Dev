@@ -30,7 +30,6 @@
 
 
 <div class="card mb-4 shadow">
-    <!-- Header -->
     <div class="card-header bg-white p-3 border-primary border-3 border-top border-bottom-0 border-start-0 border-end-0">
         <div>
             <h5 class="fw-bold mb-1 text-dark">@Model.Employee.FirstName @Model.Employee.LastName</h5>
@@ -40,10 +39,8 @@
     <div class="border-primary border-1 border-top border-bottom-0 border-start-0 border-end-0"></div>
 
 
-    <!-- Body -->
     <div class="card-body p-4">
         <div class="row g-4">
-            <!-- First Column -->
             <div class="col-md-6">
                 <div class="list-group">
                     <div class="list-group-item border-0 bg-light rounded">
@@ -61,7 +58,6 @@
                 </div>
             </div>
 
-            <!-- Second Column -->
             <div class="col-md-6">
                 <div class="list-group">
                     <div class="list-group-item border-0 bg-light rounded">
@@ -79,7 +75,6 @@
                 </div>
             </div>
 
-            <!-- Address (Full Width) -->
             <div class="col-12">
                 <div class="list-group">
                     <div class="list-group-item border-0 bg-light rounded">
@@ -96,12 +91,12 @@
                 <div class="d-flex justify-content-end mt-4 gap-3">
                     <a href="@Url.Action("UpdateEmployee", "Employee", new { id = Model.Employee.Id })"
                        class="btn btn-gradient-primary btn-fw d-flex align-items-center px-4 py-2 shadow-sm">
-                        <i class="bi bi-pencil-square me-2"></i> <!-- Icon for Update -->
+                        <i class="bi bi-pencil-square me-2"></i> 
                         Update
                     </a>
                     <a href="@Url.Action("ResetPassword", "Account")" 
                        class="btn btn-outline-primary btn-fw d-flex align-items-center px-4 py-2 shadow-sm">
-                        <i class="bi bi-key me-2"></i> <!-- Icon for Change Password -->
+                        <i class="bi bi-key me-2"></i>
                         Change Password
                     </a>
                 </div>

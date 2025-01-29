@@ -151,13 +151,11 @@ namespace ERP_Project.Areas.Identity.Pages.Account
 
             if (!ModelState.IsValid)
             {
-                foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
-                {
-                    _logger.LogError("ModelState error: " + error.ErrorMessage);
-                }
+                _logger.LogWarning("ModelState is invalid. Reloading departments and returning to the register page.");
+                Departments = await _depRepo.GetAllAsync();
+                ViewData["Departments"] = new SelectList(Departments, "Id", "Name");
                 return Page(); 
             }
-
             _logger.LogInformation("ModelState is valid, continuing registration process.");
 
             var user = CreateUser() as Employee;

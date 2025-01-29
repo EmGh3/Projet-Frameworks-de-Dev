@@ -8,7 +8,7 @@
         public DateOnly StartDate { get; set; }
         public DateOnly EndDate  { get; set; }
         public DateOnly? ActualEndDate { get; set; }
-        public string Status { get; set; } // En cours, Terminé, etc.
+        public string Status { get; set; } 
         public double Progress { get; set; } 
 
         public decimal Budget { get; set; }

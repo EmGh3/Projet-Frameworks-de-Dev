@@ -29,7 +29,7 @@ namespace ERP_Project.Data
             .HasForeignKey(p => p.ProjectManagerId)
             .OnDelete(DeleteBehavior.NoAction);
             modelBuilder.Entity<User>()
-                .HasDiscriminator<string>("Discriminator")  // Map to the existing discriminator column
+                .HasDiscriminator<string>("Discriminator")  
                 .HasValue<User>("User")
                 .HasValue<Employee>("Employee")
                 .HasValue<ProjectManager>("ProjectManager");
@@ -37,12 +37,12 @@ namespace ERP_Project.Data
                   .HasOne(task => task.Employee)
                   .WithMany()
                   .HasForeignKey(task => task.EmployeeId)
-                  .OnDelete(DeleteBehavior.SetNull);  // Specify the delete behavior if needed
+                  .OnDelete(DeleteBehavior.SetNull);  
 
             modelBuilder.Entity<Comment>()
                  .HasOne(c => c.User)
-                 .WithMany()  // If User has many Comments
-                 .HasForeignKey(c => c.UserId);  // Foreign Key configuration
+                 .WithMany() 
+                 .HasForeignKey(c => c.UserId); 
         }
 
     }

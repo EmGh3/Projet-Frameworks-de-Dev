@@ -16,7 +16,6 @@
             <p class="card-description">Update the project details below.</p>
 
             <div class="row">
-                <!-- Project Name -->
                 <div class="col-md-6 mb-3">
                     <div class="form-group">
                         <label class="form-label" for="Name">Project Name</label>
@@ -25,7 +24,6 @@
                     </div>
                 </div>
 
-                <!-- Description -->
                 <div class="col-md-6 mb-3">
                     <div class="form-group">
                         <label class="form-label" for="Description">Description</label>
@@ -36,7 +34,6 @@
             </div>
 
             <div class="row">
-                <!-- Start Date -->
                 <div class="col-md-6 mb-3">
                     <div class="form-group">
                         <label class="form-label" for="StartDate">Start Date</label>
@@ -45,7 +42,6 @@
                     </div>
                 </div>
 
-                <!-- End Date -->
                 <div class="col-md-6 mb-3">
                     <div class="form-group">
                         <label class="form-label" for="EndDate">End Date</label>
@@ -56,7 +52,6 @@
             </div>
 
             <div class="row">
-                <!-- Budget -->
                 <div class="col-md-6 mb-3">
                     <div class="form-group">
                         <label class="form-label" for="Budget">Budget</label>
@@ -68,11 +63,9 @@
                     </div>
                 </div>
 
-                <!-- Project Manager -->
                 <div class="col-md-6 mb-3">
                     <div class="form-group">
                         <label class="form-label" for="ProjectManagerId">Project Manager</label>
-                        <!-- Display readonly field for Project Manager Username -->
                         <input type="text" class="form-control" id="ProjectManager" value="@Model.ProjectManagerUsername" readonly />
                         <input asp-for="ProjectManagerId" type="hidden" value="@Model.ProjectManagerId" />
                         <span asp-validation-for="ProjectManagerId" class="text-danger"></span>
