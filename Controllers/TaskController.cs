@@ -87,9 +87,9 @@ namespace ERP_Project.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete(ProjectTask task)
+        public async Task<IActionResult>  Delete(ProjectTask task)
         {
-            _taskService.DeleteAsync(task.Id);
+            await _taskService.DeleteAsync(task.Id);
             _projectService.UpdateProgress(task.ProjectId);
             _projectService.UpdateExpenses(task.ProjectId);
             return RedirectToAction(nameof(ListByManager));

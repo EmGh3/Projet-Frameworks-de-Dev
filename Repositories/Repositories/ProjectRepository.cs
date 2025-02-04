@@ -46,7 +46,12 @@ namespace ERP_Project.Repositories.Repositories
         }
         public IEnumerable<ProjectTask> GetTasks(int projectId)
         {
-            return _dbSet.Include(p => p.Tasks).SingleOrDefault(p => p.Id == projectId).Tasks;
+            var project = _dbSet.Include(p => p.Tasks).SingleOrDefault(p => p.Id == projectId);
+            if (project != null)
+            {
+                return project.Tasks;
+            }
+            return null;
         }
         public IEnumerable<Project> GetByProjectManagerId(string projectManagerId)
         {

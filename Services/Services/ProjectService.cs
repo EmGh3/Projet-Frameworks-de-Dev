@@ -39,6 +39,10 @@ namespace ERP_Project.Services.Contracts
         {
             var project = _projectRepository.GetByIdAsync(projectId).Result;
             var tasks = GetTasks(projectId);
+            if (tasks == null)
+            {
+                return;
+            }
             var totalTasks = tasks.Count();
             var finishedTasks = tasks.Where(t => t.Status == ProjectTaskStatus.Finished).Count();
             project.Progress = (finishedTasks * 100) / totalTasks;
@@ -48,6 +52,10 @@ namespace ERP_Project.Services.Contracts
         {
             var project = _projectRepository.GetByIdAsync(projectId).Result;
             var tasks = GetTasks(projectId);
+            if (tasks == null)
+            {
+                return;
+            }
             var totalExpense = tasks.Sum(t => t.Cost);
             project.Expenses = (decimal)totalExpense;
             _projectRepository.UpdateAsync(project).Wait();
