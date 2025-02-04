@@ -197,9 +197,9 @@ namespace ERP_Project.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Update(ProjectTask task)
+        public async Task<IActionResult> Update(ProjectTask task)
         {
-            _taskService.UpdateAsync(task);
+            await _taskService.UpdateAsync(task);
             return RedirectToAction("Details", new { task.Id });
         }
     }
