@@ -33,6 +33,7 @@ namespace ERP_Project.Controllers
         [Authorize(Roles = "ProjectManager")]
         [HttpGet]
         [Route("Task/Create")]
+        //Allow the manager to choose the project when creating a task
         public IActionResult Create()
         {
             ViewBag.projectList = new SelectList(_projectService.GetByProjectManagerId(_userManager.GetUserId(User)), "Id", "Name");
@@ -41,6 +42,7 @@ namespace ERP_Project.Controllers
         [Authorize(Roles = "ProjectManager")]
         [HttpGet]
         [Route("Task/Create/{id:int}")]
+        //Create a task for a specific project
         public IActionResult Create(int id)
         {
             var project = _projectService.GetByIdAsync(id).Result;
@@ -187,6 +189,18 @@ namespace ERP_Project.Controllers
         {
             IEnumerable<ProjectTask> projectTasks = _taskService.GetByEmployeeId(_userManager.GetUserId(User));
             return View(projectTasks);
+        }
+        public IActionResult Update(int id)
+        {
+            ProjectTask task = _taskService.GetByIdAsync(id).Result;
+            return View(task);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Update(ProjectTask task)
+        {
+            _taskService.UpdateAsync(task);
+            return RedirectToAction("Details", new { task.Id });
         }
     }
 }

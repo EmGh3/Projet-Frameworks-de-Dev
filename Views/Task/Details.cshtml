@@ -138,6 +138,8 @@
             @if (Model.Project.ProjectManagerId == (string?)ViewData["UserId"])
             {
                 <a class="add btn btn-gradient-danger font-weight-bold" asp-action="Delete" asp-route-id="@Model.Id">Delete Task</a>
+                <a class="add btn btn-gradient-warning font-weight-bold" asp-action="Update" asp-route-id="@Model.Id">Update Task</a>
+
             }
             @if (Model.EmployeeId == (string?)ViewData["UserId"] && Model.Status == ProjectTaskStatus.InProgress)
 			{
