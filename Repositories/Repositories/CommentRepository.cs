@@ -10,7 +10,7 @@ namespace ERP_Project.Repositories.Repositories
         public CommentRepository(ApplicationDbContext db) : base(db)
     {
     }
-        public IEnumerable<Comment> GetByTaskId(int taskId)
+        public async Task<IEnumerable<Comment>> GetByTaskId(int taskId)
         {
             return _dbSet.Include(c => c.User).Where(c => c.TaskId == taskId).ToList();
         }

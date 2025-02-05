@@ -18,9 +18,9 @@ namespace ERP_Project.Controllers
             _taskService = taskService;
             _userManager = userManager;
         }
-        public IActionResult Create(int id)
+        public async Task<IActionResult> Create(int id)
         {
-            ProjectTask task = _taskService.GetByIdAsync(id).Result;
+            ProjectTask task = await _taskService.GetByIdAsync(id);
             if (task == null)
             {
                 return NotFound();

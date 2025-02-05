@@ -9,11 +9,11 @@ namespace ERP_Project.Services.Contracts
         Task<IEnumerable<Project>> GetProjectsByManagerAsync(string projectManagerId); 
         Task<int> GetDelayedProjectsCountForUserAsync(string userId);
         Task<Project> GetProjectWithTasksAsync(int projectId);
-        public IEnumerable<ProjectTask> GetTasks(int projectId);
-        public void UpdateProgress(int projectId);
-        public void UpdateExpenses(int projectId);
-        public IEnumerable<Project> GetByProjectManagerId(string projectManagerId);
-        public void AddEmployeeToProject(int ProjectId, Employee employee);
+        public Task<IEnumerable<ProjectTask>> GetTasks(int projectId);
+        public Task UpdateProgress(int projectId);
+        public Task UpdateExpenses(int projectId);
+        public Task<IEnumerable<Project>> GetByProjectManagerId(string projectManagerId);
+        public Task AddEmployeeToProject(int ProjectId, Employee employee);
 
     }
 }

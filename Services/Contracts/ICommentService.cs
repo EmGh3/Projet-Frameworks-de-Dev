@@ -4,6 +4,6 @@ namespace ERP_Project.Services.Contracts
 {
     public interface ICommentService : IGenericService<Comment>
     {
-        public IEnumerable<Comment> GetByTaskId(int taskId);
+        public Task<IEnumerable<Comment>> GetByTaskId(int taskId);
     }
 }

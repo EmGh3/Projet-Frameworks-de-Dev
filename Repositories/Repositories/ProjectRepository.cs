@@ -44,20 +44,16 @@ namespace ERP_Project.Repositories.Repositories
                 .Include(p => p.Tasks)  
                 .FirstOrDefaultAsync(p => p.Id == projectId);  
         }
-        public IEnumerable<ProjectTask> GetTasks(int projectId)
+        public async Task<IEnumerable<ProjectTask>> GetTasks(int projectId)
         {
-            var project = _dbSet.Include(p => p.Tasks).SingleOrDefault(p => p.Id == projectId);
-            if (project != null)
-            {
-                return project.Tasks;
-            }
-            return null;
+            return _dbSet.Include(p => p.Tasks).SingleOrDefault(p => p.Id == projectId).Tasks;
+
         }
-        public IEnumerable<Project> GetByProjectManagerId(string projectManagerId)
+        public async Task<IEnumerable<Project>> GetByProjectManagerId(string projectManagerId)
         {
             return _dbSet.Include(p => p.Tasks).Where(p => p.ProjectManagerId == projectManagerId).ToList();
         }
-        public void AddEmployeeToProject(int projectId, Employee employee)
+        public async Task AddEmployeeToProject(int projectId, Employee employee)
         {
             var project = _dbSet.Include(p => p.Employees).FirstOrDefault(p => p.Id == projectId);
             if (project != null)

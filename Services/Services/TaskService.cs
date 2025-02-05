@@ -10,13 +10,13 @@ namespace ERP_Project.Services.Services
         {
             
         }
-        public ProjectTask GetByIdWithIncludes(int id)
+        public async Task<ProjectTask> GetByIdWithIncludes(int id)
         {
-            return ((ITaskRepository)_repository).GetByIdWithIncludes(id);
+            return await ((ITaskRepository)_repository).GetByIdWithIncludes(id);
         }
-        public IEnumerable<ProjectTask> GetByProjectId(int projectId)
+        public async Task<IEnumerable<ProjectTask>> GetByProjectId(int projectId)
         {
-            return ((ITaskRepository)_repository).GetByProjectId(projectId);
+            return await ((ITaskRepository)_repository).GetByProjectId(projectId);
         }
         public Task ChangeStatus(ProjectTask projectTask, ProjectTaskStatus status)
         {
@@ -34,13 +34,13 @@ namespace ERP_Project.Services.Services
             projectTask.EmployeeId = null;
             return UpdateAsync(projectTask);
         }
-        public IEnumerable<ProjectTask> GetByEmployeeId(string employeeId)
+        public async Task<IEnumerable<ProjectTask>> GetByEmployeeId(string employeeId)
         {
-            return ((ITaskRepository)_repository).GetByEmployeeId(employeeId);
+            return await ((ITaskRepository)_repository).GetByEmployeeId(employeeId);
         }
-        public IEnumerable<ProjectTask> GetByProjectManagerId(string projectManagerId)
+        public async Task<IEnumerable<ProjectTask>> GetByProjectManagerId(string projectManagerId)
         {
-            return ((ITaskRepository)_repository).GetByProjectManagerId(projectManagerId);
+            return await ((ITaskRepository)_repository).GetByProjectManagerId(projectManagerId);
         }
     }
 

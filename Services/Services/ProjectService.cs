@@ -31,14 +31,14 @@ namespace ERP_Project.Services.Contracts
         {
             return await _projectRepository.GetProjectWithTasksAsync(projectId);
         }
-        public IEnumerable<ProjectTask> GetTasks(int projectId)
+        public async Task<IEnumerable<ProjectTask>> GetTasks(int projectId)
         {
-            return ((IProjectRepository)_projectRepository).GetTasks(projectId);
+            return await _projectRepository.GetTasks(projectId);
         }
-        public void UpdateProgress(int projectId)
+        public async Task UpdateProgress(int projectId)
         {
-            var project = _projectRepository.GetByIdAsync(projectId).Result;
-            var tasks = GetTasks(projectId);
+            var project = await _projectRepository.GetByIdAsync(projectId);
+            var tasks = await GetTasks(projectId);
             if (tasks == null)
             {
                 return;
@@ -46,27 +46,38 @@ namespace ERP_Project.Services.Contracts
             var totalTasks = tasks.Count();
             var finishedTasks = tasks.Where(t => t.Status == ProjectTaskStatus.Finished).Count();
             project.Progress = (finishedTasks * 100) / totalTasks;
-            _projectRepository.UpdateAsync(project).Wait();
+            if(project.Progress == 100) {
+                project.Status = "Completed";
+            }
+            else if (project.Progress > 0)
+            {
+                project.Status = "In Progress";
+            }
+            else
+            {
+                project.Status = "Not Started";
+            }
+            await _projectRepository.UpdateAsync(project);
         }
-        public void UpdateExpenses(int projectId)
+        public async Task UpdateExpenses(int projectId)
         {
-            var project = _projectRepository.GetByIdAsync(projectId).Result;
-            var tasks = GetTasks(projectId);
+            var project = await _projectRepository.GetByIdAsync(projectId);
+            var tasks = await GetTasks(projectId);
             if (tasks == null)
             {
                 return;
             }
             var totalExpense = tasks.Sum(t => t.Cost);
             project.Expenses = (decimal)totalExpense;
-            _projectRepository.UpdateAsync(project).Wait();
+            await _projectRepository.UpdateAsync(project);
         }
-        public IEnumerable<Project> GetByProjectManagerId(string projectManagerId)
+        public async Task<IEnumerable<Project>> GetByProjectManagerId(string projectManagerId)
         {
-            return ((IProjectRepository)_projectRepository).GetByProjectManagerId(projectManagerId);
+            return await _projectRepository.GetByProjectManagerId(projectManagerId);
         }
-        public void AddEmployeeToProject(int projectId, Employee employee)
+        public async Task AddEmployeeToProject(int projectId, Employee employee)
         {
-            ((IProjectRepository)_projectRepository).AddEmployeeToProject(projectId, employee);
+            await _projectRepository.AddEmployeeToProject(projectId, employee);
         }
     }
 }

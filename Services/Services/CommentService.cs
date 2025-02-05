@@ -11,9 +11,9 @@ namespace ERP_Project.Services.Services
         {
 
         }
-        public IEnumerable<Comment> GetByTaskId(int taskId)
+        public async Task<IEnumerable<Comment>> GetByTaskId(int taskId)
         {
-            return ((ICommentRepository)_repository).GetByTaskId(taskId);
+            return await ((ICommentRepository)_repository).GetByTaskId(taskId);
         }
     }
 }
